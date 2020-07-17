@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +28,12 @@ public class UIWebsiteApplication {
 
 
 	@PostMapping(value = "/")
-	public String hello(@RequestBody String data) throws IOException, TemplateException {
-
+	public String hello(@RequestBody String data) throws IOException, TemplateException, SQLException {
+		Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+		Statement stmt = connection.createStatement();
+		stmt.executeUpdate("use demo");
+		stmt.executeUpdate("truncate table templates");
+		stmt.close();
 		htmlGenerator.setPageUICDL(data);
 		htmlGenerator.parse();
 		htmlGenerator.getPageHTML();
