@@ -14,9 +14,10 @@ public class TemplateDao {
         Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
-        PreparedStatement pps = connection.prepareStatement("insert into templates values(?,?)");
+        PreparedStatement pps = connection.prepareStatement("insert into templates values(?,?,?)");
         pps.setString(1,component.getString("selector"));
         pps.setString(2,html);
+        pps.setString(3,"page1");
         ResultSet rs = pps.executeQuery();
         System.out.println( component.getString("selector") + " has been added to db");
 

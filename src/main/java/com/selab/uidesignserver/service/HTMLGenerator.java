@@ -33,6 +33,10 @@ public class HTMLGenerator{
         this.pageUICDL = new JSONObject(pageUICDL);
         this.compositeComponentsHTML = new LinkedList<>();
     }
+
+    public JSONObject getPageUICDL(){
+        return this.pageUICDL;
+    }
     public void parse() throws IOException, TemplateException, SQLException {
 
         System.out.println(this.pageUICDL.get("componentList"));
