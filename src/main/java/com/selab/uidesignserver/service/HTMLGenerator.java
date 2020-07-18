@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class HTMLGenerator{
@@ -67,6 +68,24 @@ public class HTMLGenerator{
         else if(type.equals("dropdown")){
             DropdownStrategy dropdownStrategy = new DropdownStrategy();
             String htmlStr = dropdownStrategy.getComponentHTML(component);
+            compositeComponentsHTML.add(htmlStr);
+            templateDao.addTemplate(component,htmlStr);
+        }
+        else if(type.equals("table")){
+            TableStrategy tableStrategy = new TableStrategy();
+            String htmlStr = tableStrategy.getComponentHTML(component);
+            compositeComponentsHTML.add(htmlStr);
+            templateDao.addTemplate(component,htmlStr);
+        }
+        else if(type.equals("inputgroup")){
+            InputgroupStrategy inputgroupStrategy = new InputgroupStrategy();
+            String htmlStr = inputgroupStrategy.getComponentHTML(component);
+            compositeComponentsHTML.add(htmlStr);
+            templateDao.addTemplate(component,htmlStr);
+        }
+        else if(type.equals("card")){
+            CardStrategy cardStrategy = new CardStrategy();
+            String htmlStr = cardStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
         }
