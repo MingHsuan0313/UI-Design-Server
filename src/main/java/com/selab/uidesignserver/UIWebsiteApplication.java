@@ -33,12 +33,13 @@ public class UIWebsiteApplication {
 		Statement stmt = connection.createStatement();
 		stmt.executeUpdate("use demo");
 		stmt.executeUpdate("truncate table templates");
-		PreparedStatement pps = connection.prepareStatement("insert into pages values(?,?) on duplicate key update pdl = ?");
+		PreparedStatement pps = connection.prepareStatement("insert into pages values(?,?,?) on duplicate key update pdl = ?");
 		htmlGenerator.setPageUICDL(data);
 
 		pps.setString(1, htmlGenerator.getPageUICDL().getString("selector"));
-		pps.setString(2, data);
+		pps.setString(2, htmlGenerator.getPageUICDL().getString("layout"));
 		pps.setString(3, data);
+		pps.setString(4, data);
 		pps.executeQuery();
 		htmlGenerator.parse();
 		htmlGenerator.getPageHTML();

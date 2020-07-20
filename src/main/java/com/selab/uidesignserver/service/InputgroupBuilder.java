@@ -16,7 +16,7 @@ public class InputgroupBuilder {
     }
 
     void buildButton(JSONObject component){
-        this.html += "<span class=\"btn\">"+component.getString("text")+"</i></span>";
+        this.html += "<span class=\"btn\">"+component.getString("text")+"</span>";
     }
 
     void buildIcon(JSONObject component){

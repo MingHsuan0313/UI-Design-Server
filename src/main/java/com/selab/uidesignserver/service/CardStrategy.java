@@ -27,16 +27,8 @@ public class CardStrategy {
                 cardBuilder.buildButton(component);
             }
         }
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("content", cardBuilder.createCard());
-        Template template = FreeMarkerUtil.getInstance().getTemplate("card.ftl");
 
-        Writer writer = new StringWriter();
-        template.process(dataMap,writer);
-        String htmlStr = writer.toString().trim().replaceAll(" +", " ")
-                .replace("\n","")
-                .replace("> ",">");
 
-        return htmlStr;
+        return cardBuilder.createCard();
     }
 }
