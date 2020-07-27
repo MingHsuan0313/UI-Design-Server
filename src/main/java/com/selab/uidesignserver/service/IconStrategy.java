@@ -15,7 +15,10 @@ public class IconStrategy {
 
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("text",uicdl.getString("text"));
-
+        dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
+        dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
+        dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
+        dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
         Template template = FreeMarkerUtil.getInstance().getTemplate("icon.ftl");
 
         Writer writer = new StringWriter();

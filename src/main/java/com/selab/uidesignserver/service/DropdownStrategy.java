@@ -15,6 +15,11 @@ public class DropdownStrategy {
 
         Map<String, Object> dataMap = new HashMap<>();
 
+
+        dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
+        dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
+        dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
+        dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
         dataMap.put("items",uicdl.getString("items").split(" +"));
         Template template = FreeMarkerUtil.getInstance().getTemplate("dropdown.ftl");
 

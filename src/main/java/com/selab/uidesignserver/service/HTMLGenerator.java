@@ -19,14 +19,11 @@ import java.util.Locale;
 
 @Service
 public class HTMLGenerator{
-    @Autowired
-    TextStrategy textStrategy;
 
     @Autowired
     TemplateDao templateDao;
 
     private JSONObject pageUICDL;
-    private List<JSONObject> compositeComponentsUICDL = new LinkedList<>();
     private List<String> compositeComponentsHTML = new LinkedList<>();
 
     public void setPageUICDL(String pageUICDL){
@@ -37,12 +34,13 @@ public class HTMLGenerator{
     public JSONObject getPageUICDL(){
         return this.pageUICDL;
     }
+
     public void parse() throws IOException, TemplateException, SQLException {
 
-        System.out.println(this.pageUICDL.get("componentList"));
+        System.out.println(this.pageUICDL);
 
-        for(int i=0;i<this.pageUICDL.getJSONArray("componentList").length();i++){
-            JSONObject component = this.pageUICDL.getJSONArray("componentList").getJSONObject(i);
+        for(int i=0;i<this.pageUICDL.getJSONObject("componentList").getJSONArray("componentList").length();i++){
+            JSONObject component = this.pageUICDL.getJSONObject("componentList").getJSONArray("componentList").getJSONObject(i);
             setStrategy(component.getString("type"), component);
         }
 
@@ -92,6 +90,15 @@ public class HTMLGenerator{
             String htmlStr = cardStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
+        }
+        else if(type.equals("form")){
+            FormStrategy formStrategy = new FormStrategy();
+            String htmlStr = formStrategy.getComponentHTML(component);
+            compositeComponentsHTML.add(htmlStr);
+            templateDao.addTemplate(component,htmlStr);
+        }
+        else{
+            System.out.println("No corresponding template for " + type);
         }
 
     }

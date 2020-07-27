@@ -4,24 +4,24 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
 
-import javax.smartcardio.Card;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CardBuilder {
-    String headerHTML="";
+public class FormBuilder {
     String contentHTML="";
     String html="";
     JSONObject uicdl;
-    CardBuilder(JSONObject uicdl){
+    FormBuilder(JSONObject uicdl){
         this.uicdl = uicdl;
     }
-    void buildHeader(String header){
-
-        this.headerHTML +=  header;
+    void buildInput(JSONObject component) throws IOException, TemplateException {
+        InputStrategy inputStrategy = new InputStrategy();
+        String content = inputStrategy.getComponentHTML(component);
+        content = "<div>" + content + "</div>";
+        this.contentHTML += content;
 
     }
 
@@ -39,16 +39,15 @@ public class CardBuilder {
         this.contentHTML += content;
     }
 
-    String createCard() throws IOException, TemplateException {
+    String createForm() throws IOException, TemplateException {
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("header", this.headerHTML);
         dataMap.put("content", this.contentHTML);
 
         dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
         dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
         dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
-        Template template = FreeMarkerUtil.getInstance().getTemplate("card.ftl");
+        Template template = FreeMarkerUtil.getInstance().getTemplate("form.ftl");
 
         Writer writer = new StringWriter();
         template.process(dataMap,writer);
