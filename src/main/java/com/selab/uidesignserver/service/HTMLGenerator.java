@@ -97,6 +97,12 @@ public class HTMLGenerator{
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
         }
+        else if(type.equals("breadcrumb")){
+            BreadcrumbStrategy breadcrumbStrategy = new BreadcrumbStrategy();
+            String htmlStr = breadcrumbStrategy.getComponentHTML(component);
+            compositeComponentsHTML.add(htmlStr);
+            templateDao.addTemplate(component,htmlStr);
+        }
         else{
             System.out.println("No corresponding template for " + type);
         }
