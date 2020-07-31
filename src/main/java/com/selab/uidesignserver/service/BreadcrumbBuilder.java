@@ -25,7 +25,7 @@ public class BreadcrumbBuilder {
             this.contentHTML += "<li class=\"breadcrumb-item\"><a>" + component.getString("text")+ "</a></li>";
         }
         else{
-            this.contentHTML += "<li class=\"breadcrumb-item\"><a href=\">" + component.getString("href")+ "\">" + component.getString("text") + "</a></li>";
+            this.contentHTML += "<li class=\"breadcrumb-item\"><a href=\"" + component.getString("href")+ "\">" + component.getString("text") + "</a></li>";
         }
     }
 
