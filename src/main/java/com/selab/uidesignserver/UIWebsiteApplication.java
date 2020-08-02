@@ -22,6 +22,8 @@ public class UIWebsiteApplication {
 
 	@Autowired
 	HTMLGenerator htmlGenerator;
+
+	@Autowired
 	PageDao pageDao;
 
 	public static void main(String[] args) {
@@ -31,10 +33,10 @@ public class UIWebsiteApplication {
 
 	@PostMapping(value = "/")
 	public String process(@RequestBody String data) throws IOException, TemplateException, SQLException {
-
+		System.out.println(data);
 		htmlGenerator.setPageUICDL(data);
 
-		pageDao.addPage(htmlGenerator.getPageUICDL());
+		pageDao.addPage(data);
 		htmlGenerator.parse();
 		htmlGenerator.getPageHTML();
 		return "hello from server";
