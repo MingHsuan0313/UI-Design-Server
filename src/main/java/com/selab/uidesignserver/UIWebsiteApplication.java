@@ -8,11 +8,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SpringBootApplication
@@ -40,6 +43,11 @@ public class UIWebsiteApplication {
 		htmlGenerator.parse();
 		htmlGenerator.getPageHTML();
 		return "hello from server";
+	}
+
+	@GetMapping(value = "/")
+	public String getPages() throws IOException, TemplateException, SQLException {
+		return pageDao.getPages();
 	}
 
 }
