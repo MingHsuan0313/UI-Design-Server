@@ -28,5 +28,7 @@ public class TemplateDao {
         ResultSet rs = pps.executeQuery();
         System.out.println( component.getString("selector") + " has been added to db");
 
+        connection.close();
+
     }
 }

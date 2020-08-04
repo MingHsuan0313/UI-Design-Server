@@ -31,6 +31,7 @@ public class PageDao {
         pps.setString(5, pdl.getJSONObject("componentList").getString("selector"));
         pps.setString(6, pdl.toString());
         pps.executeQuery();
+        connection.close();
     }
 
     public String getPages() throws SQLException {
@@ -49,6 +50,7 @@ public class PageDao {
             pages.add(page);
         }
 
+        connection.close();
         return pages.toString();
     }
 }
