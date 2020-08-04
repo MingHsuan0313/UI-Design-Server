@@ -3,6 +3,8 @@ package com.selab.uidesignserver.service;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -10,7 +12,12 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class TableStrategy {
+
+
+    PositionTransformer positionTransformer = new PositionTransformer();
+
     public String getComponentHTML(JSONObject uicdl) throws IOException, TemplateException {
 
         Map<String, Object> dataMap = new HashMap<>();
@@ -20,8 +27,9 @@ public class TableStrategy {
         dataMap.put("width",uicdl.getInt("width"));
         dataMap.put("height",uicdl.getInt("height"));
         // height is sometimes not needed cuz table will distributed spaces equally
-        dataMap.put("x",uicdl.getInt("x"));
-        dataMap.put("y",uicdl.getInt("y"));
+        positionTransformer.transform(uicdl.getInt("x"),uicdl.getInt("y"));
+        dataMap.put("x",positionTransformer.getTargetWidth());
+        dataMap.put("y",positionTransformer.getTargetHeight());
         Template template = FreeMarkerUtil.getInstance().getTemplate("table.ftl");
 
         Writer writer = new StringWriter();

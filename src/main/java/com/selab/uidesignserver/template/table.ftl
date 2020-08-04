@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered" style="position:absolute;width:${width}px;left:${x}px;top:${y}px;font-size:20px">
+<table class="table table-striped table-bordered" style="position:absolute;width:${width}px;left:${x}%;top:${y}%;font-size:20px">
     <thead>
         <tr>
             <#list headers as header>

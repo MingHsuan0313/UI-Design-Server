@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FormBuilder {
+
+    PositionTransformer positionTransformer = new PositionTransformer();
     String contentHTML="";
     String html="";
     JSONObject uicdl;
@@ -19,6 +21,7 @@ public class FormBuilder {
     }
     void buildInput(JSONObject component) throws IOException, TemplateException {
         InputStrategy inputStrategy = new InputStrategy();
+        inputStrategy.setIsCompositeELement(true);
         String content = inputStrategy.getComponentHTML(component);
         content = "<div>" + content + "</div>";
         this.contentHTML += content;
@@ -27,6 +30,7 @@ public class FormBuilder {
 
     void buildText(JSONObject component) throws IOException, TemplateException {
         TextStrategy textStrategy = new TextStrategy();
+        textStrategy.setIsCompositeELement(true);
         String content = textStrategy.getComponentHTML(component);
         content = "<div>" + content + "</div>";
         this.contentHTML += content;
@@ -45,8 +49,9 @@ public class FormBuilder {
 
         dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
-        dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
-        dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
+        positionTransformer.transform(uicdl.getInt("x"),uicdl.getInt("y"));
+        dataMap.put("x",positionTransformer.getTargetWidth());
+        dataMap.put("y",positionTransformer.getTargetHeight());
         Template template = FreeMarkerUtil.getInstance().getTemplate("form.ftl");
 
         Writer writer = new StringWriter();

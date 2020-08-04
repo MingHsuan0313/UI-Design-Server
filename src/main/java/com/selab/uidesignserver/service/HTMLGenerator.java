@@ -23,6 +23,9 @@ public class HTMLGenerator{
     @Autowired
     TemplateDao templateDao;
 
+
+    PositionTransformer positionTransformer = new PositionTransformer();
+
     private JSONObject pageUICDL;
     private List<String> compositeComponentsHTML = new LinkedList<>();
 
@@ -37,7 +40,13 @@ public class HTMLGenerator{
 
     public void parse() throws IOException, TemplateException, SQLException {
 
-        System.out.println(this.pageUICDL);
+        if(!positionTransformer.isSet){
+            int width = this.pageUICDL.getJSONObject("componentList").getInt("width");
+            int height = this.pageUICDL.getJSONObject("componentList").getInt("height");
+            positionTransformer.setSourceHeight(height);
+            positionTransformer.setSourceWidth(width);
+            positionTransformer.isSet = true;
+        }
 
         for(int i=0;i<this.pageUICDL.getJSONObject("componentList").getJSONArray("componentList").length();i++){
             JSONObject component = this.pageUICDL.getJSONObject("componentList").getJSONArray("componentList").getJSONObject(i);
