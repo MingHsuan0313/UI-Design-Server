@@ -59,6 +59,7 @@ public class HTMLGenerator{
 
         if(type.equals("text")){
             TextStrategy textStrategy = new TextStrategy();
+            textStrategy.setIsCompositeELement(false);
             String htmlStr = textStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);

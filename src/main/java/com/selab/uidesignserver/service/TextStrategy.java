@@ -18,7 +18,7 @@ public class TextStrategy {
     boolean isCompositeElement = false;
 
     public void setIsCompositeELement(boolean res) {
-        this.isCompositeElement = true;
+        this.isCompositeElement = res;
     }
 
     public String getComponentHTML(JSONObject uicdl) throws IOException, TemplateException {
