@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DropdownStrategy {
+
     public String getComponentHTML(JSONObject uicdl) throws IOException, TemplateException {
 
         Map<String, Object> dataMap = new HashMap<>();

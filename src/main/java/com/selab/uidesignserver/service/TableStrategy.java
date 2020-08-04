@@ -18,6 +18,7 @@ public class TableStrategy {
 
     PositionTransformer positionTransformer = new PositionTransformer();
 
+
     public String getComponentHTML(JSONObject uicdl) throws IOException, TemplateException {
 
         Map<String, Object> dataMap = new HashMap<>();

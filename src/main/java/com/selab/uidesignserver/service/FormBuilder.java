@@ -38,6 +38,7 @@ public class FormBuilder {
 
     void buildButton(JSONObject component) throws IOException, TemplateException {
         ButtonStrategy buttonStrategy = new ButtonStrategy();
+        buttonStrategy.setIsCompositeELement(true);
         String content = buttonStrategy.getComponentHTML(component);
         content = "<div>" + content + "</div>";
         this.contentHTML += content;

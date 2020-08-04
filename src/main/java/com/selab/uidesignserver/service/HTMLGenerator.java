@@ -67,12 +67,14 @@ public class HTMLGenerator{
         }
         else if(type.equals("button")){
             ButtonStrategy buttonStrategy = new ButtonStrategy();
+            buttonStrategy.setIsCompositeELement(false);
             String htmlStr = buttonStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
         }
         else if(type.equals("icon")){
             IconStrategy iconStrategy = new IconStrategy();
+            iconStrategy.setIsCompositeELement(false);
             String htmlStr = iconStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
