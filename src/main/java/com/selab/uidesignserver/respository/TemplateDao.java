@@ -27,8 +27,15 @@ public class TemplateDao {
         pps.setString(5,html);
         ResultSet rs = pps.executeQuery();
         System.out.println( component.getString("selector") + " has been added to db");
-
         connection.close();
+    }
 
+    public void truncateTable() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate("use demo");
+        stmt.executeUpdate("truncate table templates;");
+        stmt.executeUpdate("truncate table pages;");
+        connection.close();
     }
 }

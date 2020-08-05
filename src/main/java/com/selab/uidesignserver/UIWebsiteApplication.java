@@ -2,6 +2,7 @@ package com.selab.uidesignserver;
 
 import com.selab.uidesignserver.model.PageComponent;
 import com.selab.uidesignserver.respository.PageDao;
+import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
@@ -29,6 +30,9 @@ public class UIWebsiteApplication {
 	@Autowired
 	PageDao pageDao;
 
+	@Autowired
+	TemplateDao templateDao;
+
 	public static void main(String[] args) {
 		SpringApplication.run(UIWebsiteApplication.class, args);
 	}
@@ -48,6 +52,12 @@ public class UIWebsiteApplication {
 	@GetMapping(value = "/")
 	public String getPages() throws IOException, TemplateException, SQLException {
 		return pageDao.getPages();
+	}
+
+	@GetMapping(value="/trunc")
+	public String truncate() throws SQLException {
+		templateDao.truncateTable();
+		return "truncate tables";
 	}
 
 }
