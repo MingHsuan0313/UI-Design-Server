@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CardBuilder {
+
+    PositionTransformer positionTransformer = new PositionTransformer();
     String headerHTML="";
     String contentHTML="";
     String html="";
@@ -27,6 +29,7 @@ public class CardBuilder {
 
     void buildText(JSONObject component) throws IOException, TemplateException {
         TextStrategy textStrategy = new TextStrategy();
+        textStrategy.setIsCompositeELement(true);
         String content = textStrategy.getComponentHTML(component);
         content = "<div>" + content + "</div>";
         this.contentHTML += content;
@@ -34,6 +37,7 @@ public class CardBuilder {
 
     void buildButton(JSONObject component) throws IOException, TemplateException {
         ButtonStrategy buttonStrategy = new ButtonStrategy();
+        buttonStrategy.setIsCompositeELement(true);
         String content = buttonStrategy.getComponentHTML(component);
         content = "<div>" + content + "</div>";
         this.contentHTML += content;
@@ -46,8 +50,9 @@ public class CardBuilder {
 
         dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
-        dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
-        dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
+        positionTransformer.transform(uicdl.getInt("x"),uicdl.getInt("y"));
+        dataMap.put("x",positionTransformer.getTargetWidth());
+        dataMap.put("y",positionTransformer.getTargetHeight());
         Template template = FreeMarkerUtil.getInstance().getTemplate("card.ftl");
 
         Writer writer = new StringWriter();

@@ -27,7 +27,7 @@ public class ButtonStrategy {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("text",uicdl.getString("text"));
         dataMap.put("href",uicdl.getString("href"));
-        dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
+        dataMap.put("width",String.valueOf(uicdl.getInt("width")+10).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
 
         if (isCompositeElement) {
