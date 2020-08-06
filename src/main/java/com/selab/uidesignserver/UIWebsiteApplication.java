@@ -1,6 +1,7 @@
 package com.selab.uidesignserver;
 
 import com.selab.uidesignserver.model.PageComponent;
+import com.selab.uidesignserver.respository.NavigationDao;
 import com.selab.uidesignserver.respository.PageDao;
 import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
@@ -33,6 +34,9 @@ public class UIWebsiteApplication {
 	@Autowired
 	TemplateDao templateDao;
 
+	@Autowired
+	NavigationDao navigationDao;
+
 	public static void main(String[] args) {
 		SpringApplication.run(UIWebsiteApplication.class, args);
 	}
@@ -59,5 +63,12 @@ public class UIWebsiteApplication {
 		templateDao.truncateTable();
 		return "truncate tables";
 	}
+
+	@PostMapping(value="/navigate")
+	public String navigate(@RequestBody String data) throws SQLException {
+		navigationDao.store(data);
+		return "store ndl";
+	}
+
 
 }
