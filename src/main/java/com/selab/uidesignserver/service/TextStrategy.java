@@ -26,6 +26,7 @@ public class TextStrategy {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("text", uicdl.getString("text"));
         dataMap.put("href", uicdl.getString("href"));
+        dataMap.put("fontSize", uicdl.getJSONObject("style").getInt("fontSize"));
         if (isCompositeElement) {
             dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
             dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));

@@ -1,5 +1,5 @@
 <#if isCompositeElement=="true">
-    <a style="position:absolute;left:${x}px;top:${y}px;font-size:16px"
+    <a style="position:absolute;left:${x}px;top:${y}px;font-size:${fontSize}px"
             <#if href?has_content>
                 href="${href}"
             </#if>
@@ -9,7 +9,7 @@
         </#if>
     </a>
 <#else>
-    <a style="position:absolute;left:${x}%;top:${y}%;font-size:16px"
+    <a style="position:absolute;left:${x}%;top:${y}%;font-size:${fontSize}px"
             <#if href?has_content>
                 href="${href}"
             </#if>

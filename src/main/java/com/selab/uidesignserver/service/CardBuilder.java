@@ -48,7 +48,7 @@ public class CardBuilder {
         dataMap.put("header", this.headerHTML);
         dataMap.put("content", this.contentHTML);
 
-        dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
+        dataMap.put("width",String.valueOf(uicdl.getInt("width")+2).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
         positionTransformer.transform(uicdl.getInt("x"),uicdl.getInt("y"));
         dataMap.put("x",positionTransformer.getTargetWidth());
