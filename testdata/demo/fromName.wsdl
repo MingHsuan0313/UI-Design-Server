@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_client_render/ColorPalette/org_craft_client_render_ColorPalette_fromName" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_client_render/ColorPalette/org_craft_client_render_ColorPalette_fromName">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="fromNameResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getName" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fromNameRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="string0" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="fromNameRequest">
+    <wsdl:part element="impl:fromNameRequest" name="fromNameRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="fromNameResponse">
+    <wsdl:part element="impl:fromNameResponse" name="fromNameResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="fromNamePort">
+    <wsdl:operation name="fromName">
+      <wsdl:output message="impl:fromNameResponse" name="out"/>
+      <wsdl:input message="impl:fromNameRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="fromNameService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_client_render/ColorPalette/org_craft_client_render_ColorPalette_fromName"/>
+  </wsdl:service>
+</wsdl:definitions>

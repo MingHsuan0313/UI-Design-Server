@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="writeAndFlushResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="writeAndFlushRequest">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="writeAndFlushRequest">
+    <wsdl:part element="impl:writeAndFlushRequest" name="writeAndFlushRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="writeAndFlushResponse">
+    <wsdl:part element="impl:writeAndFlushResponse" name="writeAndFlushResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="writeAndFlushPort">
+    <wsdl:operation name="writeAndFlush">
+      <wsdl:output message="impl:writeAndFlushResponse" name="out"/>
+      <wsdl:input message="impl:writeAndFlushRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="writeAndFlushService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

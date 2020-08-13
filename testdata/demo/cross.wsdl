@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_maths/Vector3/org_craft_maths_Vector3_cross" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_maths/Vector3/org_craft_maths_Vector3_cross">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="crossRequest">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="crossResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getX" type="xsd:float"/>
+            <xsd:element name="getY" type="xsd:float"/>
+            <xsd:element name="getZ" type="xsd:float"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="crossRequest">
+    <wsdl:part element="impl:crossRequest" name="crossRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="crossResponse">
+    <wsdl:part element="impl:crossResponse" name="crossResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="crossPort">
+    <wsdl:operation name="cross">
+      <wsdl:output message="impl:crossResponse" name="out"/>
+      <wsdl:input message="impl:crossRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="crossService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_maths/Vector3/org_craft_maths_Vector3_cross"/>
+  </wsdl:service>
+</wsdl:definitions>

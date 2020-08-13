@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="getInstanceRequest">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInstanceResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getInstanceRequest">
+    <wsdl:part element="impl:getInstanceRequest" name="getInstanceRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="getInstanceResponse">
+    <wsdl:part element="impl:getInstanceResponse" name="getInstanceResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="getInstancePort">
+    <wsdl:operation name="getInstance">
+      <wsdl:output message="impl:getInstanceResponse" name="out"/>
+      <wsdl:input message="impl:getInstanceRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="getInstanceService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

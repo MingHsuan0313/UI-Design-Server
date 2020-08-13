@@ -38,4 +38,5 @@ public class TemplateDao {
         stmt.executeUpdate("truncate table pages;");
         connection.close();
     }
+
 }

@@ -5,20 +5,26 @@ import com.selab.uidesignserver.respository.NavigationDao;
 import com.selab.uidesignserver.respository.PageDao;
 import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
+import com.selab.uidesignserver.service.SearchWSDLService;
+import com.selab.uidesignserver.model.matchMaking.RankingResult;
+import com.selab.uidesignserver.service.CanvasToPictureUtil;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
+////import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootApplication
 @RestController
@@ -36,6 +42,9 @@ public class UIWebsiteApplication {
 
 	@Autowired
 	NavigationDao navigationDao;
+	private final static Logger logger = Logger.getLogger(UIWebsiteApplication.class);
+
+	SearchWSDLService sws = new SearchWSDLService();
 
 	public static void main(String[] args) {
 		SpringApplication.run(UIWebsiteApplication.class, args);
@@ -69,6 +78,54 @@ public class UIWebsiteApplication {
 		navigationDao.store(data);
 		return "store ndl";
 	}
+
+	@PostMapping(value="/search")
+	public RankingResult search(MultipartHttpServletRequest request) throws IOException {
+		logger.info("Hello Search");
+		Iterator<String> iterator = request.getFileNames();
+		MultipartFile multiFile = request.getFile(iterator.next());
+		String name = multiFile.getOriginalFilename();
+		logger.info("Request WSDL: " + name);
+
+		//byte[] bytes = multiFile.getBytes();
+		//System.out.println("File uploaded content:\n" + new String(bytes));
+
+		File requestWSDL = new File(multiFile.getOriginalFilename());
+		requestWSDL.createNewFile();
+		FileOutputStream fos = new FileOutputStream(requestWSDL);
+		fos.write(multiFile.getBytes());
+
+		String result = sws.search(requestWSDL, 15);
+
+		fos.close();
+
+		return new RankingResult(result);
+	}
+
+	@PostMapping(value = "/exportPicture")
+	public void exportPicture(@RequestBody String data) throws IOException{
+		String xmlTest = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+				"<mxGraphModel connect=\"1\" fold=\"1\" grid=\"1\" gridSize=\"10\" guides=\"1\" page=\"0\"    pageHeight=\"1169\" pageScale=\"1\" pageWidth=\"826\" tooltips=\"1\">\n" +
+				"       <root>\n" +
+				"           <mxCell id=\"0\"/>\n" +
+				"           <mxCell id=\"1\" parent=\"0\"/>\n" +
+				"           <mxCell id=\"2\" parent=\"1\" style=\"whiteSpace=wrap\" value=\"\" vertex=\"1\">\n" +
+				"               <mxGeometry as=\"geometry\" height=\"60\" width=\"120\" x=\"80\" y=\"70\"/>\n" +
+				"           </mxCell>\n" +
+				"           <mxCell id=\"3\" parent=\"1\" style=\"whiteSpace=wrap\" value=\"\" vertex=\"1\">\n" +
+				"               <mxGeometry as=\"geometry\" height=\"60\" width=\"120\" x=\"280\" y=\"70\"/>\n" +
+				"           </mxCell>\n" +
+				"           <mxCell edge=\"1\" id=\"4\" parent=\"1\" source=\"2\" style=\"edgeStyle=orthogonalEdgeStyle;rounded=0;\" target=\"3\">\n" +
+				"               <mxGeometry as=\"geometry\" relative=\"1\"/>\n" +
+				"           </mxCell>\n" +
+				"       </root>\n" +
+				"</mxGraphModel>";
+		logger.info("Hello World");
+		logger.info(data);
+		CanvasToPictureUtil.transformToPNG(xmlTest);
+	}
+
+
 
 
 }

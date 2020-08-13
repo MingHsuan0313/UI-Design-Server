@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_blocks_states/EnumConnexionStates/org_craft_blocks_states_EnumConnexionStates_fromFlag" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_blocks_states/EnumConnexionStates/org_craft_blocks_states_EnumConnexionStates_fromFlag">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="fromFlagResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="toString" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fromFlagRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="int0" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="fromFlagRequest">
+    <wsdl:part element="impl:fromFlagRequest" name="fromFlagRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="fromFlagResponse">
+    <wsdl:part element="impl:fromFlagResponse" name="fromFlagResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="fromFlagPort">
+    <wsdl:operation name="fromFlag">
+      <wsdl:output message="impl:fromFlagResponse" name="out"/>
+      <wsdl:input message="impl:fromFlagRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="fromFlagService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_blocks_states/EnumConnexionStates/org_craft_blocks_states_EnumConnexionStates_fromFlag"/>
+  </wsdl:service>
+</wsdl:definitions>

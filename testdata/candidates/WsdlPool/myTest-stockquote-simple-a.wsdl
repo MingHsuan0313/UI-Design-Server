@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="stockquote" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.webserviceX.NET/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://www.webserviceX.NET/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema xmlns="http://www.w3.org/2001/XMLSchema"
+    		  targetNamespace="http://www.webserviceX.NET/">
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetQuoteSoapIn">
+    <wsdl:part name="symbol" element="s:string" />
+  </wsdl:message>
+  <wsdl:message name="GetQuoteSoapOut">
+    <wsdl:part name="Price" element="s:float" />
+  </wsdl:message>
+  <wsdl:portType name="StockQuoteSoap">
+    <wsdl:operation name="GetQuote">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Get Stock quote for a company Symbol</wsdl:documentation>
+      <wsdl:input message="tns:GetQuoteSoapIn" />
+      <wsdl:output message="tns:GetQuoteSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StockQuoteSoap" type="tns:StockQuoteSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetQuote">
+      <soap:operation soapAction="http://www.webserviceX.NET/GetQuote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StockQuotationSimpleSample">
+    <wsdl:port name="StockQuoteSoap" binding="tns:StockQuoteSoap">
+      <soap:address location="http://www.webservicex.net/stockquote.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

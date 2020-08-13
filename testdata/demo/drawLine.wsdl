@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="drawLineResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="drawLineRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="url1_string1" type="xsd:String"/>
+            <xsd:element name="url1_string0" type="xsd:String"/>
+            <xsd:element name="url1_string3" type="xsd:String"/>
+            <xsd:element name="resourcelocation0_string0" type="xsd:String"/>
+            <xsd:element name="float8" type="xsd:float"/>
+            <xsd:element name="float9" type="xsd:float"/>
+            <xsd:element name="float5" type="xsd:float"/>
+            <xsd:element name="float6" type="xsd:float"/>
+            <xsd:element name="virtualresource2_string0" type="xsd:String"/>
+            <xsd:element name="virtualresource2_byte[]1" type="xsd:byte[]"/>
+            <xsd:element name="float7" type="xsd:float"/>
+            <xsd:element name="file1_string0" type="xsd:String"/>
+            <xsd:element name="int2" type="xsd:int"/>
+            <xsd:element name="int1" type="xsd:int"/>
+            <xsd:element name="int4" type="xsd:int"/>
+            <xsd:element name="int3" type="xsd:int"/>
+            <xsd:element name="url1_int2" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="drawLineRequest">
+    <wsdl:part element="impl:drawLineRequest" name="drawLineRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="drawLineResponse">
+    <wsdl:part element="impl:drawLineResponse" name="drawLineResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="drawLinePort">
+    <wsdl:operation name="drawLine">
+      <wsdl:output message="impl:drawLineResponse" name="out"/>
+      <wsdl:input message="impl:drawLineRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="drawLineService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

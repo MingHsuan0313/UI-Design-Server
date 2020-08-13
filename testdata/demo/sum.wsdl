@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="sumRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="int2" type="xsd:int"/>
+            <xsd:element name="int1" type="xsd:int"/>
+            <xsd:element name="string3" type="xsd:String"/>
+            <xsd:element name="string[]0" type="xsd:String[]"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="sumResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return_string0" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="sumRequest">
+    <wsdl:part element="impl:sumRequest" name="sumRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="sumResponse">
+    <wsdl:part element="impl:sumResponse" name="sumResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="sumPort">
+    <wsdl:operation name="sum">
+      <wsdl:output message="impl:sumResponse" name="out"/>
+      <wsdl:input message="impl:sumRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="sumService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_fromChar" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_fromChar">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="fromCharRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="char0" type="xsd:char"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="fromCharResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="charsAfter" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="fromCharRequest">
+    <wsdl:part element="impl:fromCharRequest" name="fromCharRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="fromCharResponse">
+    <wsdl:part element="impl:fromCharResponse" name="fromCharResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="fromCharPort">
+    <wsdl:operation name="fromChar">
+      <wsdl:output message="impl:fromCharResponse" name="out"/>
+      <wsdl:input message="impl:fromCharRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="fromCharService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_fromChar"/>
+  </wsdl:service>
+</wsdl:definitions>

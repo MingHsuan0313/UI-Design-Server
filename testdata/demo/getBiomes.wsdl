@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="getBiomesRequest">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getBiomesResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getBiomesRequest">
+    <wsdl:part element="impl:getBiomesRequest" name="getBiomesRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="getBiomesResponse">
+    <wsdl:part element="impl:getBiomesResponse" name="getBiomesResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="getBiomesPort">
+    <wsdl:operation name="getBiomes">
+      <wsdl:output message="impl:getBiomesResponse" name="out"/>
+      <wsdl:input message="impl:getBiomesRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="getBiomesService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

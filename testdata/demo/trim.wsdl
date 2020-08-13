@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="trimRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="string[]0" type="xsd:String[]"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="trimResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return_string[]0" type="xsd:String[]"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="trimRequest">
+    <wsdl:part element="impl:trimRequest" name="trimRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="trimResponse">
+    <wsdl:part element="impl:trimResponse" name="trimResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="trimPort">
+    <wsdl:operation name="trim">
+      <wsdl:output message="impl:trimResponse" name="out"/>
+      <wsdl:input message="impl:trimRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="trimService">
+    <wsdlrestful:address method="get" url="http://localhost:8090"/>
+  </wsdl:service>
+</wsdl:definitions>

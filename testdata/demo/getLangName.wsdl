@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_client/I18n/org_craft_client_I18n_getLangName" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_client/I18n/org_craft_client_I18n_getLangName">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="getLangNameRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="string0" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getLangNameResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return_string0" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getLangNameRequest">
+    <wsdl:part element="impl:getLangNameRequest" name="getLangNameRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="getLangNameResponse">
+    <wsdl:part element="impl:getLangNameResponse" name="getLangNameResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="getLangNamePort">
+    <wsdl:operation name="getLangName">
+      <wsdl:output message="impl:getLangNameResponse" name="out"/>
+      <wsdl:input message="impl:getLangNameRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="getLangNameService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_client/I18n/org_craft_client_I18n_getLangName"/>
+  </wsdl:service>
+</wsdl:definitions>

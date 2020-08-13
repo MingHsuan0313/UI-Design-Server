@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_generateFromColor" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_generateFromColor">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="generateFromColorRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="int0" type="xsd:int"/>
+            <xsd:element name="int2" type="xsd:int"/>
+            <xsd:element name="int1" type="xsd:int"/>
+            <xsd:element name="int3" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="generateFromColorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return_string0" type="xsd:String"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="generateFromColorRequest">
+    <wsdl:part element="impl:generateFromColorRequest" name="generateFromColorRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="generateFromColorResponse">
+    <wsdl:part element="impl:generateFromColorResponse" name="generateFromColorResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="generateFromColorPort">
+    <wsdl:operation name="generateFromColor">
+      <wsdl:output message="impl:generateFromColorResponse" name="out"/>
+      <wsdl:input message="impl:generateFromColorRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="generateFromColorService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_client_render_fonts/TextFormatting/org_craft_client_render_fonts_TextFormatting_generateFromColor"/>
+  </wsdl:service>
+</wsdl:definitions>

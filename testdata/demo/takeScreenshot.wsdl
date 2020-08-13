@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:impl="http://localhost:8090/org_craft_client/OurCraft/org_craft_client_OurCraft_takeScreenshot" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://localhost:8090/org_craft_client/OurCraft/org_craft_client_OurCraft_takeScreenshot">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified">
+      <xsd:element name="takeScreenshotResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="getType" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="takeScreenshotRequest">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="int0" type="xsd:int"/>
+            <xsd:element name="int2" type="xsd:int"/>
+            <xsd:element name="int1" type="xsd:int"/>
+            <xsd:element name="int3" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="takeScreenshotRequest">
+    <wsdl:part element="impl:takeScreenshotRequest" name="takeScreenshotRequest" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="takeScreenshotResponse">
+    <wsdl:part element="impl:takeScreenshotResponse" name="takeScreenshotResponse" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="takeScreenshotPort">
+    <wsdl:operation name="takeScreenshot">
+      <wsdl:output message="impl:takeScreenshotResponse" name="out"/>
+      <wsdl:input message="impl:takeScreenshotRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="takeScreenshotService">
+    <wsdlrestful:address method="get" url="http://localhost:8090/org_craft_client/OurCraft/org_craft_client_OurCraft_takeScreenshot"/>
+  </wsdl:service>
+</wsdl:definitions>
