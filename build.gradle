@@ -11,10 +11,15 @@ sourceCompatibility = '1.8'
 repositories {
 	mavenCentral()
 	jcenter()
+	maven{
+		url "https://dl.bintray.com/flowtick/jgraphx/"
+	}
 }
 
 dependencies {
 	compile 'org.json:json:20171018'
+	compile group: 'com.mxgraph', name: 'jgraphx', version: '3.7.4'
+
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
