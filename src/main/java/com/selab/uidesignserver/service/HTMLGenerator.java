@@ -81,6 +81,7 @@ public class HTMLGenerator{
         }
         else if(type.equals("dropdown")){
             DropdownStrategy dropdownStrategy = new DropdownStrategy();
+            dropdownStrategy.setIsCompositeELement(false);
             String htmlStr = dropdownStrategy.getComponentHTML(component);
             compositeComponentsHTML.add(htmlStr);
             templateDao.addTemplate(component,htmlStr);
