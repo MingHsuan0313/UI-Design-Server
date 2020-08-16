@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootApplication
 @RestController
@@ -72,7 +69,7 @@ public class UIWebsiteApplication {
 	}
 
 	@PostMapping(value = "/exportPicture")
-	public void exportPicture(@RequestBody String data) throws IOException{
+	public String exportPicture(@RequestBody String data) throws IOException{
 		String xmlTest = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
 				"<mxGraphModel connect=\"1\" fold=\"1\" grid=\"1\" gridSize=\"10\" guides=\"1\" page=\"0\"    pageHeight=\"1169\" pageScale=\"1\" pageWidth=\"826\" tooltips=\"1\">\n" +
 				"       <root>\n" +
@@ -90,7 +87,8 @@ public class UIWebsiteApplication {
 				"       </root>\n" +
 				"</mxGraphModel>";
 
-		CanvasToPictureUtil.transformToPNG(xmlTest);
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
 	}
 
 
