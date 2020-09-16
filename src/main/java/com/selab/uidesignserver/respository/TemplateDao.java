@@ -16,7 +16,7 @@ public class TemplateDao {
     private List<String> templates;
 
     public void addTemplate(JSONObject component, String html) throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","timhsieh","ji3yjo4dj4x87");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
         PreparedStatement pps = connection.prepareStatement("insert into templates(id, selector,page,html) values(?, ?,?,?) on duplicate key update html=?");
@@ -31,7 +31,7 @@ public class TemplateDao {
     }
 
     public void truncateTable() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","timhsieh","ji3yjo4dj4x87");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
         stmt.executeUpdate("truncate table templates;");

@@ -3,6 +3,7 @@ package com.selab.uidesignserver;
 import com.selab.uidesignserver.model.PageComponent;
 import com.selab.uidesignserver.respository.NavigationDao;
 import com.selab.uidesignserver.respository.PageDao;
+import com.selab.uidesignserver.respository.ServiceComponentDao;
 import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
 import com.selab.uidesignserver.service.CanvasToPictureUtil;
@@ -34,6 +35,9 @@ public class UIWebsiteApplication {
 
 	@Autowired
 	NavigationDao navigationDao;
+
+	@Autowired
+	ServiceComponentDao serviceComponentDao;
 
 	public static void main(String[] args) {
 		SpringApplication.run(UIWebsiteApplication.class, args);
@@ -76,7 +80,32 @@ public class UIWebsiteApplication {
 		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
 	}
 
+	@GetMapping(value = "/getServices")
+	public String getFrameworkTypes(
+		@RequestParam("uiCategory") String uiCategory,
+		@RequestParam("parameters") String parameters,
+		@RequestParam("matchmaking") String isMatchmaking
+	) throws  SQLException{ 
+		System.out.println("Hello");
+		System.out.println(uiCategory);
+		System.out.println(parameters);
+		System.out.println(isMatchmaking);
+		return serviceComponentDao.getServices(uiCategory,parameters,isMatchmaking);
+	}
 
+	@GetMapping(value = "/getOutputServices")
+	public String getFrameworkTypes(
+		@RequestParam("matchmaking") String isMatchmaking
+	) throws SQLException {
+		return serviceComponentDao.getOutputServices(isMatchmaking);
+	}
 
-
+	@GetMapping(value = "/getArguments")
+	public String getArguments(
+		@RequestParam("serviceID") String serviceID
+	) throws SQLException {
+		System.out.println("Hello arguments");
+		System.out.println(serviceID);
+		return serviceComponentDao.getArguments(serviceID);
+	}
 }
