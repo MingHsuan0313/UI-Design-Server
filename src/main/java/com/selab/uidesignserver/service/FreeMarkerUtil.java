@@ -21,7 +21,6 @@ public class FreeMarkerUtil {
     private FreeMarkerUtil(){
         this.configuration = new Configuration(Configuration.VERSION_2_3_28);
         try {
-            System.out.println("Working Directory = " + System.getProperty("user.dir"));
             configuration.setDirectoryForTemplateLoading(new File("src/main/java/com/selab/uidesignserver/template"));
         } catch (IOException e) {
             e.printStackTrace();

@@ -28,7 +28,7 @@ import java.util.*;
 
 @SpringBootApplication
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class UIWebsiteApplication {
 
 	@Autowired
