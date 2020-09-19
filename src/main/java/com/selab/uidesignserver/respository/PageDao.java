@@ -16,7 +16,7 @@ public class PageDao {
 
     public void addPage(String data) throws SQLException {
         JSONObject pdl = new JSONObject(data);
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","timhsieh","ji3yjo4dj4x87");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
 //        stmt.executeUpdate("truncate table templates");
@@ -35,7 +35,7 @@ public class PageDao {
     }
 
     public String getPages() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","timhsieh","ji3yjo4dj4x87");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
         String sql = "select * from pages";

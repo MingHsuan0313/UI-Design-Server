@@ -9,7 +9,7 @@ import java.sql.*;
 public class NavigationDao {
     public void store(String data) throws SQLException {
         JSONObject pdl = new JSONObject(data);
-        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","root","");
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306","timhsieh","ji3yjo4dj4x87");
         Statement stmt = connection.createStatement();
         stmt.executeUpdate("use demo");
 //        stmt.executeUpdate("truncate table templates");

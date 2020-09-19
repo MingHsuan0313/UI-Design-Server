@@ -9,6 +9,4 @@ import java.util.List;
 public class PageComponent extends ComponentStrategy {
     public String selector;
     public List<JSONObject> componentList;
-
-
 }

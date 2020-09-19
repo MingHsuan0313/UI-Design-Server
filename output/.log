@@ -141,5 +141,5 @@ Construct Service Graph: 137       Filename: writeNamedTag.wsdl
 Construct Service Graph: 138       Filename: writeString.wsdl
 Initializing ExecutorService 'applicationTaskExecutor'
 Tomcat started on port(s): 8080 (http) with context path ''
-Started UIWebsiteApplication in 20.985 seconds (JVM running for 21.58)
+Started UIWebsiteApplication in 24.345 seconds (JVM running for 24.982)
 Shutting down ExecutorService 'applicationTaskExecutor'
