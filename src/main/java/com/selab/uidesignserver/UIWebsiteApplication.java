@@ -7,6 +7,7 @@ import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
 import com.selab.uidesignserver.service.SearchWSDLService;
 import com.selab.uidesignserver.model.matchMaking.RankingResult;
+
 import com.selab.uidesignserver.service.CanvasToPictureUtil;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
@@ -79,6 +80,7 @@ public class UIWebsiteApplication {
 		return "store ndl";
 	}
 
+
 	@PostMapping(value="/search")
 	public RankingResult search(MultipartHttpServletRequest request) throws IOException {
 		logger.info("Hello Search");
@@ -102,27 +104,14 @@ public class UIWebsiteApplication {
 		return new RankingResult(result);
 	}
 
+
 	@PostMapping(value = "/exportPicture")
-	public void exportPicture(@RequestBody String data) throws IOException{
-		String xmlTest = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-				"<mxGraphModel connect=\"1\" fold=\"1\" grid=\"1\" gridSize=\"10\" guides=\"1\" page=\"0\"    pageHeight=\"1169\" pageScale=\"1\" pageWidth=\"826\" tooltips=\"1\">\n" +
-				"       <root>\n" +
-				"           <mxCell id=\"0\"/>\n" +
-				"           <mxCell id=\"1\" parent=\"0\"/>\n" +
-				"           <mxCell id=\"2\" parent=\"1\" style=\"whiteSpace=wrap\" value=\"\" vertex=\"1\">\n" +
-				"               <mxGeometry as=\"geometry\" height=\"60\" width=\"120\" x=\"80\" y=\"70\"/>\n" +
-				"           </mxCell>\n" +
-				"           <mxCell id=\"3\" parent=\"1\" style=\"whiteSpace=wrap\" value=\"\" vertex=\"1\">\n" +
-				"               <mxGeometry as=\"geometry\" height=\"60\" width=\"120\" x=\"280\" y=\"70\"/>\n" +
-				"           </mxCell>\n" +
-				"           <mxCell edge=\"1\" id=\"4\" parent=\"1\" source=\"2\" style=\"edgeStyle=orthogonalEdgeStyle;rounded=0;\" target=\"3\">\n" +
-				"               <mxGeometry as=\"geometry\" relative=\"1\"/>\n" +
-				"           </mxCell>\n" +
-				"       </root>\n" +
-				"</mxGraphModel>";
-		logger.info("Hello World");
-		logger.info(data);
-		CanvasToPictureUtil.transformToPNG(xmlTest);
+	public String exportPicture(@RequestBody String data) throws IOException{
+		String xmlTest = data;
+
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
+
 	}
 
 

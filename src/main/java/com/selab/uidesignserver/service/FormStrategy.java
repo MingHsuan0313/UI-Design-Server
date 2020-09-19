@@ -23,6 +23,9 @@ public class FormStrategy {
             else if(type.equals("input")){
                 formBuilder.buildInput(component);
             }
+            else if(type.equals("dropdown")){
+                formBuilder.buildDropdown(component);
+            }
         }
 
 

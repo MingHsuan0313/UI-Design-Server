@@ -44,6 +44,14 @@ public class FormBuilder {
         this.contentHTML += content;
     }
 
+    void buildDropdown(JSONObject component) throws IOException, TemplateException {
+        DropdownStrategy dropdownStrategy = new DropdownStrategy();
+        dropdownStrategy.setIsCompositeELement(true);
+        String content = dropdownStrategy.getComponentHTML(component);
+        this.contentHTML += content;
+
+    }
+
     String createForm() throws IOException, TemplateException {
         Map<String, Object> dataMap = new HashMap<>();
         dataMap.put("content", this.contentHTML);

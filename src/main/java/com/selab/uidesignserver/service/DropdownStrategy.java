@@ -12,6 +12,13 @@ import java.util.Map;
 
 public class DropdownStrategy {
 
+    PositionTransformer positionTransformer = new PositionTransformer();
+    boolean isCompositeElement = false;
+
+    public void setIsCompositeELement(boolean res) {
+        this.isCompositeElement = res;
+    }
+
     public String getComponentHTML(JSONObject uicdl) throws IOException, TemplateException {
 
         Map<String, Object> dataMap = new HashMap<>();
@@ -19,8 +26,17 @@ public class DropdownStrategy {
 
         dataMap.put("width",String.valueOf(uicdl.getInt("width")).replace(",", ""));
         dataMap.put("height",String.valueOf(uicdl.getInt("height")).replace(",", ""));
-        dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
-        dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
+        if (isCompositeElement) {
+            dataMap.put("x",String.valueOf(uicdl.getInt("x")).replace(",", ""));
+            dataMap.put("y",String.valueOf(uicdl.getInt("y")).replace(",", ""));
+            dataMap.put("isCompositeElement", "true");
+        } else {
+            positionTransformer.transform(uicdl.getInt("x"), uicdl.getInt("y"));
+            dataMap.put("x", positionTransformer.getTargetWidth());
+            dataMap.put("y", positionTransformer.getTargetHeight());
+            dataMap.put("isCompositeElement", "false");
+        }
+
         dataMap.put("items",uicdl.getString("items").split(" +"));
         Template template = FreeMarkerUtil.getInstance().getTemplate("dropdown.ftl");
 
