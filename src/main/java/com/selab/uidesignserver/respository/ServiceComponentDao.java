@@ -30,7 +30,8 @@ public class ServiceComponentDao {
         return frameworkTypes.toString();
     }
 
-    public String getServices(String uiCategory, String parameters, String isMatchmaking) throws SQLException {
+    // Service : Web Client -> BPEL
+    public String getInputServices(String uiCategory, String parameters, String isMatchmaking) throws SQLException {
         int parameterCount = Integer.parseInt(parameters);
 
         Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306", "timhsieh",
@@ -95,6 +96,7 @@ public class ServiceComponentDao {
         return arguments.toString();
     }
 
+    // Service : BPEL to Web Client
     public String getOutputServices(String isMatchmaking) throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306", "timhsieh",
                 "ji3yjo4dj4x87");
@@ -113,5 +115,21 @@ public class ServiceComponentDao {
         }
         connection.close();
         return serviceComponents.toString();
+    }
+    
+    // get Code by Service id
+    public String getCodeByServiceID(String serviceID) throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mariadb://localhost:3306", "timhsieh",
+                "ji3yjo4dj4x87");
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate("use TEST_DB");
+        String sql = "select code from ServiceComponent where serviceID = " + serviceID;
+        ResultSet rs = stmt.executeQuery(sql);
+        rs.next();
+
+        JSONObject code = new JSONObject();
+        code.put("code", rs.getString("code"));
+        connection.close();
+        return code.toString();
     }
 }

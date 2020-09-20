@@ -93,7 +93,7 @@ public class UIWebsiteApplication {
 		System.out.println(uiCategory);
 		System.out.println(parameters);
 		System.out.println(isMatchmaking);
-		return serviceComponentDao.getServices(uiCategory, parameters, isMatchmaking);
+		return serviceComponentDao.getInputServices(uiCategory, parameters, isMatchmaking);
 	}
 
 	@GetMapping(value = "/getOutputServices")
@@ -106,6 +106,11 @@ public class UIWebsiteApplication {
 		System.out.println("Hello arguments");
 		System.out.println(serviceID);
 		return serviceComponentDao.getArguments(serviceID);
+	}
+	
+	@GetMapping(value = "/getCode")
+	public String getCodeByServiceID(@RequestParam("serviceID") String serviceID) throws SQLException {
+		return serviceComponentDao.getCodeByServiceID(serviceID);
 	}
 
 	@PostMapping(value = "/modifyCode")
