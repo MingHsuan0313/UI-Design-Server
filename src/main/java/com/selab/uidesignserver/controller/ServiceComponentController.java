@@ -2,8 +2,8 @@ package com.selab.uidesignserver.controller;
 
 import java.sql.SQLException;
 
+import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
 import com.selab.uidesignserver.respository.ServiceComponentDao;
-import com.selab.uidesignserver.service.EditCodeService;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +51,12 @@ public class ServiceComponentController {
     @PostMapping(value = "/modifyCode")
 	public String postModifiedCode(@RequestBody String data) {
 		JSONObject dataJsonObject = new JSONObject(data);
-		EditCodeService editCodeService = new EditCodeService(dataJsonObject.getString("fileName"));
-		editCodeService.updateEditedJavaFile(dataJsonObject.getString("code"));
-		editCodeService.buildCode();
+        String editedCode = dataJsonObject.getString("code");
+        String serviceComponetClassName = dataJsonObject.getString("class");
+        EditCodeService editCodeService = new EditCodeService(serviceComponetClassName);
+		// EditCodeService editCodeService = new EditCodeService(dataJsonObject.getString("filePath"));
+		// editCodeService.updateEditedJavaFile(dataJsonObject.getString("code"));
+		// editCodeService.buildCode();
 		return "build process string";
     }
 }
