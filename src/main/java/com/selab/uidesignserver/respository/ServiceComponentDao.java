@@ -129,6 +129,8 @@ public class ServiceComponentDao {
 
         JSONObject code = new JSONObject();
         code.put("code", rs.getString("code"));
+        System.out.println("Hello Heree");
+        System.out.println(code.toString());
         connection.close();
         return code.toString();
     }
