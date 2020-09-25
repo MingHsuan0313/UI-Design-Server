@@ -1,3 +1,6 @@
 cd ../serviceProjectsEnvironment/InventorySystemBackendMarksTonyModify
-./gradlew build
+# ../ServiceProjectsEnvironment/InventorySystemBackendMarksTonyModify/gradlew build
 cd -
+pwd
+echo "heree"
+./gradlew build

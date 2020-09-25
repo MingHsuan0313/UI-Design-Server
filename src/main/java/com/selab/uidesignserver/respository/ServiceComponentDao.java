@@ -64,7 +64,7 @@ public class ServiceComponentDao {
             ResultSet rs2 = stmt2.executeQuery(sql2);
             rs2.next();
 
-            serviceComponent.put("code", rs.getString("code"));
+            // serviceComponent.put("code", rs.getString("code"));
             serviceComponent.put("name", rs.getString("name"));
             serviceComponent.put("serviceID", rs.getString("serviceID"));
             serviceComponent.put("className", rs2.getString("className"));
@@ -108,7 +108,7 @@ public class ServiceComponentDao {
         List<JSONObject> serviceComponents = new ArrayList<JSONObject>();
         while (rs.next()) {
             JSONObject serviceComponent = new JSONObject();
-            serviceComponent.put("code", rs.getString("code"));
+            // serviceComponent.put("code", rs.getString("code"));
             serviceComponent.put("name", rs.getString("name"));
             serviceComponent.put("serviceID", rs.getString("serviceID"));
             serviceComponents.add(serviceComponent);
@@ -129,8 +129,6 @@ public class ServiceComponentDao {
 
         JSONObject code = new JSONObject();
         code.put("code", rs.getString("code"));
-        System.out.println("Hello Heree");
-        System.out.println(code.toString());
         connection.close();
         return code.toString();
     }

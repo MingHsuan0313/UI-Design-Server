@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	compile 'org.json:json:20171018'
 	compile group: 'com.mxgraph', name: 'jgraphx', version: '3.7.4'
 

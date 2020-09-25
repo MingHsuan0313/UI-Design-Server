@@ -13,26 +13,40 @@ import com.sun.tools.javac.api.JavacTool;
 import com.sun.tools.javac.util.Context;
 import javax.tools.JavaFileObject;
 import javax.tools.JavaCompiler;
+import com.selab.uidesignserver.ServiceComponentService.visitors.*;
 
 public class CodeParser {
     private JavacFileManager fileManager;
     private JavacTool javacTool;
+    public String resultString;
 
-    public CodeParser () {
+    public CodeParser() {
         System.out.println("constructor");
+        this.resultString = "";
         Context context = new Context();
-        fileManager = new JavacFileManager(context, true, Charset.defaultCharset());
-        javacTool = JavacTool.create();
+        this.fileManager = new JavacFileManager(context, true, Charset.defaultCharset());
+        this.javacTool = JavacTool.create();
     }
 
-    public void addEditedServiceComponent(String editedServicePath, String originalServicePath) {
+    public String getResult() {
+        return this.resultString;
+    }
+
+    public String addEditedServiceComponent(String editedServicePath, String originalServicePath) {
         MethodTree methodTree = this.parseServiceComponent(editedServicePath);
         ClassTree classTree = this.parseJavaFile(originalServicePath);
         // identify if service signature is unique
-        this.identifySignatureUnique(methodTree, classTree);
-        String code = classTree.toString().substring(0, classTree.toString().length() - 1) + methodTree.toString()
-                + "\n}";
-        // System.out.println(code);
+        if (this.identifySignatureUnique(methodTree, classTree)) {
+            System.out.println("Update Service Component....");
+            String code = this.resultString.substring(0,resultString.toString().length() - 1) + methodTree.toString()
+                    + "\n}";
+            System.out.println(code);
+            return code;
+        }
+        else {
+            System.out.println("Because Signature is the same , you must modify your function signature");
+            return "";
+        }
     }
 
     public boolean identifySignatureUnique(MethodTree methodTree, ClassTree classTree) {
@@ -42,39 +56,40 @@ public class CodeParser {
             if (methodTrees.get(index).getName().toString().equals(methodTree.getName().toString())) {
                 List<? extends VariableTree> variableTrees = methodTree.getParameters();
                 List<? extends VariableTree> targetVariableTrees = methodTrees.get(index).getParameters();
-                if(variableTrees.size() == targetVariableTrees.size()) {
+                if (variableTrees.size() == targetVariableTrees.size()) {
                     boolean identityFlag = true;
-                    for(int variableIndex = 0;variableIndex < variableTrees.size();variableIndex++) {
+                    for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
                         String variableType = variableTrees.get(variableIndex).getType().toString();
                         String targetVariableType = targetVariableTrees.get(variableIndex).getType().toString();
-                        if(!variableType.equals(targetVariableType)) {
-                           identityFlag = false; 
-                           break;
+                        if (!variableType.equals(targetVariableType)) {
+                            System.out.println(methodTree.getName());
+                            System.out.println(methodTrees.get(index).getName());
+                            identityFlag = false;
+                            break;
                         }
                     }
-                    if(identityFlag) {
-                        System.out.println("Signature is the same");
+                    if (identityFlag) {
+                        // System.out.println("Signature is the same");
+                        return false;
+                    } else {
+                        // System.out.println("Argument type isn't the same");
+                        // System.out.println("Signature isn't the same");
                     }
-                    else {
-                        System.out.println("Argument type isn't the same");
-                        System.out.println("Signature isn't the same");
-                    }
+                } else {
+                    // System.out.println("Arguments isn't the same");
+                    // System.out.println("Signature isn't the same");
                 }
-                else {
-                    System.out.println("Arguments isn't the same");
-                    System.out.println("Signature isn't the same");
-                }
-                for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
-                    VariableTree variableTree = variableTrees.get(variableIndex);
-                    System.out.println("Parameter : " + variableTree.getType());
-                }
+                // for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
+                //     VariableTree variableTree = variableTrees.get(variableIndex);
+                //     System.out.println("Parameter : " + variableTree.getType());
+                // }
 
             } else {
-                System.out.println("Name isn't the same");
-                System.out.println("Signature isn't the same");
+                // System.out.println("Name isn't the same");
+                // System.out.println("Signature isn't the same");
             }
         }
-        return false;
+        return true;
     }
 
     // java file which only has function
@@ -115,10 +130,13 @@ public class CodeParser {
                 // tree.getPackage();
                 System.out.println(tree.getPackageName());
 
+                resultString += "package " + tree.getPackageName() + ";\n";
+
                 List<ImportTree> importTreeContainer = new ArrayList<>();
                 tree.accept(new ImportVisitor(), importTreeContainer);
-                ImportTree importTree = importTreeContainer.get(0);
-                System.out.println(importTree.toString());
+                for(int importTreeIndex = 0;importTreeIndex < importTreeContainer.size();importTreeIndex++) {
+                    resultString += importTreeContainer.get(importTreeIndex).toString();
+                }
 
                 tree.accept(new ClassVisitor(), classTreeContainer);
                 for (Object classTreeObj : classTreeContainer) {
@@ -128,17 +146,18 @@ public class CodeParser {
                     for (int index = 0; index < methodTrees.size(); index++) {
                         MethodTree methodTree = methodTrees.get(index);
                         List<? extends VariableTree> variableTrees = methodTree.getParameters();
-                        System.out.println("Method : " + methodTree.getName());
-                        for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
-                            VariableTree variableTree = variableTrees.get(variableIndex);
-                            System.out.println("Parameter : " + variableTree.getType());
-                        }
+                        // System.out.println("Method : " + methodTree.getName());
+                        // for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
+                        //     VariableTree variableTree = variableTrees.get(variableIndex);
+                        //     System.out.println("Parameter : " + variableTree.getType());
+                        // }
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        resultString = resultString + classTreeContainer.get(0).toString();
         return classTreeContainer.get(0);
     }
 }
