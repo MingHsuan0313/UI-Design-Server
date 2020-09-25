@@ -1,18 +1,17 @@
 public class Temp{
     
-public void itemHistoryPriceChanged(String iid, User user, Double price) {
-    readAllEvent();
-    readAllReason();
-    ItemHistory itemHistory = new ItemHistory(null, user);
-    DatabaseObject itemHistoryDatabaseObject = DatabaseObject.initMethod("ItemHistory");
-    itemHistoryDatabaseObject.putString("iid", iid);
-    itemHistoryDatabaseObject.putDate("date", itemHistory.getDate());
-    itemHistoryDatabaseObject.putString("event", eventMap.get("Price changed"));
-    itemHistoryDatabaseObject.putDouble("price", price);
-    itemHistoryDatabaseObject.putInteger("adjust", 0);
-    itemHistoryDatabaseObject.putString("reason", "");
-    itemHistoryDatabaseObject.putString("uid", user.getId().toString());
-    itemHistoryDatabaseObject.putString("comment", "");
-    manager.DatabaseManager.save(itemHistoryDatabaseObject);
+public Map<String, Object> departmentById(String id,String test) {
+    List<model.Restriction> restrict = new ArrayList<>();
+    model.Restriction r1 = model.Restriction.equal("__id", id);
+    restrict.add(r1);
+    List<DatabaseObject> list = DatabaseManager.retrieveWithRestriction("Department", restrict);
+    if (list.size() == 0) throw new NotFoundException(String.format("No department found with id: %s.", id));
+    Map<String, Object> return_map = new HashMap<>();
+    return_map.put("id", list.get(0).get("__id"));
+    return_map.put("name", list.get(0).get("name"));
+    return_map.put("description", list.get(0).get("description"));
+    return_map.put("Code", list.get(0).get("POSCode"));
+    return_map.put("tag", list.get(0).get("tag"));
+    return return_map;
 }
 }
