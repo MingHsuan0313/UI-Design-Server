@@ -54,6 +54,7 @@ public class ServiceComponentController {
 
     @GetMapping(value = "/getCode")
     public String getCodeByServiceID(@RequestParam("serviceID") String serviceID) throws SQLException {
+        System.out.println("Hello World");
         return serviceComponentDao.getCodeByServiceID(serviceID);
     }
 
