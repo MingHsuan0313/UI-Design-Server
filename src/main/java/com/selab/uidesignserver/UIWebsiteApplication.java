@@ -6,14 +6,11 @@ import com.selab.uidesignserver.respository.PageDao;
 import com.selab.uidesignserver.respository.ServiceComponentDao;
 import com.selab.uidesignserver.respository.TemplateDao;
 import com.selab.uidesignserver.service.HTMLGenerator;
-import com.selab.uidesignserver.service.SearchWSDLService;
-import com.selab.uidesignserver.model.matchMaking.RankingResult;
 
 import com.selab.uidesignserver.service.CanvasToPictureUtil;
 import freemarker.template.TemplateException;
 import org.json.JSONObject;
 ////import org.apache.log4j.Logger;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
