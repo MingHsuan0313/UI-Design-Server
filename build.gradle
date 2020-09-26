@@ -19,20 +19,20 @@ repositories {
 dependencies {
 	compile files("${System.properties['java.home']}/../lib/tools.jar")
 	compile 'org.json:json:20171018'
-
 	compile 'edu.mit:jwi:2.2.3'
 	compile 'me.shib.java.lib:diction:0.1.0'
 	compile 'edu.stanford.nlp:stanford-parser:3.7.0'
 	compile 'wsdl4j:wsdl4j:1.6.3'
-
-// https://mvnrepository.com/artifact/com.mxgraph/jgraphx
 	compile group: 'com.mxgraph', name: 'jgraphx', version: '3.7.4'
 
 	compile 'org.slf4j:slf4j-log4j12:1.7.25'
+	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}

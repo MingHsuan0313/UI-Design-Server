@@ -2,8 +2,11 @@ package com.selab.uidesignserver.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
+import com.selab.uidesignserver.entity.Employee;
+import com.selab.uidesignserver.repositoryService.EmployeeService;
 import com.selab.uidesignserver.respository.ServiceComponentDao;
 
 import org.json.JSONObject;
@@ -22,8 +25,21 @@ import freemarker.template.TemplateException;
 @CrossOrigin(origins = "*", allowCredentials = "true")
 public class ServiceComponentController {
 
+    private EmployeeService employeeService;
+    
+    @Autowired
+    public ServiceComponentController(EmployeeService theEmployeeService) {
+        employeeService = theEmployeeService;
+    }
+
 	@Autowired
 	ServiceComponentDao serviceComponentDao;
+    
+    @GetMapping(value = "/service/testing")
+    public List<Employee> test() throws SQLException {
+        System.out.println("Hello World");
+        return employeeService.findAll();
+    }
 
     @GetMapping(value = "/getServices")
     public String getServices(@RequestParam("uiCategory") String uiCategory,
