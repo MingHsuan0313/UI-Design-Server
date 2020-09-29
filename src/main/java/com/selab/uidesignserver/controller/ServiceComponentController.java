@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
-import com.selab.uidesignserver.entity.ServiceComponent;
+import com.selab.uidesignserver.entity.ServiceComponentTable;
 import com.selab.uidesignserver.repositoryService.ServiceComponentService;
 import com.selab.uidesignserver.respository.ServiceComponentDao;
 
@@ -38,7 +38,7 @@ public class ServiceComponentController {
 	ServiceComponentDao serviceComponentDao;
 
     @GetMapping(value = "/service/testing")
-    public List<ServiceComponent> test() throws SQLException {
+    public List<ServiceComponentTable> test() throws SQLException {
         return serviceComponentService.findAll();
     }
 

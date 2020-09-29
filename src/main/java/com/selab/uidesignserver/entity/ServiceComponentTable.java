@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "\"ServiceComponent\"")
-public class ServiceComponent {
+public class ServiceComponentTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,11 +50,11 @@ public class ServiceComponent {
     @Column(name = "serviceTypeID")
     private int serviceTypeID;
 
-    public ServiceComponent() {
+    public ServiceComponentTable() {
 
     }
 
-    public ServiceComponent(int theArgumentCount, String theCode, String theDocString, String theIsDatabase,
+    public ServiceComponentTable(int theArgumentCount, String theCode, String theDocString, String theIsDatabase,
             String theIsWeb, String theMethodException, String theName, int theFrameworkTypeID, int theClassID,
             int theProjectID, int theServiceTypeID) {
         this.argumentCount = theArgumentCount;
