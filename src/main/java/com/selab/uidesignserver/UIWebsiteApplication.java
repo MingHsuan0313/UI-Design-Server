@@ -27,6 +27,7 @@ import java.util.*;
 
 @SpringBootApplication
 @RestController
+@RequestMapping("/selab")
 @CrossOrigin(origins = "*", allowCredentials = "true")
 public class UIWebsiteApplication {
 
