@@ -5,7 +5,9 @@ import java.util.List;
 import com.selab.uidesignserver.entity.ServiceComponent;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ServiceComponentService {
     public List<ServiceComponent> findAll();
 
@@ -16,5 +18,4 @@ public interface ServiceComponentService {
     public void save(ServiceComponent serviceComponent);
     
     public void deleteById(int theId);
-    
 }
