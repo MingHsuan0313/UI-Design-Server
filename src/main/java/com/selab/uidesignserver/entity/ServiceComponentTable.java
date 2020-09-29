@@ -1,11 +1,15 @@
 package com.selab.uidesignserver.entity;
 
 import javax.annotation.Generated;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -41,8 +45,9 @@ public class ServiceComponentTable {
     @Column(name = "frameworkTypeID")
     private int frameworkTypeID;
 
-    @Column(name = "classID")
-    private int classID;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "classID")
+    private ClassTable klass;
 
     @Column(name = "projectID")
     private int projectID;
@@ -51,16 +56,6 @@ public class ServiceComponentTable {
     private int serviceTypeID;
 
     public ServiceComponentTable() {
-
-    }
-
-    public ServiceComponentTable(int theArgumentCount, String theCode, String theDocString, String theIsDatabase,
-            String theIsWeb, String theMethodException, String theName, int theFrameworkTypeID, int theClassID,
-            int theProjectID, int theServiceTypeID) {
-        this.argumentCount = theArgumentCount;
-        this.code = theCode;
-        this.name = theName;
-        this.docString = theDocString;
 
     }
 
@@ -76,10 +71,6 @@ public class ServiceComponentTable {
         return argumentCount;
     }
 
-    public int getClassID() {
-        return classID;
-    }
-
     public String getDocString() {
         return docString;
     }
@@ -90,6 +81,10 @@ public class ServiceComponentTable {
 
     public String getMethodException() {
         return methodException;
+    }
+    
+    public ClassTable getKlass() {
+        return klass;
     }
 
     public int getProjectID() {
@@ -114,10 +109,6 @@ public class ServiceComponentTable {
 
     public void setArgumentCount(int argumentCount) {
         this.argumentCount = argumentCount;
-    }
-
-    public void setClassID(int classID) {
-        this.classID = classID;
     }
 
     public void setDatabase(boolean isDatabase) {
@@ -150,5 +141,9 @@ public class ServiceComponentTable {
 
     public void setWeb(boolean isWeb) {
         this.isWeb = isWeb;
+    }
+    
+    public void setKlass(ClassTable klass) {
+        this.klass = klass;
     }
 }

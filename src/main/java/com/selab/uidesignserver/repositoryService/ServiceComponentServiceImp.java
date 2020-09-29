@@ -1,55 +1,60 @@
 package com.selab.uidesignserver.repositoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.selab.uidesignserver.dao.ArgumentRepository;
+import com.selab.uidesignserver.dao.ClassRepository;
 import com.selab.uidesignserver.dao.ServiceComponentRepository;
 import com.selab.uidesignserver.entity.ServiceComponentTable;
 
+import org.apache.tomcat.util.json.JSONParser;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class ServiceComponentServiceImp implements ServiceComponentService {
     
     @Autowired
     ServiceComponentRepository serviceComponentRepository;
+	
+	@Autowired
+	ArgumentRepository argumentRepository;
+	
+	@Autowired
+	ClassRepository classRepository;
 
 	@Override
-	public List<ServiceComponentTable> findAll() {
-        return serviceComponentRepository.findAll();
-		// TODO Auto-generated method stub
+	public List<ServiceComponentTable> getServiceComponents() {
+		return serviceComponentRepository.getServiceComponents();
 	}
 
 	@Override
-	public ServiceComponentTable findById(String theId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<JSONObject> getServiceComponentsWithRestriction(int argumentCount) {
+		List<ServiceComponentTable> serviceComponents = serviceComponentRepository
+				.getServiceComponentsWithRestriction(argumentCount);
+		List<JSONObject> serviceComponentResponse = new ArrayList<JSONObject>();
+		for(int index = 0;index < serviceComponents.size();index++) {
+			ServiceComponentTable serviceComponent = serviceComponents.get(index);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("serviceID",serviceComponent.getServiceID());
+			jsonObject.put("name",serviceComponent.getName());
+			jsonObject.put("className",serviceComponent.getClass().getName());
+			serviceComponentResponse.add(jsonObject);
+		}
+		return serviceComponentResponse;
 	}
 
 	@Override
-	public List<String> findCodeByServiceID(int theID) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getServiceComponentCode(int serviceID) {
+		return serviceComponentRepository.getCodeByServiceID(serviceID);
 	}
 
 	@Override
-	public List<ServiceComponentTable> test() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<String> getArgumentsByServiceID(int serviceID) {
+		return argumentRepository.getArgumentNamesByServiceID(serviceID);
 	}
-
-	@Override
-	public void save(ServiceComponentTable serviceComponent) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteById(int theId) {
-		// TODO Auto-generated method stub
-		
-    }
-
-    
-    
 }

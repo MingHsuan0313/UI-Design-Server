@@ -4,17 +4,15 @@ import java.util.List;
 
 import com.selab.uidesignserver.entity.ServiceComponentTable;
 
+import org.json.JSONObject;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 public interface ServiceComponentService {
-    public List<ServiceComponentTable> findAll();
-
-    public ServiceComponentTable findById(String theId);
-    public List<String> findCodeByServiceID(int theID);
+    public List<ServiceComponentTable> getServiceComponents();
     
-    public List<ServiceComponentTable> test() ;
-    public void save(ServiceComponentTable serviceComponent);
-    
-    public void deleteById(int theId);
+    // need to add classname and remove code part , with argument count
+    public List<JSONObject> getServiceComponentsWithRestriction(int argumentCount);
+    public String getServiceComponentCode(int serviceID);
+    public List<String> getArgumentsByServiceID(int serviceID);
 }

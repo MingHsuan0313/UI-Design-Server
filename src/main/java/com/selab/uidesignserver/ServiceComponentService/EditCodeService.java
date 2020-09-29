@@ -1,6 +1,7 @@
 package com.selab.uidesignserver.ServiceComponentService;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.File;
@@ -9,6 +10,14 @@ import com.selab.uidesignserver.Configuration;
 import com.selab.uidesignserver.service.FreeMarkerUtil;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -17,20 +26,23 @@ public class EditCodeService {
     public String filePath;
     public CodeParser codeParser;
 
+    // @Autowired
+    // RestTemplate restTemplate;
+
     public EditCodeService(String className) {
         this.codeParser = new CodeParser();
         this.filePath = this.convertClassNameToFilePath(className);
         this.filePath = Configuration.Base_Source_Code_DIR_PATH + this.filePath;
         System.out.println("File Path : " + this.filePath);
     }
-    
+
     public String addEditServiceComponent() {
-        String code = this.codeParser.addEditedServiceComponent("./temp/Temp.java",this.filePath);
+        String code = this.codeParser.addEditedServiceComponent("./temp/Temp.java", this.filePath);
         System.out.println("final code string hereee");
         System.out.println(code);
-        if(code.length() > 0) {
+        if (code.length() > 0) {
             System.out.println("Write file...");
-           this.writeFile(this.filePath,code);
+            this.writeFile(this.filePath, code);
         }
         return code;
     }
@@ -103,7 +115,7 @@ public class EditCodeService {
     }
 
     public String buildCode() {
-        //statusCode
+        // statusCode
         // -1 signature same
         // 0 no thing happen
         // 1 build success
@@ -119,10 +131,9 @@ public class EditCodeService {
             while ((s = br.readLine()) != null) {
                 log += s;
                 System.out.println(s);
-                if(s.contains("BUILD SUCCESSFUL")) {
+                if (s.contains("BUILD SUCCESSFUL")) {
                     statusCode = 1;
-                }
-                else if(s.contains("BUILD FAILED"))
+                } else if (s.contains("BUILD FAILED"))
                     statusCode = 2;
                 // System.out.println("line: " + s);
             }
@@ -133,9 +144,22 @@ public class EditCodeService {
         } catch (Exception e) {
         }
         JSONObject response = new JSONObject();
-        response.put("log",log);
-        response.put("statusCode",statusCode);
+        response.put("log", log);
+        response.put("statusCode", statusCode);
         return response.toString();
     }
 
+    public String triggerJenkinsBuild() {
+        String uri = "http://localhost:8080/buildByToken/build";
+        String jenkinsToken = "SelabServiceGeneratorToken";
+        String jenkinsJob = "Service Generator Pipeline";
+
+        // uri = "http://localhost:8080/buildByToken/build?token=SelabServiceGeneratorToken&job=Service Generator Pipeline";
+        uri = "http://localhost:8080/buildByToken/build?token=" + jenkinsToken + "&" + "job=" + jenkinsJob;
+        RestTemplate restTemplate = new RestTemplate();
+         
+        String result = restTemplate.getForObject(uri, String.class);
+        System.out.println(result);
+        return result;
+    }
 }
