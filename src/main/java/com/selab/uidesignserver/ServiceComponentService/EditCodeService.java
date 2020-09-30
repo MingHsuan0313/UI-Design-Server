@@ -160,6 +160,7 @@ public class EditCodeService {
          
         String result = restTemplate.getForObject(uri, String.class);
         System.out.println(result);
+        System.out.println("Trigger Jenkins Build");
         return result;
     }
 }

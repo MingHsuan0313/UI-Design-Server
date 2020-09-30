@@ -42,7 +42,7 @@ public class ServiceComponentServiceImp implements ServiceComponentService {
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("serviceID",serviceComponent.getServiceID());
 			jsonObject.put("name",serviceComponent.getName());
-			jsonObject.put("className",serviceComponent.getClass().getName());
+			jsonObject.put("className",serviceComponent.getKlass().getClassName());
 			serviceComponentResponse.add(jsonObject);
 		}
 		return serviceComponentResponse;

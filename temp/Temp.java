@@ -1,9 +1,6 @@
 public class Temp{
     
-@GetMapping(value = "/", produces = "application/json")
-public List<Map<String, Object>> viewAcquisitionList(@CookieValue(name = "uid")
-String uid, @CookieValue(name = "token")
-String token) {
-    return acquisitionService.acquisitionList();
+public void setAdjust(Integer adjust,String data) {
+    this.adjust = adjust;
 }
 }

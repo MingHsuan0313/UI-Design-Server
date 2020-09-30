@@ -4,6 +4,8 @@ import com.sun.tools.javac.file.JavacFileManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
@@ -38,12 +40,18 @@ public class CodeParser {
         // identify if service signature is unique
         if (this.identifySignatureUnique(methodTree, classTree)) {
             System.out.println("Update Service Component....");
-            String code = this.resultString.substring(0,resultString.toString().length() - 1) + methodTree.toString()
+            String code = this.resultString.substring(0, resultString.toString().length() - 1) + methodTree.toString()
                     + "\n}";
             System.out.println(code);
+            System.out.println("HelloWorld111");
+            this.writeFile("./temp/Check.java",code);
+            Boolean IsSyntaxCorrect = this.checkJavaSyntaxError("./temp/Check.java");
+            if(IsSyntaxCorrect)
+                ;// write file
+            else
+                return "";
             return code;
-        }
-        else {
+        } else {
             System.out.println("Because Signature is the same , you must modify your function signature");
             return "";
         }
@@ -79,9 +87,10 @@ public class CodeParser {
                     // System.out.println("Arguments isn't the same");
                     // System.out.println("Signature isn't the same");
                 }
-                // for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
-                //     VariableTree variableTree = variableTrees.get(variableIndex);
-                //     System.out.println("Parameter : " + variableTree.getType());
+                // for (int variableIndex = 0; variableIndex < variableTrees.size();
+                // variableIndex++) {
+                // VariableTree variableTree = variableTrees.get(variableIndex);
+                // System.out.println("Parameter : " + variableTree.getType());
                 // }
 
             } else {
@@ -91,6 +100,15 @@ public class CodeParser {
         }
         return true;
     }
+    
+    public Boolean checkJavaSyntaxError(String path) {
+        System.out.println("checking syntax error");
+        Iterable<? extends JavaFileObject> files = fileManager.getJavaFileObjects(path);
+        JavaCompiler.CompilationTask compilationTask = this.javacTool.getTask(null, fileManager, null, null, null,
+                files);
+        JavacTask javacTask = (JavacTask) compilationTask;
+        return javacTask.call();
+    }
 
     // java file which only has function
     public MethodTree parseServiceComponent(String path) {
@@ -99,18 +117,31 @@ public class CodeParser {
         JavaCompiler.CompilationTask compilationTask = this.javacTool.getTask(null, fileManager, null, null, null,
                 files);
         JavacTask javacTask = (JavacTask) compilationTask;
+
         List<MethodTree> methodTrees = new ArrayList<>();
         try {
             Iterable<? extends CompilationUnitTree> result = javacTask.parse();
+            // System.out.println(javacTask.call());
+
+            System.out.println(javacTask.toString());
+            System.out.println("rrr");
+            System.out.println(result.toString());
             for (CompilationUnitTree tree : result) {
+                System.out.println("d");
                 List<ClassTree> classTreeContainer = new ArrayList<>();
                 tree.accept(new ClassVisitor(), classTreeContainer);
                 for (ClassTree classTree : classTreeContainer) {
+                    System.out.println("qaq");
+                    System.out.println(classTree.getKind());
                     classTree.accept(new MethodVisitor(), methodTrees);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IllegalStateException e2) {
+            System.out.println("Hello World");
+            ;
+            e2.printStackTrace();
         }
         return methodTrees.get(0);
     }
@@ -134,7 +165,7 @@ public class CodeParser {
 
                 List<ImportTree> importTreeContainer = new ArrayList<>();
                 tree.accept(new ImportVisitor(), importTreeContainer);
-                for(int importTreeIndex = 0;importTreeIndex < importTreeContainer.size();importTreeIndex++) {
+                for (int importTreeIndex = 0; importTreeIndex < importTreeContainer.size(); importTreeIndex++) {
                     resultString += importTreeContainer.get(importTreeIndex).toString();
                 }
 
@@ -147,9 +178,10 @@ public class CodeParser {
                         MethodTree methodTree = methodTrees.get(index);
                         List<? extends VariableTree> variableTrees = methodTree.getParameters();
                         // System.out.println("Method : " + methodTree.getName());
-                        // for (int variableIndex = 0; variableIndex < variableTrees.size(); variableIndex++) {
-                        //     VariableTree variableTree = variableTrees.get(variableIndex);
-                        //     System.out.println("Parameter : " + variableTree.getType());
+                        // for (int variableIndex = 0; variableIndex < variableTrees.size();
+                        // variableIndex++) {
+                        // VariableTree variableTree = variableTrees.get(variableIndex);
+                        // System.out.println("Parameter : " + variableTree.getType());
                         // }
                     }
                 }
@@ -159,5 +191,32 @@ public class CodeParser {
         }
         resultString = resultString + classTreeContainer.get(0).toString();
         return classTreeContainer.get(0);
+    }
+
+    public void writeFile(String path, String text) {
+        System.out.println("path heree : " + path);
+        File fileObj = new File(path);
+        if (fileObj.exists()) {
+            try {
+                FileWriter myWriter = new FileWriter(path);
+                myWriter.write(text);
+                myWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                fileObj.createNewFile();
+                FileWriter myFileWriter = new FileWriter(path);
+                myFileWriter.write(text);
+                myFileWriter.close();
+                System.out.println("create file successfully");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("create not success");
+            }
+        }
     }
 }
