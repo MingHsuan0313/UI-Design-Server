@@ -21,10 +21,13 @@ public class CodeParser {
     private JavacFileManager fileManager;
     private JavacTool javacTool;
     public String resultString;
+    public String originalCode;
+    public String sourceFilePath;
 
-    public CodeParser() {
-        System.out.println("constructor");
+    public CodeParser(String filePath) {
         this.resultString = "";
+        this.sourceFilePath = filePath;
+        this.originalCode = "";
         Context context = new Context();
         this.fileManager = new JavacFileManager(context, true, Charset.defaultCharset());
         this.javacTool = JavacTool.create();
@@ -34,22 +37,41 @@ public class CodeParser {
         return this.resultString;
     }
 
+    public void recover() {
+        System.out.println("starting recover");
+        System.out.println(this.sourceFilePath);
+        System.out.println(this.originalCode);
+        this.writeFile(this.sourceFilePath, this.originalCode);
+    }
+
     public String addEditedServiceComponent(String editedServicePath, String originalServicePath) {
         MethodTree methodTree = this.parseServiceComponent(editedServicePath);
         ClassTree classTree = this.parseJavaFile(originalServicePath);
+        this.originalCode = this.resultString;
+        // identify if service signature is unique
+        if (this.identifySignatureUnique(methodTree, classTree)) {
+            // System.out.println("Update Service Component....");
+            String code = this.resultString.substring(0, resultString.toString().length() - 1) + methodTree.toString()
+                    + "\n}";
+            // System.out.println(code);
+            // System.out.println("HelloWorld111");
+            return code;
+        } else {
+            System.out.println("Because Signature is the same , you must modify your function signature");
+            return "";
+        }
+    }
+
+    public String checkingSignatureUnique(String editedServicePath, String originalServicePath) {
+        MethodTree methodTree = this.parseServiceComponent(editedServicePath);
+        ClassTree classTree = this.parseJavaFile(originalServicePath);
+        this.originalCode = this.resultString;
         // identify if service signature is unique
         if (this.identifySignatureUnique(methodTree, classTree)) {
             System.out.println("Update Service Component....");
             String code = this.resultString.substring(0, resultString.toString().length() - 1) + methodTree.toString()
                     + "\n}";
-            System.out.println(code);
-            System.out.println("HelloWorld111");
-            this.writeFile("./temp/Check.java",code);
-            Boolean IsSyntaxCorrect = this.checkJavaSyntaxError("./temp/Check.java");
-            if(IsSyntaxCorrect)
-                ;// write file
-            else
-                return "";
+            // System.out.println(code);
             return code;
         } else {
             System.out.println("Because Signature is the same , you must modify your function signature");
@@ -77,37 +99,12 @@ public class CodeParser {
                         }
                     }
                     if (identityFlag) {
-                        // System.out.println("Signature is the same");
                         return false;
-                    } else {
-                        // System.out.println("Argument type isn't the same");
-                        // System.out.println("Signature isn't the same");
                     }
-                } else {
-                    // System.out.println("Arguments isn't the same");
-                    // System.out.println("Signature isn't the same");
                 }
-                // for (int variableIndex = 0; variableIndex < variableTrees.size();
-                // variableIndex++) {
-                // VariableTree variableTree = variableTrees.get(variableIndex);
-                // System.out.println("Parameter : " + variableTree.getType());
-                // }
-
-            } else {
-                // System.out.println("Name isn't the same");
-                // System.out.println("Signature isn't the same");
             }
         }
         return true;
-    }
-    
-    public Boolean checkJavaSyntaxError(String path) {
-        System.out.println("checking syntax error");
-        Iterable<? extends JavaFileObject> files = fileManager.getJavaFileObjects(path);
-        JavaCompiler.CompilationTask compilationTask = this.javacTool.getTask(null, fileManager, null, null, null,
-                files);
-        JavacTask javacTask = (JavacTask) compilationTask;
-        return javacTask.call();
     }
 
     // java file which only has function
@@ -121,27 +118,15 @@ public class CodeParser {
         List<MethodTree> methodTrees = new ArrayList<>();
         try {
             Iterable<? extends CompilationUnitTree> result = javacTask.parse();
-            // System.out.println(javacTask.call());
-
-            System.out.println(javacTask.toString());
-            System.out.println("rrr");
-            System.out.println(result.toString());
             for (CompilationUnitTree tree : result) {
-                System.out.println("d");
                 List<ClassTree> classTreeContainer = new ArrayList<>();
                 tree.accept(new ClassVisitor(), classTreeContainer);
                 for (ClassTree classTree : classTreeContainer) {
-                    System.out.println("qaq");
-                    System.out.println(classTree.getKind());
                     classTree.accept(new MethodVisitor(), methodTrees);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (IllegalStateException e2) {
-            System.out.println("Hello World");
-            ;
-            e2.printStackTrace();
         }
         return methodTrees.get(0);
     }
@@ -149,7 +134,6 @@ public class CodeParser {
     public ClassTree parseJavaFile(String path) {
         System.out.println("parser file...");
         Iterable<? extends JavaFileObject> files = fileManager.getJavaFileObjects(path);
-        // System.out.println(files.toString());
         JavaCompiler.CompilationTask compilationTask = javacTool.getTask(null, fileManager, null, null, null, files);
         JavacTask javacTask = (JavacTask) compilationTask;
 
@@ -158,7 +142,6 @@ public class CodeParser {
             Iterable<? extends CompilationUnitTree> result = javacTask.parse();
 
             for (CompilationUnitTree tree : result) {
-                // tree.getPackage();
                 System.out.println(tree.getPackageName());
 
                 resultString += "package " + tree.getPackageName() + ";\n";
@@ -177,12 +160,6 @@ public class CodeParser {
                     for (int index = 0; index < methodTrees.size(); index++) {
                         MethodTree methodTree = methodTrees.get(index);
                         List<? extends VariableTree> variableTrees = methodTree.getParameters();
-                        // System.out.println("Method : " + methodTree.getName());
-                        // for (int variableIndex = 0; variableIndex < variableTrees.size();
-                        // variableIndex++) {
-                        // VariableTree variableTree = variableTrees.get(variableIndex);
-                        // System.out.println("Parameter : " + variableTree.getType());
-                        // }
                     }
                 }
             }
@@ -194,14 +171,13 @@ public class CodeParser {
     }
 
     public void writeFile(String path, String text) {
-        System.out.println("path heree : " + path);
+        System.out.println("path here : " + path);
         File fileObj = new File(path);
         if (fileObj.exists()) {
             try {
                 FileWriter myWriter = new FileWriter(path);
                 myWriter.write(text);
                 myWriter.close();
-                System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();

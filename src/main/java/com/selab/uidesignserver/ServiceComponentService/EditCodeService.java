@@ -25,23 +25,45 @@ import freemarker.template.TemplateException;
 public class EditCodeService {
     public String filePath;
     public CodeParser codeParser;
+    public String tempServiceComponentPath = "./temp/Temp.java";
 
     // @Autowired
     // RestTemplate restTemplate;
 
     public EditCodeService(String className) {
-        this.codeParser = new CodeParser();
         this.filePath = this.convertClassNameToFilePath(className);
         this.filePath = Configuration.Base_Source_Code_DIR_PATH + this.filePath;
-        System.out.println("File Path : " + this.filePath);
+        this.codeParser = new CodeParser(this.filePath);
+        System.out.println("Source Code File Path : " + this.filePath);
+    }
+    
+    public JSONObject editServiceComponent(String code) throws IOException, TemplateException {
+        // write editcode to ./temp/Temp.java
+        this.createTempServiceComponent(code);
+        JSONObject result = new JSONObject();
+
+        // checking is the edited signature unique
+        // if signature unique return complete code
+        // else return ""
+        String codeResult = this.codeParser.checkingSignatureUnique(tempServiceComponentPath,this.filePath);
+
+        if(codeResult.length() == 0) {
+            System.out.println("ggggg");
+            result.put("statusCode",-1);
+            result.put("log","Signature is the same");
+        }
+        else {
+            result.put("statusCode",2);
+            this.writeFile(this.filePath,codeResult);
+        }
+        return result;
     }
 
     public String addEditServiceComponent() {
         String code = this.codeParser.addEditedServiceComponent("./temp/Temp.java", this.filePath);
-        System.out.println("final code string hereee");
-        System.out.println(code);
         if (code.length() > 0) {
             System.out.println("Write file...");
+            System.out.println(this.filePath);
             this.writeFile(this.filePath, code);
         }
         return code;
@@ -54,7 +76,7 @@ public class EditCodeService {
         templateData.put("code", code);
         Writer writer = new StringWriter();
         mainCodeTemplate.process(templateData, writer);
-        this.writeFile("./temp/Temp.java", writer.toString());
+        this.writeFile(this.tempServiceComponentPath, writer.toString());
     }
 
     public void writeFile(String path, String text) {
@@ -63,9 +85,10 @@ public class EditCodeService {
         if (fileObj.exists()) {
             try {
                 FileWriter myWriter = new FileWriter(path);
+                System.out.println(text);
                 myWriter.write(text);
                 myWriter.close();
-                System.out.println("Successfully wrote to the file.");
+                System.out.println("Successfully wrote to the file. EditorCode");
             } catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
@@ -114,39 +137,42 @@ public class EditCodeService {
         return "success";
     }
 
-    public String buildCode() {
+    public JSONObject buildCode() {
         // statusCode
         // -1 signature same
-        // 0 no thing happen
+        // 0 build error
         // 1 build success
-        // 2 build error
         System.out.println("Bulding Code...");
         String s;
         Process p;
         String log = "";
         int statusCode = 0;
         try {
-            p = Runtime.getRuntime().exec("./buildService.sh");
+            p = Runtime.getRuntime().exec("./build.sh");
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null) {
                 log += s;
                 System.out.println(s);
                 if (s.contains("BUILD SUCCESSFUL")) {
+                    System.out.println("Build success");
                     statusCode = 1;
-                } else if (s.contains("BUILD FAILED"))
-                    statusCode = 2;
-                // System.out.println("line: " + s);
+                } else if (s.contains("FAILED")) {
+                    System.out.println("Build failed");
+                    statusCode = 0;
+                    this.codeParser.recover();
+                }
             }
             p.waitFor();
-            // System.out.println("exit: " + p.exitValue());
-            // statusCode = p.exitValue();
             p.destroy();
         } catch (Exception e) {
+            System.out.println("build process exception");
+            e.printStackTrace();
         }
+        System.out.println("hello " + statusCode);
         JSONObject response = new JSONObject();
         response.put("log", log);
         response.put("statusCode", statusCode);
-        return response.toString();
+        return response;
     }
 
     public String triggerJenkinsBuild() {

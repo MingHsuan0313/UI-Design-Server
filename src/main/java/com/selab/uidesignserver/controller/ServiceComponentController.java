@@ -59,35 +59,22 @@ public class ServiceComponentController {
     @PostMapping(value = "/editServiceComponent")
     public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
         JSONObject requestBodyObject = new JSONObject(data);
-        System.out.println("get code hereee");
-        System.out.println(requestBodyObject.getString("code"));
+        // System.out.println(requestBodyObject.getString("code"));
         String editedServiceComponentCode = requestBodyObject.getString("code");
         // class name with package name
         String serviceComponentClassName = requestBodyObject.getString("class");
 
         EditCodeService editCodeService = new EditCodeService(serviceComponentClassName);
+        JSONObject editCodeState = editCodeService.editServiceComponent(editedServiceComponentCode);
+        // means signature not unique
+        if(editCodeState.getInt("statusCode") == -1)
+            return editCodeState.toString();
 
-        // locate absolute file path depends on package and class name
-        editCodeService.createTempServiceComponent(editedServiceComponentCode);
-        String signatureUnique = editCodeService.addEditServiceComponent();
-        // stage1 checking signature
-        if(signatureUnique.length() == 0) {
-            JSONObject responseObject = new JSONObject();
-            responseObject.put("statusCode",-1);
-            responseObject.put("log","Signature is the same");
-            return responseObject.toString();
-        }
+        // if signature is unique than pass to build stage
+        JSONObject buildResultObject = editCodeService.buildCode();
 
-        // EditCodeService editCodeService = new
-        // EditCodeService(dataJsonObject.getString("filePath"));
-        // editCodeService.updateEditedJavaFile(dataJsonObject.getString("code"));
-        // String response = editCodeService.buildCode();
-        // String response = editCodeService.triggerJenkinsBuild();
-        // System.out.println(response);
-        JSONObject responseObject = new JSONObject();
-        responseObject.append("log","");
-        responseObject.append("status",1);
-
-        return responseObject.toString();
+        buildResultObject.put("log",buildResultObject.getString("log"));
+        buildResultObject.put("statusCode",buildResultObject.getInt("statusCode"));
+        return buildResultObject.toString();
     }
 }
