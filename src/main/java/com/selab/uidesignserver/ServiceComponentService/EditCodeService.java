@@ -151,7 +151,7 @@ public class EditCodeService {
             p = Runtime.getRuntime().exec("./build.sh");
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null) {
-                log += s;
+                log += s + "\n";
                 System.out.println(s);
                 if (s.contains("BUILD SUCCESSFUL")) {
                     System.out.println("Build success");

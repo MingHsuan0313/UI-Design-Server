@@ -1,25 +1,24 @@
 public class Temp{
     
-public void itemHistoryPriceSet(String iid, User user, String data) {
-    readAllEvent();
-    readAllReason();
-    dd
-    ItemHistory itemHistory = new ItemHistory(null, user);
-    DatabaseObject itemHistoryDatabaseObject = DatabaseObject.initMethod("ItemHistory");
-    itemHistoryDatabaseObject.putString("iid", iid);
-    itemHistoryDatabaseObject.putDate("date", itemHistory.getDate());
-    itemHistoryDatabaseObject.putString("event", eventMap.get("Price set"));
-    Double price = 0.0;
-    for (DatabaseObject databaseObject : manager.DatabaseManager.retrieveAll("Item")) {
-        if (databaseObject.get("__id").toString().equals(iid)) {
-            price = (Double)databaseObject.get("price");
-        }
-    }
-    itemHistoryDatabaseObject.putDouble("price", price);
-    itemHistoryDatabaseObject.putInteger("adjust", 0);
-    itemHistoryDatabaseObject.putString("reason", "");
-    itemHistoryDatabaseObject.putString("uid", user.getId().toString());
-    itemHistoryDatabaseObject.putString("comment", "");
-    manager.DatabaseManager.save(itemHistoryDatabaseObject);
+@PostMapping(value = "/login2", produces = "application/json")
+public Map<String, Object> login(@RequestBody()
+Map<String, Object> map, HttpServletResponse response, String test) {
+    DatabaseObject user = userService.authenticate((String)map.getOrDefault("username", ""), (String)map.getOrDefault("password", ""));
+    userService.expireToken(user);
+    DatabaseObject token = userService.assignNewToken(user);
+    Cookie cookie;
+    cookie = new Cookie("uid", token.get("uid").toString());
+    cookie.setPath("/");
+    response.addCookie(cookie);
+    cookie = new Cookie("token", token.get("token").toString());
+    cookie.setPath("/");
+    response.addCookie(cookie);
+    Map<String, Object> body = new HashMap<>();
+    List<Restriction> restrict = new ArrayList<>();
+    model.Restriction r1 = model.Restriction.equal("__id", token.get("uid").toString());
+    restrict.add(r1);
+    List<DatabaseObject> list_user = DatabaseManager.retrieveWithRestriction("User", restrict);
+    body.put("privilege", list_user.get(0).get("privilege"));
+    return body;
 }
 }
