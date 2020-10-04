@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.selab.uidesignserver.dao.ArgumentRepository;
-import com.selab.uidesignserver.dao.ClassRepository;
-import com.selab.uidesignserver.dao.ServiceComponentRepository;
-import com.selab.uidesignserver.entity.ServiceComponentTable;
+import com.selab.uidesignserver.dao.serviceComponent.*;
+import com.selab.uidesignserver.entity.serviceComponent.ServiceComponentTable;
 
 import org.apache.tomcat.util.json.JSONParser;
 import org.json.JSONObject;

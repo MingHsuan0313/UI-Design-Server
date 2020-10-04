@@ -1,4 +1,4 @@
-package com.selab.uidesignserver.entity;
+package com.selab.uidesignserver.entity.serviceComponent;
 
 import javax.annotation.Generated;
 import javax.persistence.CascadeType;

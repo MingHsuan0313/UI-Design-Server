@@ -2,7 +2,7 @@ package com.selab.uidesignserver.repositoryService;
 
 import java.util.List;
 
-import com.selab.uidesignserver.entity.ServiceComponentTable;
+import com.selab.uidesignserver.entity.serviceComponent.ServiceComponentTable;
 
 import org.json.JSONObject;
 import org.springframework.data.jpa.repository.Query;

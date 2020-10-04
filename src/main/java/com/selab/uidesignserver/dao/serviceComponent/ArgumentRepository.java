@@ -1,6 +1,6 @@
-package com.selab.uidesignserver.dao;
+package com.selab.uidesignserver.dao.serviceComponent;
 
-import com.selab.uidesignserver.entity.ArgumentTable;
+import com.selab.uidesignserver.entity.serviceComponent.ArgumentTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;

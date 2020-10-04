@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
-import com.selab.uidesignserver.entity.ServiceComponentTable;
+import com.selab.uidesignserver.entity.serviceComponent.*;
+import com.selab.uidesignserver.entity.uiComposition.*;
+
 import com.selab.uidesignserver.repositoryService.ServiceComponentService;
 import com.selab.uidesignserver.respository.ServiceComponentDao;
 
