@@ -1,14 +1,16 @@
 package com.selab.uidesignserver;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 @SpringBootApplication
 @RestController
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@RequestMapping("/selab")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class UIWebsiteApplication {
 
 	public static void main(String[] args) {

@@ -12,6 +12,7 @@ import com.mxgraph.swing.handler.mxGraphHandler;
 
 import org.w3c.dom.Document;
 
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
@@ -19,8 +20,10 @@ import java.io.*;
 import java.util.Map;
 
 
+
 public class CanvasToPictureUtil {
     public CanvasToPictureUtil(){}
+
     static public byte[] transformToPNG(String erXmlString) throws IOException{
         System.out.println(erXmlString);
         Document doc = mxXmlUtils.parseXml(erXmlString);
@@ -28,6 +31,7 @@ public class CanvasToPictureUtil {
         mxGraph graph = new mxGraph();
         Map<String,Object> defaultStyle = graph.getStylesheet().getDefaultVertexStyle();
         defaultStyle.put("fillColor","#ffffff");
+
         mxCodec codec = new mxCodec(doc);
         codec.decode(doc.getDocumentElement(), graph.getModel());
 
@@ -42,11 +46,13 @@ public class CanvasToPictureUtil {
 
         if (image != null) {
             encoder.encode(image);
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(image,"png",baos);
             baos.flush();
             byte[] imageBytes = baos.toByteArray();
             return imageBytes;
+
         }
         outputStream.close();
         return null;
