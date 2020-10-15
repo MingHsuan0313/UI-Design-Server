@@ -9,7 +9,6 @@ import com.selab.uidesignserver.entity.serviceComponent.*;
 import com.selab.uidesignserver.entity.uiComposition.*;
 
 import com.selab.uidesignserver.repositoryService.ServiceComponentService;
-import com.selab.uidesignserver.respository.ServiceComponentDao;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

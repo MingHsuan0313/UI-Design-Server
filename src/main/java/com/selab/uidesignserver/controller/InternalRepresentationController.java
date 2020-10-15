@@ -7,9 +7,6 @@ import java.util.List;
 import com.selab.uidesignserver.entity.uiComposition.NavigationTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
-import com.selab.uidesignserver.respository.PageDao;
-import com.selab.uidesignserver.respository.TemplateDao;
-import com.selab.uidesignserver.service.HTMLGenerator;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

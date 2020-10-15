@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.selab.uidesignserver.entity.uiComposition.NavigationTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
-import com.selab.uidesignserver.respository.NavigationDao;
 import com.selab.uidesignserver.service.CanvasToPictureUtil;
 
 import org.json.JSONObject;
@@ -26,8 +25,6 @@ import freemarker.template.TemplateException;
 @RequestMapping("/navigation")
 @CrossOrigin(origins = "*", allowCredentials = "true")
 public class NavigationController {
-    @Autowired
-    NavigationDao navigationDao;
 	
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
