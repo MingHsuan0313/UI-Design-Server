@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "uiEntityManagerFactory",
- basePackages = { "com.selab.uidesignserver.dao.uiComposition" })
+@EnableJpaRepositories(
+transactionManagerRef = "uiTransactionManager" ,
+entityManagerFactoryRef = "uiEntityManagerFactory", 
+basePackages = {"com.selab.uidesignserver.dao.uiComposition" })
 public class UIDBConfig {
 
     // @Primary
@@ -34,16 +36,17 @@ public class UIDBConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
             @Qualifier("uiDataSource") DataSource dataSource) {
         return builder.dataSource(dataSource).packages("com.selab.uidesignserver.entity.uiComposition")
-            .persistenceUnit("navigation")
-            .persistenceUnit("pages")
-            .persistenceUnit("templates")
-            .build();
+                .persistenceUnit("navigation").persistenceUnit("pages").persistenceUnit("templates").build();
     }
 
     // @Primary
     @Bean(name = "uiTransactionManager")
     public PlatformTransactionManager transactionManager(
             @Qualifier("uiEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
+
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory);
+        return transactionManager;
+        // return new JpaTransactionManager(entityManagerFactory);
     }
 }

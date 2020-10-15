@@ -6,11 +6,12 @@ import javax.persistence.*;
 @Table(name = "pages")
 public class PagesTable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     
+	@Id
     @Column(name = "selector")
     private String selector;
     
@@ -19,6 +20,16 @@ public class PagesTable {
     
     @Column(name = "pdl")
     private String pdl;
+	
+	public PagesTable() {
+		
+	}
+	public PagesTable(int id,String selector,String layout,String pdl) {
+		this.id = id;
+		this.selector = selector;
+		this.layout = layout;
+		this.pdl = pdl;
+	}
 
 	public int getId() {
 		return this.id;
