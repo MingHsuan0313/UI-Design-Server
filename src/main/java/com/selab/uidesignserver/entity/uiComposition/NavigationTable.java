@@ -12,12 +12,21 @@ import javax.persistence.Table;
 public class NavigationTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     
     @Column(name = "ndl")
     private String ndl;
+	
+	public NavigationTable() {
+		
+	}
+	
+	public NavigationTable(int id,String ndl) {
+		this.id = id;
+		this.ndl = ndl;
+	}
 
 	public int getId() {
 		return this.id;
@@ -34,6 +43,4 @@ public class NavigationTable {
 	public void setNdl(String ndl) {
 		this.ndl = ndl;
 	}
-
-    
 }
