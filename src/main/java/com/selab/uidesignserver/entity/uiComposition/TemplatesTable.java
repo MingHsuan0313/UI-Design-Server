@@ -8,7 +8,7 @@ public class TemplatesTable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "classID")
+    @Column(name = "id")
     private int id;
     
     @Column(name = "selector")
