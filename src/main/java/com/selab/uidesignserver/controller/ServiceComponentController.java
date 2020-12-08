@@ -45,6 +45,29 @@ public class ServiceComponentController {
             @RequestParam("matchmaking") String isMatchmaking) throws SQLException {
         return serviceComponentService.getServiceComponentsWithRestriction(Integer.parseInt(argumentCount)).toString();
     }
+    
+    @GetMapping(value = "/getReturn")
+    public String getReturn(@RequestParam("serviceID") String serviceID) {
+        JSONObject Return = new JSONObject();
+        // JSONObject department = new JSONObject();
+        JSONObject category = new JSONObject();
+        JSONObject item = new JSONObject();
+        
+        item.put("name","");
+        item.put("id","");
+        item.put("description","");
+        
+        category.put("name","");
+        category.put("id","");
+        category.put("item",item);
+        
+        Return.put("name","");
+        Return.put("description","");
+        Return.put("category",category);
+        
+        // return "Hello";
+        return Return.toString();
+    }
 
     @GetMapping(value = "/getCode")
     public String getCode(@RequestParam("serviceID") String serviceID) throws SQLException {
