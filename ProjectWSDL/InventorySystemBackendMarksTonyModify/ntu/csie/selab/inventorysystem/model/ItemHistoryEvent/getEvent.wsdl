@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ntu_csie_selab_inventorysystem_model_ItemHistoryEvent="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent/getEvent" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent/getEvent">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="getEventRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_model_ItemHistoryEvent:ntu_csie_selab_inventorysystem_model_ItemHistoryEvent" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="getEventResponse">
+    <wsdl:part name="serviceResult" type="xsd:string" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="getEventPort">
+    <wsdl:operation name="getEvent">
+      <wsdl:output message="selfNameSpace:getEventResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:getEventRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="getEventService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent/getEvent"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/ItemHistoryEvent"/>
+</wsdl:definitions>

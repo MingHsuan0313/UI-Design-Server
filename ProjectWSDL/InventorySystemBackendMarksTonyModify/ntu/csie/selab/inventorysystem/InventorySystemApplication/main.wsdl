@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/InventorySystemApplication/main" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/InventorySystemApplication/main">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="mainRequest"/>
+  <wsdl:message name="mainResponse">
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="mainPort">
+    <wsdl:operation name="main">
+      <wsdl:output message="selfNameSpace:mainResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:mainRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="mainService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/InventorySystemApplication/main"/>
+  </wsdl:service>
+</wsdl:definitions>

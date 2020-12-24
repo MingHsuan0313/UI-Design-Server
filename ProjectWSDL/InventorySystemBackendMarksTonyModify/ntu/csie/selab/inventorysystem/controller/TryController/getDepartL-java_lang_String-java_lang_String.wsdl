@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:java_util_List="http://140.112.90.144:7122/java/util/List" xmlns:ntu_csie_selab_inventorysystem_controller_TryController="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController/getDepartL-java_lang_String-java_lang_String" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController/getDepartL-java_lang_String-java_lang_String">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="getDepartLRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_controller_TryController:ntu_csie_selab_inventorysystem_controller_TryController" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="uid" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="token" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="getDepartLResponse">
+    <wsdl:part element="java_util_List:java_util_List" name="serviceResult" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="getDepartLPort">
+    <wsdl:operation name="getDepartL">
+      <wsdl:output message="selfNameSpace:getDepartLResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:getDepartLRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="getDepartLService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController/getDepartL-java_lang_String-java_lang_String"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/TryController"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/java/util/List.wsdl" namespace="http://140.112.90.144:7122/java/util/List"/>
+</wsdl:definitions>

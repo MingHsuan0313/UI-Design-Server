@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:java_util_Map="http://140.112.90.144:7122/java/util/Map" xmlns:ntu_csie_selab_inventorysystem_controller_ItemController="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/viewItem-java_lang_String-java_lang_String-java_lang_Integer" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/viewItem-java_lang_String-java_lang_String-java_lang_Integer">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="viewItemRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_controller_ItemController:ntu_csie_selab_inventorysystem_controller_ItemController" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="uid" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="token" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="iid" type="xsd:integer" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="viewItemResponse">
+    <wsdl:part element="java_util_Map:java_util_Map" name="serviceResult" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="viewItemPort">
+    <wsdl:operation name="viewItem">
+      <wsdl:output message="selfNameSpace:viewItemResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:viewItemRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="viewItemService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/viewItem-java_lang_String-java_lang_String-java_lang_Integer"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/java/util/Map.wsdl" namespace="http://140.112.90.144:7122/java/util/Map"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController"/>
+</wsdl:definitions>

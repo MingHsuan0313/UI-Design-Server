@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:java_util_Map="http://140.112.90.144:7122/java/util/Map" xmlns:ntu_csie_selab_inventorysystem_controller_HierarchyController="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/viewDepartment-java_lang_String-java_lang_String-java_lang_String" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/viewDepartment-java_lang_String-java_lang_String-java_lang_String">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="viewDepartmentRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_controller_HierarchyController:ntu_csie_selab_inventorysystem_controller_HierarchyController" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="uid" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="token" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="did" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="viewDepartmentResponse">
+    <wsdl:part element="java_util_Map:java_util_Map" name="serviceResult" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="viewDepartmentPort">
+    <wsdl:operation name="viewDepartment">
+      <wsdl:output message="selfNameSpace:viewDepartmentResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:viewDepartmentRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="viewDepartmentService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/viewDepartment-java_lang_String-java_lang_String-java_lang_String"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/java/util/Map.wsdl" namespace="http://140.112.90.144:7122/java/util/Map"/>
+</wsdl:definitions>

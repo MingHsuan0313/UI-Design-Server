@@ -14,5 +14,5 @@ public interface ServiceComponentService {
     // need to add classname and remove code part , with argument count
     public List<JSONObject> getServiceComponentsWithRestriction(int argumentCount);
     public String getServiceComponentCode(int serviceID);
-    public List<String> getArgumentsByServiceID(int serviceID);
+    public List<JSONObject> getArgumentsByServiceID(int serviceID);
 }

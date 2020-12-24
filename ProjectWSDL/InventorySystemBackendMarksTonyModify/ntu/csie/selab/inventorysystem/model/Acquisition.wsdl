@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:java_lang_Object="http://140.112.90.144:7122/java/lang/Object" xmlns:ntu_csie_selab_inventorysystem_model_Acquisition="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Acquisition" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Acquisition" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Acquisition">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" type="class">
+      <xsd:element name="ntu_csie_selab_inventorysystem_model_Acquisition">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="id" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="parents">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="java_lang_Object" type="java_lang_Object:java_lang_Object"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="Request">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_model_Acquisition:ntu_csie_selab_inventorysystem_model_Acquisition" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="Response">
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="Port">
+    <wsdl:operation name="">
+      <wsdl:output message="selfNameSpace:Response" name="out"/>
+      <wsdl:input message="selfNameSpace:Request" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="Service">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Acquisition"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/java/lang/Object.wsdl" namespace="http://140.112.90.144:7122/java/lang/Object"/>
+</wsdl:definitions>

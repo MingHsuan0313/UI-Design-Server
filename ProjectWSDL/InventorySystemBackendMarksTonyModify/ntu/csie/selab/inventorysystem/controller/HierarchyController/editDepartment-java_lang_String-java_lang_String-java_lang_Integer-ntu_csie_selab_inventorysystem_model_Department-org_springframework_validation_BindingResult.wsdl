@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ntu_csie_selab_inventorysystem_controller_HierarchyController="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController" xmlns:ntu_csie_selab_inventorysystem_model_Department="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Department" xmlns:org_springframework_validation_BindingResult="http://140.112.90.144:7122/org/springframework/validation/BindingResult" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/editDepartment-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Department-org_springframework_validation_BindingResult" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/editDepartment-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Department-org_springframework_validation_BindingResult">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="editDepartmentRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_controller_HierarchyController:ntu_csie_selab_inventorysystem_controller_HierarchyController" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="uid" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="token" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="did" type="xsd:integer" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part element="ntu_csie_selab_inventorysystem_model_Department:ntu_csie_selab_inventorysystem_model_Department" name="department" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part element="org_springframework_validation_BindingResult:org_springframework_validation_BindingResult" name="validation" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="editDepartmentResponse">
+    <wsdl:part name="serviceResult" type="xsd:string" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="editDepartmentPort">
+    <wsdl:operation name="editDepartment">
+      <wsdl:output message="selfNameSpace:editDepartmentResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:editDepartmentRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="editDepartmentService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController/editDepartment-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Department-org_springframework_validation_BindingResult"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Department.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Department"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/HierarchyController"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/org/springframework/validation/BindingResult.wsdl" namespace="http://140.112.90.144:7122/org/springframework/validation/BindingResult"/>
+</wsdl:definitions>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:model_DatabaseObject="http://140.112.90.144:7122/model/DatabaseObject" xmlns:ntu_csie_selab_inventorysystem_controller_ItemController="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController" xmlns:ntu_csie_selab_inventorysystem_model_Item_ItemValidation="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Item_ItemValidation" xmlns:org_springframework_validation_BindingResult="http://140.112.90.144:7122/org/springframework/validation/BindingResult" xmlns:selfNameSpace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/editItem-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Item_ItemValidation-org_springframework_validation_BindingResult" xmlns:wsdlrestful="http://schemas.xmlsoap.org/wsdl/restful/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/editItem-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Item_ItemValidation-org_springframework_validation_BindingResult">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified"/>
+  </wsdl:types>
+  <wsdl:message name="editItemRequest">
+    <wsdl:part element="ntu_csie_selab_inventorysystem_controller_ItemController:ntu_csie_selab_inventorysystem_controller_ItemController" name="self" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="uid" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="token" type="xsd:string" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part name="iid" type="xsd:integer" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part element="ntu_csie_selab_inventorysystem_model_Item_ItemValidation:ntu_csie_selab_inventorysystem_model_Item_ItemValidation" name="item" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+    <wsdl:part element="org_springframework_validation_BindingResult:org_springframework_validation_BindingResult" name="validation" wsdlrestful:contentType="application/json" wsdlrestful:requestType="get"/>
+  </wsdl:message>
+  <wsdl:message name="editItemResponse">
+    <wsdl:part element="model_DatabaseObject:model_DatabaseObject" name="serviceResult" wsdlrestful:contentType="application/json"/>
+    <wsdl:part name="standardOutput" type="xsd:string" wsdlrestful:contentType="application/json"/>
+  </wsdl:message>
+  <wsdl:portType name="editItemPort">
+    <wsdl:operation name="editItem">
+      <wsdl:output message="selfNameSpace:editItemResponse" name="out"/>
+      <wsdl:input message="selfNameSpace:editItemRequest" name="in"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:service name="editItemService">
+    <wsdlrestful:address method="get" url="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController/editItem-java_lang_String-java_lang_String-java_lang_Integer-ntu_csie_selab_inventorysystem_model_Item_ItemValidation-org_springframework_validation_BindingResult"/>
+  </wsdl:service>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Item_ItemValidation.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/model/Item_ItemValidation"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/org/springframework/validation/BindingResult.wsdl" namespace="http://140.112.90.144:7122/org/springframework/validation/BindingResult"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/model/DatabaseObject.wsdl" namespace="http://140.112.90.144:7122/model/DatabaseObject"/>
+  <wsdl:import location="http://140.112.90.144/wsdl/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController.wsdl" namespace="http://140.112.90.144:7122/InventorySystemBackendMarksTonyModify/ntu/csie/selab/inventorysystem/controller/ItemController"/>
+</wsdl:definitions>

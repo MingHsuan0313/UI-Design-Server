@@ -3,6 +3,8 @@ package com.selab.uidesignserver.repositoryService;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import com.google.gson.Gson;
 import com.selab.uidesignserver.dao.serviceComponent.*;
 import com.selab.uidesignserver.entity.serviceComponent.ServiceComponentTable;
@@ -31,7 +33,9 @@ public class ServiceComponentServiceImp implements ServiceComponentService {
 	}
 
 	@Override
+	@Transactional
 	public List<JSONObject> getServiceComponentsWithRestriction(int argumentCount) {
+		//connect
 		List<ServiceComponentTable> serviceComponents = serviceComponentRepository
 				.getServiceComponentsWithRestriction(argumentCount);
 		List<JSONObject> serviceComponentResponse = new ArrayList<JSONObject>();
@@ -42,6 +46,7 @@ public class ServiceComponentServiceImp implements ServiceComponentService {
 			jsonObject.put("name",serviceComponent.getName());
 			jsonObject.put("className",serviceComponent.getKlass().getClassName());
 			serviceComponentResponse.add(jsonObject);
+
 		}
 		return serviceComponentResponse;
 	}
@@ -52,7 +57,7 @@ public class ServiceComponentServiceImp implements ServiceComponentService {
 	}
 
 	@Override
-	public List<String> getArgumentsByServiceID(int serviceID) {
+	public List<JSONObject> getArgumentsByServiceID(int serviceID) {
 		return argumentRepository.getArgumentNamesByServiceID(serviceID);
 	}
 }
