@@ -19,4 +19,9 @@ public class WebAppController {
     public String generateWebApp(@RequestParam("projectName") String projectName) {
         return generateWebAppService.trigger(projectName);
     }
+
+    @GetMapping(value = "/getCurrentStatus")
+    public String getCurrentStatusOfWebApp(@RequestParam("instanceId") String instanceId) {
+        return generateWebAppService.getCurrentStatus(instanceId);
+    }
 }
