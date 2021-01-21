@@ -6,6 +6,7 @@ import com.cdancy.jenkins.rest.domain.job.Workflow;
 import com.cdancy.jenkins.rest.domain.queue.Executable;
 import com.cdancy.jenkins.rest.domain.queue.QueueItem;
 import com.google.gson.Gson;
+import com.selab.uidesignserver.dto.WebAppGeneratingStateDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -43,17 +44,26 @@ public class GenerateWebAppService {
 
 
     /**
+     * Get the status of all building stages and specify the result of the web app generation.
      * @param instanceId The building instance id.
-     * @return If status is IN_PROGRESS, return all the SUCCESS stages and current IN_PROGRESS stage.
-     * If status is SUCCESS, return the deployed url of the webApp.
-     * If status if FAILURE or ABORTED, return the error message.
+     * @return
+     * If status is SUCCESS, set the deployed url of the webApp.
+     * If status if FAILURE or ABORTED, set the result to the error message.
      */
-    public String getCurrentStatus(String instanceId) {
-        if (client == null) return "You should generate webApp first to build up the JenkinsClient instance";
+    public WebAppGeneratingStateDto getCurrentGeneratingState(String instanceId) {
+        WebAppGeneratingStateDto ret = new WebAppGeneratingStateDto();
+
+        if (client == null) {
+            ret.setStatus("You should generate webApp first to build up the JenkinsClient instance");
+            return ret;
+        }
 
         while (true) {
             QueueItem queuedInstance = client.api().queueApi().queueItem(Integer.parseInt(instanceId));
-            if (queuedInstance.cancelled()) return BUILD_STATUS.ABORTED.toString();
+            if (queuedInstance.cancelled()) {
+                ret.setStatus(BUILD_STATUS.ABORTED.toString());
+                return ret;
+            }
 
             Executable executableBuild = queuedInstance.executable();
             if (executableBuild == null)    continue;
@@ -62,17 +72,24 @@ public class GenerateWebAppService {
             // check timeout first
             long currentTime = System.currentTimeMillis();
             if (currentTime - workflow.startTimeMillis() > Config.BUILD_TIMEOUT) {
-                return String.format("Timeout: the build task cost over %d", Config.BUILD_TIMEOUT);
+                ret.setStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
+                return ret;
             }
+            // get building stages
+            ret.setStages(new Gson().toJson(workflow.stages()));
             // check status
             String status = workflow.status();
             if (status.equals(BUILD_STATUS.SUCCESS.toString())) {
-                return Config.DEPLOY_URL + projectName + "/";
+                ret.setStatus(BUILD_STATUS.SUCCESS.toString());
+                ret.setDeployedUrl(Config.DEPLOY_URL + projectName + "/");
             } else if (status.equals(BUILD_STATUS.IN_PROGRESS.toString())){
-                return new Gson().toJson(workflow.stages());
+                ret.setStatus(BUILD_STATUS.IN_PROGRESS.toString());
+            } else if (status.equals(BUILD_STATUS.NOT_EXECUTED.toString())) {
+                ret.setStatus(String.format("Queueing. %s", BUILD_STATUS.NOT_EXECUTED.toString()));
             } else {
-                return String.format("Failed. Build Result: %s", status);
+                ret.setStatus(String.format("Failed. Build Result: %s", status));
             }
+            return ret;
         }
     }
 
@@ -95,6 +112,6 @@ public class GenerateWebAppService {
      * Referred to Jenkins Plugin.
      */
     private enum BUILD_STATUS {
-        SUCCESS, FAILURE, IN_PROGRESS, ABORTED
+        SUCCESS, FAILURE, NOT_EXECUTED, IN_PROGRESS, ABORTED
     };
 }
