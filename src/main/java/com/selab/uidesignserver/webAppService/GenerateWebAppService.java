@@ -54,14 +54,14 @@ public class GenerateWebAppService {
         WebAppGeneratingStateDto ret = new WebAppGeneratingStateDto();
 
         if (client == null) {
-            ret.setStatus("You should generate webApp first to build up the JenkinsClient instance");
+            ret.setTaskStatus("You should generate webApp first to build up the JenkinsClient instance");
             return ret;
         }
 
         while (true) {
             QueueItem queuedInstance = client.api().queueApi().queueItem(Integer.parseInt(instanceId));
             if (queuedInstance.cancelled()) {
-                ret.setStatus(BUILD_STATUS.ABORTED.toString());
+                ret.setTaskStatus(BUILD_STATUS.ABORTED.toString());
                 return ret;
             }
 
@@ -74,20 +74,20 @@ public class GenerateWebAppService {
             // check status
             String status = workflow.status();
             if (status.equals(BUILD_STATUS.SUCCESS.toString())) {
-                ret.setStatus(BUILD_STATUS.SUCCESS.toString());
+                ret.setTaskStatus(BUILD_STATUS.SUCCESS.toString());
                 ret.setDeployedUrl(Config.DEPLOY_URL + projectName + "/");
             } else if (status.equals(BUILD_STATUS.IN_PROGRESS.toString())){
                 // check timeout first
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - workflow.startTimeMillis() > Config.BUILD_TIMEOUT) {
-                    ret.setStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
+                    ret.setTaskStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
                     return ret;
                 }
-                ret.setStatus(BUILD_STATUS.IN_PROGRESS.toString());
+                ret.setTaskStatus(BUILD_STATUS.IN_PROGRESS.toString());
             } else if (status.equals(BUILD_STATUS.NOT_EXECUTED.toString())) {
-                ret.setStatus(String.format("Queueing. %s", BUILD_STATUS.NOT_EXECUTED.toString()));
+                ret.setTaskStatus(String.format("Queueing. %s", BUILD_STATUS.NOT_EXECUTED.toString()));
             } else {
-                ret.setStatus(String.format("Failed. Build Result: %s", status));
+                ret.setTaskStatus(String.format("Failed. Build Result: %s", status));
             }
             return ret;
         }

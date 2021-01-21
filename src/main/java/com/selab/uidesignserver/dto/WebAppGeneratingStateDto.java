@@ -1,14 +1,10 @@
 package com.selab.uidesignserver.dto;
 
-import com.cdancy.jenkins.rest.domain.job.Stage;
-
-import java.util.List;
-
 public class WebAppGeneratingStateDto {
 
     private String stages;  // third-party library class doesn't have a serializer, so use Gson
     private String deployedUrl;
-    private String status;
+    private String taskStatus;  // prevent naming conflict with HTTP response status
 
     public String getStages() {
         return stages;
@@ -18,8 +14,8 @@ public class WebAppGeneratingStateDto {
         return deployedUrl;
     }
 
-    public String getStatus() {
-        return status;
+    public String getTaskStatus() {
+        return taskStatus;
     }
 
     public void setStages(String serializedStages) {
@@ -30,7 +26,7 @@ public class WebAppGeneratingStateDto {
         this.deployedUrl = deployedUrl;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }
