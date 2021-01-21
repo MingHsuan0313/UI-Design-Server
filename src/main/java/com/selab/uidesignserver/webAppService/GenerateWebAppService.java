@@ -69,12 +69,6 @@ public class GenerateWebAppService {
             if (executableBuild == null)    continue;
 
             Workflow workflow = client.api().jobsApi().workflow(null, Config.JOB_NAME, executableBuild.number());
-            // check timeout first
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - workflow.startTimeMillis() > Config.BUILD_TIMEOUT) {
-                ret.setStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
-                return ret;
-            }
             // get building stages
             ret.setStages(new Gson().toJson(workflow.stages()));
             // check status
@@ -83,6 +77,12 @@ public class GenerateWebAppService {
                 ret.setStatus(BUILD_STATUS.SUCCESS.toString());
                 ret.setDeployedUrl(Config.DEPLOY_URL + projectName + "/");
             } else if (status.equals(BUILD_STATUS.IN_PROGRESS.toString())){
+                // check timeout first
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - workflow.startTimeMillis() > Config.BUILD_TIMEOUT) {
+                    ret.setStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
+                    return ret;
+                }
                 ret.setStatus(BUILD_STATUS.IN_PROGRESS.toString());
             } else if (status.equals(BUILD_STATUS.NOT_EXECUTED.toString())) {
                 ret.setStatus(String.format("Queueing. %s", BUILD_STATUS.NOT_EXECUTED.toString()));
