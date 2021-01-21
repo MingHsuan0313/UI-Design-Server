@@ -81,13 +81,15 @@ public class GenerateWebAppService {
                 long currentTime = System.currentTimeMillis();
                 if (currentTime - workflow.startTimeMillis() > Config.BUILD_TIMEOUT) {
                     ret.setTaskStatus(String.format("Timeout: the build task cost over %d s", Config.BUILD_TIMEOUT / 1000));
+                    ret.setTimeout(true);
                     return ret;
                 }
                 ret.setTaskStatus(BUILD_STATUS.IN_PROGRESS.toString());
             } else if (status.equals(BUILD_STATUS.NOT_EXECUTED.toString())) {
                 ret.setTaskStatus(String.format("Queueing. %s", BUILD_STATUS.NOT_EXECUTED.toString()));
             } else {
-                ret.setTaskStatus(String.format("Failed. Build Result: %s", status));
+                // Failed
+                ret.setTaskStatus(String.format(status));
             }
             return ret;
         }
@@ -112,6 +114,6 @@ public class GenerateWebAppService {
      * Referred to Jenkins Plugin.
      */
     private enum BUILD_STATUS {
-        SUCCESS, FAILURE, NOT_EXECUTED, IN_PROGRESS, ABORTED
+        SUCCESS, NOT_EXECUTED, IN_PROGRESS, ABORTED
     };
 }
