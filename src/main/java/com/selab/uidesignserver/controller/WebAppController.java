@@ -1,5 +1,6 @@
 package com.selab.uidesignserver.controller;
 
+import com.selab.uidesignserver.dto.WebAppGeneratingStateDto;
 import com.selab.uidesignserver.webAppService.GenerateWebAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,5 +19,10 @@ public class WebAppController {
     @GetMapping(value = "/generate")
     public String generateWebApp(@RequestParam("projectName") String projectName) {
         return generateWebAppService.trigger(projectName);
+    }
+
+    @GetMapping(value = "/getCurrentGeneratingState")
+    public @ResponseBody WebAppGeneratingStateDto getCurrentGeneratingState(@RequestParam("instanceId") String instanceId) {
+        return generateWebAppService.getCurrentGeneratingState(instanceId);
     }
 }
