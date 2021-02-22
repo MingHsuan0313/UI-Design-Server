@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @SpringBootApplication
 @RestController
 @RequestMapping("/selab")
-// @CrossOrigin(origins = "*", allowCredentials = "true")
+@CrossOrigin(origins = "*", allowCredentials = "true")
 public class UIWebsiteApplication {
 
 	public static void main(String[] args) {
