@@ -1,4 +1,4 @@
-package com.selab.uidesinserver.entity.uiComposition;
+package com.selab.uidesignserver.entity.uiComposition;
 
 import javax.persistence.*;
 

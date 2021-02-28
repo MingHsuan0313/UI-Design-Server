@@ -30,13 +30,13 @@ public class InternalRepresentationController {
 
 	@PostMapping(value = "/")
 	public String process(@RequestBody String data) throws IOException, TemplateException, SQLException {
-		JSONObject pdlObject = new JSONObject(data);
-		String id = pdlObject.getString("id");
-		String selector = pdlObject.getString("selector");
-		String layout = pdlObject.getString("layout");
-		String pdl = data;
-		PagesTable pagesTable = new PagesTable(Integer.parseInt(id),selector,layout,pdl);
-		internalRepresentationService.insertPage(pagesTable);
+		// JSONObject pdlObject = new JSONObject(data);
+		// String id = pdlObject.getString("id");
+		// String selector = pdlObject.getString("selector");
+		// String layout = pdlObject.getString("layout");
+		// String pdl = data;
+		// PagesTable pagesTable = new PagesTable(Integer.parseInt(id),selector,layout,pdl);
+		// internalRepresentationService.insertPage(pagesTable);
 		return "insert page";
 	}
 	

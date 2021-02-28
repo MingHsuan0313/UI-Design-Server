@@ -3,65 +3,75 @@ package com.selab.uidesignserver.entity.uiComposition;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pages")
+@Table(name = "PageUICDLs")
 public class PagesTable {
 
-    // @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+	@Id
+    @Column(name = "pageID")
     private int id;
     
-	@Id
-    @Column(name = "selector")
-    private String selector;
+	@Column(name = "pageName")
+	private String name;
     
-    @Column(name = "layout")
-    private String layout;
-    
-    @Column(name = "pdl")
+    @Column(name = "pageUICDL")
     private String pdl;
+
+	@Column(name = "projectName")
+	private String projectName;
+
+	@ManyToOne
+	@JoinColumn(name = "themeID", referencedColumnName = "themeID")
+	private ThemesTable themeTable;
 	
 	public PagesTable() {
 		
 	}
 
-	public PagesTable(int id,String selector,String layout,String pdl) {
+	public PagesTable(int id, String name, String pdl, String projectName, ThemesTable themesTable) {
 		this.id = id;
-		this.selector = selector;
-		this.layout = layout;
+		this.name = name;
 		this.pdl = pdl;
+		this.projectName = projectName;
+		this.themeTable = themesTable;
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getSelector() {
-		return this.selector;
+	public String getName() {
+		return name;
 	}
 
-	public void setSelector(String selector) {
-		this.selector = selector;
-	}
-
-	public String getLayout() {
-		return this.layout;
-	}
-
-	public void setLayout(String layout) {
-		this.layout = layout;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPdl() {
-		return this.pdl;
+		return pdl;
 	}
 
 	public void setPdl(String pdl) {
 		this.pdl = pdl;
 	}
 
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public ThemesTable getThemeTable() {
+		return themeTable;
+	}
+	
+	public void setThemeTable(ThemesTable themeTable) {
+		this.themeTable = themeTable;
+	}
 }
