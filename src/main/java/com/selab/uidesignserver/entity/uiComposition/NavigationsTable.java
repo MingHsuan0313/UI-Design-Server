@@ -8,24 +8,28 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "navigation")
-public class NavigationTable {
+@Table(name = "NDLs")
+public class NavigationsTable {
 
     @Id
-    // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "navigationID")
     private int id;
     
     @Column(name = "ndl")
     private String ndl;
 	
-	public NavigationTable() {
+	@Column(name = "projectName")
+	private String projectName;
+
+	public NavigationsTable() {
 		
 	}
 	
-	public NavigationTable(int id,String ndl) {
+	public NavigationsTable(int id, String ndl, String projectName) {
 		this.id = id;
 		this.ndl = ndl;
+		this.projectName = projectName;
 	}
 
 	public int getId() {
@@ -42,5 +46,13 @@ public class NavigationTable {
 
 	public void setNdl(String ndl) {
 		this.ndl = ndl;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 }

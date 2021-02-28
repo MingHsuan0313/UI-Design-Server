@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.selab.uidesignserver.entity.uiComposition.NavigationTable;
+import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 

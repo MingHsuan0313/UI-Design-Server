@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
 
-import com.selab.uidesignserver.entity.uiComposition.NavigationTable;
+import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 import com.selab.uidesignserver.service.CanvasToPictureUtil;
 
@@ -43,13 +43,14 @@ public class NavigationController {
 		JSONObject ndlObject = new JSONObject(data);
 		String id = ndlObject.getString("id");
 		String ndl = ndlObject.getString("ndl");
-		NavigationTable navigationTable = new NavigationTable(Integer.parseInt(id),ndl);
+		String projectName = ndlObject.getString("projectName");
+		NavigationsTable navigationTable = new NavigationsTable(Integer.parseInt(id),ndl, projectName);
 		internalRepresentationService.insertNaivigation(navigationTable);
 		return "insert page";
 	}
 	
 	@GetMapping(value = "")
-	public List<NavigationTable> getNavigations() {
+	public List<NavigationsTable> getNavigations() {
 		return internalRepresentationService.getNavigations();	
 	}
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.selab.uidesignserver.dao.uiComposition.NavigationRepository;
 import com.selab.uidesignserver.dao.uiComposition.PagesRepository;
-import com.selab.uidesignserver.entity.uiComposition.NavigationTable;
+import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +41,14 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
 	@Override
-	public NavigationTable insertNaivigation(NavigationTable navigationTable) {
+	public NavigationsTable insertNaivigation(NavigationsTable navigationTable) {
         // List<NavigationTable> navigationTables = navigationRepository.findAll();
         // navigationTables.add(navigationTable);
         return navigationRepository.save(navigationTable);
 	}
 
 	@Override
-	public List<NavigationTable> getNavigations() {
+	public List<NavigationsTable> getNavigations() {
 		// TODO Auto-generated method stub
 		return navigationRepository.findAll();
 	}
