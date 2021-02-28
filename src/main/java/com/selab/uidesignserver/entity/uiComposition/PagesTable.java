@@ -24,6 +24,7 @@ public class PagesTable {
 	public PagesTable() {
 		
 	}
+
 	public PagesTable(int id,String selector,String layout,String pdl) {
 		this.id = id;
 		this.selector = selector;
