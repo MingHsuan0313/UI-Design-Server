@@ -23,13 +23,19 @@ import freemarker.template.TemplateException;
 @RestController
 @RequestMapping("/page")
 @CrossOrigin(origins = "*", allowCredentials = "true")
-public class InternalRepresentationController {
+public class PageController {
 	
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
 
-	@PostMapping(value = "/")
-	public String process(@RequestBody String data) throws IOException, TemplateException, SQLException {
+	@DeleteMapping(value = "/trunc")
+	public String truncate() throws SQLException {
+		internalRepresentationService.truncateTables();
+		return "truncate tables";
+	}
+
+	@PostMapping(value = "")
+	public String insertPage(@RequestBody String data) throws IOException, TemplateException, SQLException {
 		// JSONObject pdlObject = new JSONObject(data);
 		// String id = pdlObject.getString("id");
 		// String selector = pdlObject.getString("selector");
@@ -39,15 +45,14 @@ public class InternalRepresentationController {
 		// internalRepresentationService.insertPage(pagesTable);
 		return "insert page";
 	}
-	
-	@GetMapping(value = "/")
-	public List<PagesTable> getTables() {
-		return internalRepresentationService.getTables();	
-	}
 
-	@DeleteMapping(value = "/trunc")
-	public String truncate() throws SQLException {
-		internalRepresentationService.truncateTables();
-		return "truncate tables";
+	@DeleteMapping(value = "")
+	public String deletePages() {
+		return "delete pages successfully";
+	}
+	
+	@GetMapping(value = "")
+	public List<PagesTable> getPages() {
+		return internalRepresentationService.getTables();	
 	}
 }

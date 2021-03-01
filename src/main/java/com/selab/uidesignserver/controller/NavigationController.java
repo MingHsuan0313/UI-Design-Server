@@ -29,14 +29,22 @@ public class NavigationController {
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
    
-	@PostMapping(value = "/exportPicture")
-	public String exportPicture(@RequestBody String data) throws IOException {
-		String xmlTest = data;
-
-		Base64.Encoder encoder = Base64.getEncoder();
-		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
+    @DeleteMapping(value = "/trunc")
+	public String truncateNavigations() throws SQLException {
+		internalRepresentationService.truncateNavigations();
+		return "truncate tables";
 	}
-    
+
+	@GetMapping(value = "")
+	public List<NavigationsTable> getNavigations() {
+		return internalRepresentationService.getNavigations();	
+	}
+
+	@DeleteMapping(value = "")
+	public String deleteNavigations() {
+		return "delete navigations successfully";
+	}
+
 	@PostMapping(value = "")
 	public String insertNavigation(@RequestBody String data) throws IOException, TemplateException, SQLException {
 		System.out.println(data);
@@ -49,14 +57,11 @@ public class NavigationController {
 		return "insert page";
 	}
 	
-	@GetMapping(value = "")
-	public List<NavigationsTable> getNavigations() {
-		return internalRepresentationService.getNavigations();	
-	}
 
-	@DeleteMapping(value = "/trunc")
-	public String truncateNavigations() throws SQLException {
-		internalRepresentationService.truncateNavigations();
-		return "truncate tables";
+	@PostMapping(value = "/exportPicture")
+	public String exportPicture(@RequestBody String data) throws IOException {
+		String xmlTest = data;
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
 	}
 }
