@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository("PagesRepository")
-public interface PagesRepository extends JpaRepository<PagesTable, Integer>{
-    @Query(value = "SELECT * FROM pages",nativeQuery = true)
-    public List<PagesTable> getTables();
+@Repository
+public interface PagesRepository extends JpaRepository<PagesTable, String>{
 }

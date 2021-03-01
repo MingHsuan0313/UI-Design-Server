@@ -36,8 +36,9 @@ public class NavigationController {
 	}
 
 	@GetMapping(value = "")
-	public List<NavigationsTable> getNavigations() {
-		return internalRepresentationService.getNavigations();	
+	public NavigationsTable getNavigation() {
+		String projectName = "inventory System";
+		return internalRepresentationService.getNavigation(projectName);
 	}
 
 	@DeleteMapping(value = "")

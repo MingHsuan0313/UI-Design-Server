@@ -1,11 +1,16 @@
 package com.selab.uidesignserver.repositoryService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.selab.uidesignserver.dao.uiComposition.NavigationRepository;
 import com.selab.uidesignserver.dao.uiComposition.PagesRepository;
+import com.selab.uidesignserver.dao.uiComposition.SumdlsRepository;
+import com.selab.uidesignserver.dao.uiComposition.ThemesRepository;
 import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
+import com.selab.uidesignserver.entity.uiComposition.SumdlsTable;
+import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,42 +27,144 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     @Autowired
     NavigationRepository navigationRepository;
 
+    @Autowired
+    ThemesRepository themeRepository;
+
+    @Autowired
+    SumdlsRepository sumdlRepository;
+
+    // page
 	@Override
 	public PagesTable insertPage(PagesTable pagesTable) {
-        System.out.println("start insert");
-		// TODO Auto-generated method stub
         return pageRepository.save(pagesTable);
-
 	}
     
     @Override
-    public List<PagesTable> getTables() {
-        return pageRepository.getTables();
+    public List<PagesTable> getPages(String projectName) {
+        List<PagesTable> allPages = pageRepository.findAll();
+        List<PagesTable> wantedPages = new ArrayList<PagesTable>();
+        for(int index = 0;index < allPages.size(); index++) {
+            if(allPages.get(index).getProjectName().equals(projectName)) {
+                wantedPages.add(allPages.get(index));
+            }
+        }
+        return wantedPages;
     }
 
     @Override
-    public void truncateTables() {
+    public void deletePages(String projectName) {
+        List<PagesTable> pages = pageRepository.findAll();
+        for(int index = 0;index < pages.size();index++) {
+            if(pages.get(index).getProjectName().equals("projectName"))
+                pageRepository.delete(pages.get(index));
+        }
+    }
+
+    @Override
+    public void truncatePages() {
         pageRepository.deleteAll();
     }
 
-	@Override
-	public NavigationsTable insertNaivigation(NavigationsTable navigationTable) {
-        // List<NavigationTable> navigationTables = navigationRepository.findAll();
-        // navigationTables.add(navigationTable);
+    // navigation
+    @Override
+    public NavigationsTable insertNaivigation(NavigationsTable navigationTable) {
         return navigationRepository.save(navigationTable);
-	}
-
-	@Override
-	public List<NavigationsTable> getNavigations() {
-		// TODO Auto-generated method stub
-		return navigationRepository.findAll();
-	}
-
-	@Override
-	public void truncateNavigations() {
-		// TODO Auto-generated method stub
-        navigationRepository.deleteAll();
-		
     }
-    
+
+    @Override
+    public NavigationsTable getNavigation(String projectName) {
+        List<NavigationsTable> allNavigations = navigationRepository.findAll();
+        NavigationsTable wantedNavigation = new NavigationsTable();
+        for(int index = 0;index < allNavigations.size(); index++) {
+            if(allNavigations.get(index).getProjectName().equals(projectName)) {
+                wantedNavigation = allNavigations.get(index);
+                break;
+            }
+        }
+        return wantedNavigation;
+    }
+
+    @Override
+    public void deleteNavigation(String projectName) {
+        List<NavigationsTable> navigations = navigationRepository.findAll();
+        for(int index = 0;index < navigations.size();index++) {
+            if(navigations.get(index).getProjectName().equals("projectName")) {
+                navigationRepository.delete(navigations.get(index));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void truncateNavigations() {
+        navigationRepository.deleteAll();
+    }
+
+    // sumdl
+    @Override
+    public SumdlsTable insertSumdl(SumdlsTable sumdlTable) {
+        return sumdlRepository.save(sumdlTable);
+    }
+
+    @Override
+    public SumdlsTable getSumdl(String projectName) {
+        List<SumdlsTable> allSumdls = sumdlRepository.findAll();
+        SumdlsTable wantedSumdl = new SumdlsTable();
+        for(int index = 0;index < allSumdls.size(); index++) {
+            if(allSumdls.get(index).getProjectName().equals(projectName)) {
+                wantedSumdl = allSumdls.get(index);
+                break;
+            }
+        }
+        return wantedSumdl;
+    }
+
+    @Override
+    public void deleteSumdl(String projectName) {
+        List<SumdlsTable> sumdls = sumdlRepository.findAll();
+        for(int index = 0;index < sumdls.size();index++) {
+            if(sumdls.get(index).getProjectName().equals("projectName")) {
+                sumdlRepository.delete(sumdls.get(index));
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void truncateSumdls() {
+        sumdlRepository.deleteAll();
+    }
+
+    // themes
+    @Override
+    public ThemesTable insertTheme(ThemesTable themeTable) {
+        return themeRepository.save(themeTable);
+    }
+
+    @Override
+    public List<ThemesTable> getThemes(String projectName) {
+        List<ThemesTable> allThemes = themeRepository.findAll();
+        List<ThemesTable> wantedThemes = new ArrayList<ThemesTable>();
+        for(int index = 0;index < allThemes.size(); index++) {
+            if(allThemes.get(index).getProjectName().equals(projectName)) {
+                wantedThemes.add(allThemes.get(index));
+            }
+        }
+        return wantedThemes;
+    }
+
+    @Override
+    public void deleteThemes(String projectName) {
+        List<ThemesTable> themes = themeRepository.findAll();
+        for(int index = 0;index < themes.size();index++) {
+            if(themes.get(index).getProjectName().equals("projectName")) {
+                themeRepository.delete(themes.get(index));
+            }
+        }
+    }
+
+    @Override
+    public void truncateThemes() {
+        themeRepository.deleteAll();
+    }
 }

@@ -28,12 +28,6 @@ public class PageController {
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
 
-	@DeleteMapping(value = "/trunc")
-	public String truncate() throws SQLException {
-		internalRepresentationService.truncateTables();
-		return "truncate tables";
-	}
-
 	@PostMapping(value = "")
 	public String insertPage(@RequestBody String data) throws IOException, TemplateException, SQLException {
 		// JSONObject pdlObject = new JSONObject(data);
@@ -48,11 +42,20 @@ public class PageController {
 
 	@DeleteMapping(value = "")
 	public String deletePages() {
+		String projectName = "Inventory System";
+		internalRepresentationService.deletePages(projectName);
 		return "delete pages successfully";
 	}
 	
 	@GetMapping(value = "")
 	public List<PagesTable> getPages() {
-		return internalRepresentationService.getTables();	
+		String projectName = "Inventory System";
+		return internalRepresentationService.getPages(projectName);	
+	}
+
+	@DeleteMapping(value = "/trunc")
+	public String truncate() throws SQLException {
+		internalRepresentationService.truncatePages();
+		return "truncate tables";
 	}
 }
