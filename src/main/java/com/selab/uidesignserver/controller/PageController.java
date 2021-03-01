@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
+import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,27 +31,25 @@ public class PageController {
 	InternalRepresentationService internalRepresentationService;
 
 	@PostMapping(value = "")
-	public String insertPage(@RequestBody String data) throws IOException, TemplateException, SQLException {
-		// JSONObject pdlObject = new JSONObject(data);
-		// String id = pdlObject.getString("id");
-		// String selector = pdlObject.getString("selector");
-		// String layout = pdlObject.getString("layout");
-		// String pdl = data;
-		// PagesTable pagesTable = new PagesTable(Integer.parseInt(id),selector,layout,pdl);
-		// internalRepresentationService.insertPage(pagesTable);
+	public String insertPage(@RequestBody String data, @RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeId) throws IOException, TemplateException, SQLException {
+		JSONObject pdlObject = new JSONObject(data);
+		String id = pdlObject.getString("id");
+		String name = pdlObject.getString("name");
+		String pdl = data;
+		ThemesTable themeTable = this.internalRepresentationService.getThemeById(themeId);
+		PagesTable pagesTable = new PagesTable(id, name, pdl, projectName, themeTable);
+		internalRepresentationService.insertPage(pagesTable);
 		return "insert page";
 	}
 
 	@DeleteMapping(value = "")
-	public String deletePages() {
-		String projectName = "Inventory System";
+	public String deletePages(@RequestHeader("projectName") String projectName) {
 		internalRepresentationService.deletePages(projectName);
 		return "delete pages successfully";
 	}
 	
 	@GetMapping(value = "")
-	public List<PagesTable> getPages() {
-		String projectName = "Inventory System";
+	public List<PagesTable> getPages(@RequestHeader("projectName") String projectName) {
 		return internalRepresentationService.getPages(projectName);	
 	}
 

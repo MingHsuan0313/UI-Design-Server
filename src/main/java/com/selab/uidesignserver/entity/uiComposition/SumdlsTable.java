@@ -2,11 +2,13 @@ package com.selab.uidesignserver.entity.uiComposition;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "SUMDLs")
 public class SumdlsTable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "sumdlID")
     private int id;
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,20 +30,14 @@ public class NavigationController {
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
    
-    @DeleteMapping(value = "/trunc")
-	public String truncateNavigations() throws SQLException {
-		internalRepresentationService.truncateNavigations();
-		return "truncate tables";
-	}
-
 	@GetMapping(value = "")
-	public NavigationsTable getNavigation() {
-		String projectName = "inventory System";
+	public NavigationsTable getNavigation(@RequestHeader("projectName") String projectName) {
 		return internalRepresentationService.getNavigation(projectName);
 	}
 
 	@DeleteMapping(value = "")
-	public String deleteNavigations() {
+	public String deleteNavigations(@RequestHeader("projectName") String projectName) {
+		internalRepresentationService.deleteNavigation(projectName);
 		return "delete navigations successfully";
 	}
 
@@ -64,5 +59,11 @@ public class NavigationController {
 		String xmlTest = data;
 		Base64.Encoder encoder = Base64.getEncoder();
 		return encoder.encodeToString(CanvasToPictureUtil.transformToPNG(xmlTest));
+	}
+
+    @DeleteMapping(value = "/trunc")
+	public String truncateNavigations() throws SQLException {
+		internalRepresentationService.truncateNavigations();
+		return "truncate tables";
 	}
 }

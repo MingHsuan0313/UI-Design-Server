@@ -33,6 +33,7 @@ public interface InternalRepresentationService {
     // themes controller
     public ThemesTable insertTheme(ThemesTable themeTable);
     public List<ThemesTable> getThemes(String projectName);
+    public ThemesTable getThemeById(String ThemeId);
     public void deleteThemes(String projectName);
     public void truncateThemes();
 }

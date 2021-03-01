@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.selab.uidesignserver.entity.uiComposition.SumdlsTable;
@@ -21,24 +22,25 @@ public class SumdlController {
     @Autowired
     InternalRepresentationService internalRepresentationService;
 
-    @DeleteMapping(value = "/trunc")
-    public String truncate() throws SQLException {
-        return "truncate sumdl tables";
-    }
-
     @GetMapping(value = "")
-    public SumdlsTable getSumdl() {
-        String projectName = "Inventory System";
-        return internalRepresentationService.getSumdl(projectName);
+    public SumdlsTable getSumdl(@RequestHeader("projectName") String projectName) {
+        return this.internalRepresentationService.getSumdl(projectName);
     }
 
     @DeleteMapping(value = "")
-    public String deleteSumdls() {
+    public String deleteSumdl(@RequestHeader("projectName") String projectName) {
+        this.internalRepresentationService.deleteSumdl(projectName);
         return "delete sumdl successfully";
     }
 
     @PostMapping(value = "")
     public String insertSumdl() {
         return "insert theme successfully";
+    }
+
+    @DeleteMapping(value = "/trunc")
+    public String truncate() throws SQLException {
+        this.internalRepresentationService.truncateSumdls();
+        return "truncate sumdl tables";
     }
 }

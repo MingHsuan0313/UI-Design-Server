@@ -8,7 +8,7 @@ public class PagesTable {
 
 	@Id
     @Column(name = "pageID")
-    private int id;
+    private String id;
     
 	@Column(name = "pageName")
 	private String name;
@@ -27,7 +27,7 @@ public class PagesTable {
 		
 	}
 
-	public PagesTable(int id, String name, String pdl, String projectName, ThemesTable themesTable) {
+	public PagesTable(String id, String name, String pdl, String projectName, ThemesTable themesTable) {
 		this.id = id;
 		this.name = name;
 		this.pdl = pdl;
@@ -35,11 +35,11 @@ public class PagesTable {
 		this.themeTable = themesTable;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

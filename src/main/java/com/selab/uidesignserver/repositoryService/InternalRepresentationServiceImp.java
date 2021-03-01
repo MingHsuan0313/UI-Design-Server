@@ -142,6 +142,11 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public ThemesTable getThemeById(String ThemeId) {
+        return themeRepository.findById(ThemeId).get();
+    }
+
+    @Override
     public List<ThemesTable> getThemes(String projectName) {
         List<ThemesTable> allThemes = themeRepository.findAll();
         List<ThemesTable> wantedThemes = new ArrayList<ThemesTable>();

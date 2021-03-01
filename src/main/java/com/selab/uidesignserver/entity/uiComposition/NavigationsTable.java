@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class NavigationsTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "navigationID")
     private int id;
     

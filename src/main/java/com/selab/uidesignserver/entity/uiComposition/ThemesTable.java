@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ThemesTable {
     @Id
     @Column(name = "themeID")
-    private int id;
+    private String id;
 
     @Column(name = "projectName")
     private String projectName;
@@ -19,17 +19,17 @@ public class ThemesTable {
 
     }
 
-    public ThemesTable(int id, String projectName, String themeName) {
+    public ThemesTable(String id, String projectName, String themeName) {
         this.id = id;
         this.projectName = projectName;
         this.themeName = themeName;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
