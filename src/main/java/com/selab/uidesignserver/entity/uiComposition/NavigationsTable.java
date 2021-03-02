@@ -7,14 +7,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "NDLs")
 public class NavigationsTable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "navigationID")
-	private String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "navigationID", nullable = false)
+	private int id;
     
     @Column(name = "ndl")
     private String ndl;
@@ -31,11 +33,11 @@ public class NavigationsTable {
 		this.projectName = projectName;
 	}
 
-	public String getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

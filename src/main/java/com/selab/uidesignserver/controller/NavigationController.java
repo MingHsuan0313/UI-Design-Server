@@ -41,7 +41,9 @@ public class NavigationController {
 
 	@PostMapping(value = "")
 	public String insertNavigation(@RequestBody String data, @RequestHeader("projectName") String projectName) throws IOException, TemplateException, SQLException {
+		System.out.println("insert navigation");
 		NavigationsTable navigationTable = new NavigationsTable(data, projectName);
+		System.out.println("projectName = " + navigationTable.getProjectName() + " id = " + navigationTable.getId());
 		internalRepresentationService.insertNaivigation(navigationTable);
 		return "insert page";
 	}
