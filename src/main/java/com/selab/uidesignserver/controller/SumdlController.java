@@ -4,11 +4,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyComponentPathImpl;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,9 @@ public class SumdlController {
     }
 
     @PostMapping(value = "")
-    public String insertSumdl() {
+    public String insertSumdl(@RequestBody String data, @RequestHeader("projectName") String projectName) {
+        SumdlsTable sumdlTable = new SumdlsTable(data, projectName);
+        this.internalRepresentationService.insertSumdl(sumdlTable);
         return "insert theme successfully";
     }
 

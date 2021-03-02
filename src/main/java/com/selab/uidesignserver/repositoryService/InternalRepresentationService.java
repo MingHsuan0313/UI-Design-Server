@@ -15,7 +15,7 @@ public interface InternalRepresentationService {
     // page controller
     public PagesTable insertPage(PagesTable pagesTable);
     public List<PagesTable> getPages(String projectName);
-    public void deletePages(String projectName);
+    public boolean deletePages(String projectName);
     public void truncatePages();
     
     // navigation controller
@@ -34,6 +34,6 @@ public interface InternalRepresentationService {
     public ThemesTable insertTheme(ThemesTable themeTable);
     public List<ThemesTable> getThemes(String projectName);
     public ThemesTable getThemeById(String ThemeId);
-    public void deleteThemes(String projectName);
+    public boolean deleteThemes(String projectName);
     public void truncateThemes();
 }

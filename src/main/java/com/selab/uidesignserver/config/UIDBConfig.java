@@ -36,17 +36,15 @@ public class UIDBConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
             @Qualifier("uiDataSource") DataSource dataSource) {
         return builder.dataSource(dataSource).packages("com.selab.uidesignserver.entity.uiComposition")
-                .persistenceUnit("navigation").persistenceUnit("pages").persistenceUnit("templates").build();
+                .persistenceUnit("NDLs").persistenceUnit("PageUICDLs").persistenceUnit("SUMDLs").persistenceUnit("Themes").build();
     }
 
     // @Primary
     @Bean(name = "uiTransactionManager")
     public PlatformTransactionManager transactionManager(
             @Qualifier("uiEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
-        // return new JpaTransactionManager(entityManagerFactory);
     }
 }

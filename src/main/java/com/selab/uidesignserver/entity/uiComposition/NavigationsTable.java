@@ -14,7 +14,7 @@ public class NavigationsTable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "navigationID")
-    private int id;
+	private String id;
     
     @Column(name = "ndl")
     private String ndl;
@@ -26,17 +26,16 @@ public class NavigationsTable {
 		
 	}
 	
-	public NavigationsTable(int id, String ndl, String projectName) {
-		this.id = id;
+	public NavigationsTable(String ndl, String projectName) {
 		this.ndl = ndl;
 		this.projectName = projectName;
 	}
 
-	public int getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

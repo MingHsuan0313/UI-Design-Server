@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
@@ -32,11 +31,13 @@ public class PageController {
 
 	@PostMapping(value = "")
 	public String insertPage(@RequestBody String data, @RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeId) throws IOException, TemplateException, SQLException {
+		System.out.println("hello insert page");
 		JSONObject pdlObject = new JSONObject(data);
 		String id = pdlObject.getString("id");
 		String name = pdlObject.getString("name");
 		String pdl = data;
 		ThemesTable themeTable = this.internalRepresentationService.getThemeById(themeId);
+		System.out.println("hello table " + themeTable.getThemeName());
 		PagesTable pagesTable = new PagesTable(id, name, pdl, projectName, themeTable);
 		internalRepresentationService.insertPage(pagesTable);
 		return "insert page";
@@ -44,8 +45,12 @@ public class PageController {
 
 	@DeleteMapping(value = "")
 	public String deletePages(@RequestHeader("projectName") String projectName) {
-		internalRepresentationService.deletePages(projectName);
-		return "delete pages successfully";
+		if(internalRepresentationService.deletePages(projectName)) {
+			return "delete pages successfully";
+		}
+		else {
+			return "delete page failed (not found)";
+		}
 	}
 	
 	@GetMapping(value = "")
@@ -55,6 +60,7 @@ public class PageController {
 
 	@DeleteMapping(value = "/trunc")
 	public String truncate() throws SQLException {
+		System.out.println("truncate page tables");
 		internalRepresentationService.truncatePages();
 		return "truncate tables";
 	}

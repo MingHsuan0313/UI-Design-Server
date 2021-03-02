@@ -52,12 +52,17 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public void deletePages(String projectName) {
+    public boolean deletePages(String projectName) {
+        boolean flag = false;
         List<PagesTable> pages = pageRepository.findAll();
         for(int index = 0;index < pages.size();index++) {
-            if(pages.get(index).getProjectName().equals("projectName"))
+            if(pages.get(index).getProjectName().equals(projectName)) {
+                System.out.println("delete page");
+                flag = true;
                 pageRepository.delete(pages.get(index));
+            }
         }
+        return flag;
     }
 
     @Override
@@ -159,13 +164,16 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public void deleteThemes(String projectName) {
+    public boolean deleteThemes(String projectName) {
+        boolean flag = false;
         List<ThemesTable> themes = themeRepository.findAll();
         for(int index = 0;index < themes.size();index++) {
-            if(themes.get(index).getProjectName().equals("projectName")) {
+            if(themes.get(index).getProjectName().equals(projectName)) {
                 themeRepository.delete(themes.get(index));
+                flag = true;
             }
         }
+        return flag;
     }
 
     @Override

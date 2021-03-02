@@ -2,7 +2,6 @@ package com.selab.uidesignserver.entity.uiComposition;
 
 import javax.persistence.*;
 
-
 @Entity
 @Table(name = "SUMDLs")
 public class SumdlsTable {
@@ -22,8 +21,7 @@ public class SumdlsTable {
 
     }
 
-    public SumdlsTable(int id, String sumdl, String projectName) {
-        this.id = id;
+    public SumdlsTable(String sumdl, String projectName) {
         this.sumdl = sumdl;
         this.projectName = projectName;
     }
