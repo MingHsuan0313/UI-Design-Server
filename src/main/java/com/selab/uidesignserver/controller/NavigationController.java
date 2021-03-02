@@ -34,7 +34,7 @@ public class NavigationController {
 	}
 
 	@DeleteMapping(value = "")
-	public String deleteNavigations(@RequestHeader("projectName") String projectName) {
+	public String deleteNavigation(@RequestHeader("projectName") String projectName) {
 		if(internalRepresentationService.deleteNavigation(projectName))
 			return "delete navigations successfully";
 		else

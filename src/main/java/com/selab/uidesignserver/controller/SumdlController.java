@@ -31,8 +31,10 @@ public class SumdlController {
 
     @DeleteMapping(value = "")
     public String deleteSumdl(@RequestHeader("projectName") String projectName) {
-        this.internalRepresentationService.deleteSumdl(projectName);
-        return "delete sumdl successfully";
+        if(this.internalRepresentationService.deleteSumdl(projectName))
+            return "delete sumdl successfully";
+        else
+            return "delete sumdl failed or not found";
     }
 
     @PostMapping(value = "")
