@@ -90,14 +90,17 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public void deleteNavigation(String projectName) {
+    public boolean deleteNavigation(String projectName) {
+        boolean flag = false;
         List<NavigationsTable> navigations = navigationRepository.findAll();
         for(int index = 0;index < navigations.size();index++) {
-            if(navigations.get(index).getProjectName().equals("projectName")) {
+            if(navigations.get(index).getProjectName().equals(projectName)) {
                 navigationRepository.delete(navigations.get(index));
+                flag = true;
                 break;
             }
         }
+        return flag;
     }
 
     @Override

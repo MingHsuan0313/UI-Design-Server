@@ -21,7 +21,7 @@ public interface InternalRepresentationService {
     // navigation controller
     public NavigationsTable insertNaivigation(NavigationsTable navigationTable);
     public NavigationsTable getNavigation(String projectName);
-    public void deleteNavigation(String projectName);
+    public boolean deleteNavigation(String projectName);
     public void truncateNavigations();
 
     // sumdl controller

@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface PagesRepository extends JpaRepository<PagesTable, String>{
+public interface PagesRepository extends JpaRepository<PagesTable, Integer>{
 }

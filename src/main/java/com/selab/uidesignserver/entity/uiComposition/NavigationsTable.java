@@ -14,7 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class NavigationsTable {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "navigationID", nullable = false)
 	private int id;
     

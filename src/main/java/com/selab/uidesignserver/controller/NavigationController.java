@@ -35,17 +35,17 @@ public class NavigationController {
 
 	@DeleteMapping(value = "")
 	public String deleteNavigations(@RequestHeader("projectName") String projectName) {
-		internalRepresentationService.deleteNavigation(projectName);
-		return "delete navigations successfully";
+		if(internalRepresentationService.deleteNavigation(projectName))
+			return "delete navigations successfully";
+		else
+			return "delete navigations failed or not found";
 	}
 
 	@PostMapping(value = "")
 	public String insertNavigation(@RequestBody String data, @RequestHeader("projectName") String projectName) throws IOException, TemplateException, SQLException {
-		System.out.println("insert navigation");
 		NavigationsTable navigationTable = new NavigationsTable(data, projectName);
-		System.out.println("projectName = " + navigationTable.getProjectName() + " id = " + navigationTable.getId());
 		internalRepresentationService.insertNaivigation(navigationTable);
-		return "insert page";
+		return "insert navigation";
 	}
 
 	@PostMapping(value = "/exportPicture")
