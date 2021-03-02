@@ -27,7 +27,7 @@ public interface InternalRepresentationService {
     // sumdl controller
     public SumdlsTable insertSumdl(SumdlsTable sumdlTable);
     public SumdlsTable getSumdl(String projectName);
-    public void deleteSumdl(String projectName);
+    public boolean deleteSumdl(String projectName);
     public void truncateSumdls();
 
     // themes controller

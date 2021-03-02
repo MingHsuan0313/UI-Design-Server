@@ -128,14 +128,17 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public void deleteSumdl(String projectName) {
+    public boolean deleteSumdl(String projectName) {
+        boolean flag = false;
         List<SumdlsTable> sumdls = sumdlRepository.findAll();
         for(int index = 0;index < sumdls.size();index++) {
-            if(sumdls.get(index).getProjectName().equals("projectName")) {
+            if(sumdls.get(index).getProjectName().equals(projectName)) {
                 sumdlRepository.delete(sumdls.get(index));
+                flag = true;
                 break;
             }
         }
+        return flag;
     }
 
     @Override
