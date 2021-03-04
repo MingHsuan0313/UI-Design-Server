@@ -97,7 +97,6 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
             if(navigations.get(index).getProjectName().equals(projectName)) {
                 navigationRepository.delete(navigations.get(index));
                 flag = true;
-                break;
             }
         }
         return flag;
@@ -135,7 +134,6 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
             if(sumdls.get(index).getProjectName().equals(projectName)) {
                 sumdlRepository.delete(sumdls.get(index));
                 flag = true;
-                break;
             }
         }
         return flag;

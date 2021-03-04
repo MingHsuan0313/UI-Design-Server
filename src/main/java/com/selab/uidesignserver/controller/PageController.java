@@ -64,4 +64,13 @@ public class PageController {
 		internalRepresentationService.truncatePages();
 		return "truncate tables";
 	}
+
+	@DeleteMapping(value = "/truncProject")
+	public String truncateProject(@RequestHeader("projectName") String projectName) throws SQLException {
+		internalRepresentationService.deletePages(projectName);
+		internalRepresentationService.deleteNavigation(projectName);
+		internalRepresentationService.deleteSumdl(projectName);
+		internalRepresentationService.deleteThemes(projectName);
+		return "delete project: " + projectName + " Success !!!";
+	}
 }
