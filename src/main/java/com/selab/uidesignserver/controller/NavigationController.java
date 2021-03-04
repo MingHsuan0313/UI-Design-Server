@@ -28,12 +28,12 @@ public class NavigationController {
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
    
-	@GetMapping(value = "")
+	@GetMapping(value = "/get")
 	public NavigationsTable getNavigation(@RequestHeader("projectName") String projectName) {
 		return internalRepresentationService.getNavigation(projectName);
 	}
 
-	@DeleteMapping(value = "")
+	@DeleteMapping(value = "/delete")
 	public String deleteNavigation(@RequestHeader("projectName") String projectName) {
 		if(internalRepresentationService.deleteNavigation(projectName))
 			return "delete navigations successfully";
@@ -41,7 +41,7 @@ public class NavigationController {
 			return "delete navigations failed or not found";
 	}
 
-	@PostMapping(value = "")
+	@PostMapping(value = "/insert")
 	public String insertNavigation(@RequestBody String data, @RequestHeader("projectName") String projectName) throws IOException, TemplateException, SQLException {
 		NavigationsTable navigationTable = new NavigationsTable(data, projectName);
 		internalRepresentationService.insertNaivigation(navigationTable);

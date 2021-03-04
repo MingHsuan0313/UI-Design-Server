@@ -29,7 +29,7 @@ public class PageController {
 	@Autowired
 	InternalRepresentationService internalRepresentationService;
 
-	@PostMapping(value = "")
+	@PostMapping(value = "/insert")
 	public String insertPage(@RequestBody String data, @RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeId) throws IOException, TemplateException, SQLException {
 		System.out.println("hello insert page");
 		JSONObject pdlObject = new JSONObject(data);
@@ -43,7 +43,7 @@ public class PageController {
 		return "insert page";
 	}
 
-	@DeleteMapping(value = "")
+	@DeleteMapping(value = "/delete")
 	public String deletePages(@RequestHeader("projectName") String projectName) {
 		if(internalRepresentationService.deletePages(projectName)) {
 			return "delete pages successfully";
@@ -53,7 +53,7 @@ public class PageController {
 		}
 	}
 	
-	@GetMapping(value = "")
+	@GetMapping(value = "/get")
 	public List<PagesTable> getPages(@RequestHeader("projectName") String projectName) {
 		return internalRepresentationService.getPages(projectName);	
 	}
