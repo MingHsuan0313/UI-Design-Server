@@ -23,18 +23,18 @@ public class ThemeController {
     @Autowired
     InternalRepresentationService internalReprsentationService;
 
-    @GetMapping(value = "/trunc")
+    @DeleteMapping(value = "/trunc")
     public String truncate() throws SQLException {
         this.internalReprsentationService.truncateThemes();
         return "truncate theme tables";
     }
 
-    @GetMapping(value = "/get")
+    @GetMapping(value = "")
     public List<ThemesTable> getThemes(@RequestHeader("projectName") String projectName) {
         return this.internalReprsentationService.getThemes(projectName);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "")
     public String deleteThemes(@RequestHeader("projectName") String projectName) {
         if(this.internalReprsentationService.deleteThemes(projectName))
             return "delete themes";
@@ -43,7 +43,7 @@ public class ThemeController {
         }
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "")
     public String insertTheme(@RequestBody String data, @RequestHeader("projectName") String projectName) {
 		JSONObject themeObject = new JSONObject(data);
         String id = themeObject.getString("id");

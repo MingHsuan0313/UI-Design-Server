@@ -24,12 +24,12 @@ public class SumdlController {
     @Autowired
     InternalRepresentationService internalRepresentationService;
 
-    @GetMapping(value = "/get")
+    @GetMapping(value = "")
     public SumdlsTable getSumdl(@RequestHeader("projectName") String projectName) {
         return this.internalRepresentationService.getSumdl(projectName);
     }
 
-    @DeleteMapping(value = "/delete")
+    @DeleteMapping(value = "")
     public String deleteSumdl(@RequestHeader("projectName") String projectName) {
         if(this.internalRepresentationService.deleteSumdl(projectName))
             return "delete sumdl successfully";
@@ -37,7 +37,7 @@ public class SumdlController {
             return "delete sumdl failed or not found";
     }
 
-    @PostMapping(value = "/insert")
+    @PostMapping(value = "")
     public String insertSumdl(@RequestBody String data, @RequestHeader("projectName") String projectName) {
         SumdlsTable sumdlTable = new SumdlsTable(data, projectName);
         this.internalRepresentationService.insertSumdl(sumdlTable);
