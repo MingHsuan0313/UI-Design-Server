@@ -3,6 +3,8 @@ package com.selab.uidesignserver.entity.uiComposition;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "Users_Group")
 public class UsersGroupsTable {
 
     @Id
