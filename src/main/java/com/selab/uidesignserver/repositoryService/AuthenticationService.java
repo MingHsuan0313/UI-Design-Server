@@ -11,6 +11,7 @@ public interface AuthenticationService {
     UsersTable insertUser(UsersTable usersTable);
     Boolean deleteUser(String userID);
     UsersTable getUser(String userID);
+    UsersTable getUserByUserName(String userName);
     Boolean authenticate(String userName, String password);
     void truncateUser();
 

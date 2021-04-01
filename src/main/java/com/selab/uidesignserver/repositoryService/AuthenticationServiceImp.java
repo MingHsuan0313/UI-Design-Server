@@ -51,6 +51,11 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
+    public UsersTable getUserByUserName(String userName) {
+        return usersRepository.findUsersTableByUserName(userName);
+    }
+
+    @Override
     public Boolean authenticate(String userName, String password){
         System.out.println("Hello authenticate");
         UsersTable usersTable = usersRepository.findUsersTableByUserName(userName);
