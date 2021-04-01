@@ -2,17 +2,20 @@ package com.selab.uidesignserver.entity.uiComposition;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "Users_Group")
+@Table(name = "\"Users_Groups\"")
 public class UsersGroupsTable {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private String relationID;
+
     @OneToOne
     @JoinColumn(name = "userID", referencedColumnName = "userID")
     private UsersTable usersTable;
 
-    @Id
     @OneToOne
     @JoinColumn(name = "groupID", referencedColumnName = "groupID")
     private GroupsTable groupsTable;
@@ -44,3 +47,5 @@ public class UsersGroupsTable {
         return usersTable;
     }
 }
+
+

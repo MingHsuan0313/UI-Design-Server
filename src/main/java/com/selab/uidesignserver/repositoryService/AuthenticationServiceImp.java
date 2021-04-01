@@ -1,22 +1,30 @@
 package com.selab.uidesignserver.repositoryService;
 
-import com.selab.uidesignserver.dao.authentication.GroupsRepository;
-import com.selab.uidesignserver.dao.authentication.UserGroupRelationshipRepository;
-import com.selab.uidesignserver.dao.authentication.UsersRepository;
+import com.selab.uidesignserver.dao.uiComposition.GroupsRepository;
+import com.selab.uidesignserver.dao.uiComposition.UserGroupRelationshipRepository;
+import com.selab.uidesignserver.dao.uiComposition.UsersRepository;
+import com.selab.uidesignserver.dao.uiComposition.ProjectsRepository;
 import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class AuthenticationServiceImp implements AuthenticationService {
 
     @Autowired
-    GroupsRepository groupsRepository;
+    ProjectsRepository projectsRepository;
 
     @Autowired
     UsersRepository usersRepository;
+
+    @Autowired
+    GroupsRepository groupsRepository;
 
     @Autowired
     UserGroupRelationshipRepository userGroupRelationshipRepository;
@@ -44,6 +52,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     @Override
     public Boolean authenticate(String userName, String password){
+        System.out.println("Hello authenticate");
         UsersTable usersTable = usersRepository.findUsersTableByUserName(userName);
         if(usersTable == null){
             return false;

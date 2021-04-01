@@ -3,13 +3,12 @@ package com.selab.uidesignserver.entity.uiComposition;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Projects")
 public class ProjectsTable {
     @Id
     @Column(name="projectID", nullable = false)
     private String projectID;
-
-    @Id
+    
     @Column(name="projectName", nullable = false)
     private String projectName;
 

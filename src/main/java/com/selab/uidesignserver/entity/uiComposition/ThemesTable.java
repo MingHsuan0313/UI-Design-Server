@@ -18,7 +18,7 @@ public class ThemesTable {
     private UsersTable usersTable;
 
     @ManyToOne
-    @JoinColumn(name = "groupID", referencedColumnName = "groupdID")
+    @JoinColumn(name = "groupID", referencedColumnName = "groupID")
     private GroupsTable groupsTable;
 
     @Column(name = "themeName", nullable = false)

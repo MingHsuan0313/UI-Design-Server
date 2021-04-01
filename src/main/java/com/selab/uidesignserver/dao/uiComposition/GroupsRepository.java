@@ -1,11 +1,13 @@
-package com.selab.uidesignserver.dao.authentication;
+package com.selab.uidesignserver.dao.uiComposition;
 
 
 import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GroupsRepository extends JpaRepository<GroupsTable, String> {
-    @Query(value = "SELECT g FROM Group g WHERE g.userID = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Group g WHERE g.userID = ?1", nativeQuery = true)
     GroupsTable findGroupsTableByGroupID(String groupID);
 }
