@@ -11,19 +11,30 @@ public class SumdlsTable {
     @Column(name = "sumdlID")
     private int id;
 
-    @Column(name = "sumdl")
+    @Column(name = "sumdl", nullable = false)
     private String sumdl;
 
-    @Column(name = "projectName")
-    private String projectName;
+    @ManyToOne
+    @JoinColumn(name = "projectID", referencedColumnName = "projectID")
+    private ProjectsTable projectsTable;
+
+    @ManyToOne
+    @JoinColumn(name = "themeID", referencedColumnName = "themeID")
+    private ThemesTable themesTable;
+
+    @ManyToOne
+    @JoinColumn(name = "pageID", referencedColumnName = "pageID")
+    private PagesTable pagesTable;
 
     public SumdlsTable() {
 
     }
 
-    public SumdlsTable(String sumdl, String projectName) {
+    public SumdlsTable(String sumdl, ProjectsTable projectsTable, ThemesTable themesTable, PagesTable pagesTable) {
         this.sumdl = sumdl;
-        this.projectName = projectName;
+        this.projectsTable = projectsTable;
+        this.themesTable = themesTable;
+        this.pagesTable = pagesTable;
     }
 
     public int getId() {
@@ -34,12 +45,28 @@ public class SumdlsTable {
         this.id = id;
     }
 
-    public String getProjectName() {
-        return projectName;
+    public ThemesTable getThemesTable() {
+        return themesTable;
     }
 
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
+    public void setThemesTable(ThemesTable themesTable) {
+        this.themesTable = themesTable;
+    }
+
+    public PagesTable getPagesTable() {
+        return pagesTable;
+    }
+
+    public void setPagesTable(PagesTable pagesTable) {
+        this.pagesTable = pagesTable;
+    }
+
+    public ProjectsTable getProjectsTable() {
+        return projectsTable;
+    }
+
+    public void setProjectsTable(ProjectsTable projectsTable) {
+        this.projectsTable = projectsTable;
     }
 
     public String getSumdl() {

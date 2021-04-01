@@ -1,11 +1,6 @@
 package com.selab.uidesignserver.entity.uiComposition;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,19 +13,30 @@ public class NavigationsTable {
     @Column(name = "navigationID", nullable = false)
 	private int id;
     
-    @Column(name = "ndl")
+    @Column(name = "ndl", nullable = false)
     private String ndl;
-	
-	@Column(name = "projectName")
-	private String projectName;
+
+	@ManyToOne
+	@JoinColumn(name = "projectID", referencedColumnName = "projectID")
+	private ProjectsTable projectsTable;
+
+	@ManyToOne
+	@JoinColumn(name = "themeID", referencedColumnName = "themeID")
+	private ThemesTable themesTable;
+
+	@ManyToOne
+	@JoinColumn(name = "pageID", referencedColumnName = "pageID")
+	private PagesTable pagesTable;
 
 	public NavigationsTable() {
 		
 	}
 	
-	public NavigationsTable(String ndl, String projectName) {
+	public NavigationsTable(String ndl, ProjectsTable projectsTable, ThemesTable themesTable, PagesTable pagesTable) {
 		this.ndl = ndl;
-		this.projectName = projectName;
+		this.projectsTable = projectsTable;
+		this.themesTable = themesTable;
+		this.pagesTable = pagesTable;
 	}
 
 	public int getId() {
@@ -49,11 +55,27 @@ public class NavigationsTable {
 		this.ndl = ndl;
 	}
 
-	public String getProjectName() {
-		return projectName;
+	public ProjectsTable getProjectsTable() {
+		return projectsTable;
 	}
 
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setProjectsTable(ProjectsTable projectsTable) {
+		this.projectsTable = projectsTable;
+	}
+
+	public PagesTable getPagesTable() {
+		return pagesTable;
+	}
+
+	public void setPagesTable(PagesTable pagesTable) {
+		this.pagesTable = pagesTable;
+	}
+
+	public ThemesTable getThemesTable() {
+		return themesTable;
+	}
+
+	public void setThemesTable(ThemesTable themesTable) {
+		this.themesTable = themesTable;
 	}
 }

@@ -7,17 +7,18 @@ import javax.persistence.*;
 public class PagesTable {
 
 	@Id
-    @Column(name = "pageID")
+    @Column(name = "pageID", nullable = false)
     private String id;
     
-	@Column(name = "pageName")
+	@Column(name = "pageName", nullable = false)
 	private String name;
     
-    @Column(name = "pageUICDL")
+    @Column(name = "pageUICDL", nullable = false)
     private String pdl;
 
-	@Column(name = "projectName")
-	private String projectName;
+	@ManyToOne
+	@JoinColumn(name = "projectID", referencedColumnName = "projectID")
+	private ProjectsTable projectsTable;
 
 	@ManyToOne
 	@JoinColumn(name = "themeID", referencedColumnName = "themeID")
@@ -27,12 +28,12 @@ public class PagesTable {
 		
 	}
 
-	public PagesTable(String id, String name, String pdl, String projectName, ThemesTable themesTable) {
+	public PagesTable(String id, String name, String pdl, ThemesTable themesTable, ProjectsTable projectsTable) {
 		this.id = id;
 		this.name = name;
 		this.pdl = pdl;
-		this.projectName = projectName;
 		this.themeTable = themesTable;
+		this.projectsTable = projectsTable;
 	}
 
 	public String getId() {
@@ -59,12 +60,12 @@ public class PagesTable {
 		this.pdl = pdl;
 	}
 
-	public String getProjectName() {
-		return projectName;
+	public ProjectsTable getProjectsTable() {
+		return projectsTable;
 	}
 
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setProjectsTable(ProjectsTable projectsTable) {
+		this.projectsTable = projectsTable;
 	}
 
 	public ThemesTable getThemeTable() {
