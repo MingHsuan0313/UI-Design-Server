@@ -36,7 +36,15 @@ public class UIDBConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
             @Qualifier("uiDataSource") DataSource dataSource) {
         return builder.dataSource(dataSource).packages("com.selab.uidesignserver.entity.uiComposition")
-                .persistenceUnit("NDLs").persistenceUnit("PageUICDLs").persistenceUnit("SUMDLs").persistenceUnit("Themes").build();
+                .persistenceUnit("NDLs")
+                .persistenceUnit("PageUICDLs")
+                .persistenceUnit("SUMDLs")
+                .persistenceUnit("Themes")
+                .persistenceUnit("Projects")
+                .persistenceUnit("Users")
+                .persistenceUnit("Groups")
+                .persistenceUnit("Users_Groups")
+                .build();
     }
 
     // @Primary

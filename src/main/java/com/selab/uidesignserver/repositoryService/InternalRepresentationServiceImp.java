@@ -3,24 +3,22 @@ package com.selab.uidesignserver.repositoryService;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.selab.uidesignserver.dao.uiComposition.NavigationRepository;
-import com.selab.uidesignserver.dao.uiComposition.PagesRepository;
-import com.selab.uidesignserver.dao.uiComposition.SumdlsRepository;
-import com.selab.uidesignserver.dao.uiComposition.ThemesRepository;
-import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
-import com.selab.uidesignserver.entity.uiComposition.PagesTable;
-import com.selab.uidesignserver.entity.uiComposition.SumdlsTable;
-import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
+import com.selab.uidesignserver.dao.uiComposition.*;
+import com.selab.uidesignserver.entity.uiComposition.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @Transactional
 public class InternalRepresentationServiceImp implements InternalRepresentationService {
-    
+
+    @Autowired
+    ProjectsRepository projectsRepository;
+
     @Autowired
     PagesRepository pageRepository;
 
@@ -32,6 +30,41 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
 
     @Autowired
     SumdlsRepository sumdlRepository;
+
+    // project
+    @Override
+    public ProjectsTable insertProject(ProjectsTable projectsTable){
+        return projectsRepository.save(projectsTable);
+    }
+
+    @Override
+    public ProjectsTable getProject(String projectID){
+        ProjectsTable projectsTable = projectsRepository.findProjectsTableByProjectID(projectID);
+        return projectsTable;
+    }
+
+    @Override
+    public ProjectsTable getProjectByProjectName(String projectName){
+        return projectsRepository.findProjectsTableByProjectName(projectName);
+    }
+
+
+    @Override
+    public boolean deleteProject(String projectID){
+        ProjectsTable projectsTable = projectsRepository.findProjectsTableByProjectID(projectID);
+        if(projectsTable != null){
+            projectsRepository.delete(projectsTable);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    @Override
+    public void truncateProjects(){
+        projectsRepository.deleteAll();
+    }
 
     // page
 	@Override
@@ -49,6 +82,11 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
             }
         }
         return wantedPages;
+    }
+
+    @Override
+    public PagesTable getPageByPageID(String pageID){
+        return pageRepository.findPagesTableByPageID(pageID);
     }
 
     @Override

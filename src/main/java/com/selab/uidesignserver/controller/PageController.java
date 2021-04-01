@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
+import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
 import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 
@@ -37,8 +38,9 @@ public class PageController {
 		String name = pdlObject.getString("name");
 		String pdl = data;
 		ThemesTable themeTable = this.internalRepresentationService.getThemeById(themeId);
+		ProjectsTable projectsTable = this.internalRepresentationService.getProjectByProjectName(projectName);
 		System.out.println("hello table " + themeTable.getThemeName());
-		PagesTable pagesTable = new PagesTable(id, name, pdl, projectName, themeTable);
+		PagesTable pagesTable = new PagesTable(id, name, pdl, themeTable, projectsTable);
 		internalRepresentationService.insertPage(pagesTable);
 		return "insert page";
 	}

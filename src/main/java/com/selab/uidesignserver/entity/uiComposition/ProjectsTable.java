@@ -1,7 +1,5 @@
 package com.selab.uidesignserver.entity.uiComposition;
 
-import com.selab.uidesignserver.entity.authentication.GroupsTable;
-
 import javax.persistence.*;
 
 @Entity

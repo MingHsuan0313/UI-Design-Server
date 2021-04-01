@@ -1,4 +1,4 @@
-package com.selab.uidesignserver.entity.authentication;
+package com.selab.uidesignserver.entity.uiComposition;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

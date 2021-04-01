@@ -3,10 +3,9 @@ package com.selab.uidesignserver.repositoryService;
 import com.selab.uidesignserver.dao.authentication.GroupsRepository;
 import com.selab.uidesignserver.dao.authentication.UserGroupRelationshipRepository;
 import com.selab.uidesignserver.dao.authentication.UsersRepository;
-import com.selab.uidesignserver.entity.authentication.GroupsTable;
-import com.selab.uidesignserver.entity.authentication.UsersGroupsTable;
-import com.selab.uidesignserver.entity.authentication.UsersTable;
-import com.selab.uidesignserver.entity.uiComposition.NavigationsTable;
+import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
+import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
+import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -63,40 +62,55 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     // Groups
     @Override
-    public UsersTable insertGroup(GroupsTable groupsTable){
-
+    public GroupsTable insertGroup(GroupsTable groupsTable){
+        return groupsRepository.save(groupsTable);
     }
     @Override
     public Boolean deleteGroup(String groupID){
-
+        GroupsTable groupsTable = groupsRepository.findGroupsTableByGroupID(groupID);
+        boolean flag = false;
+        if(groupsTable!=null){
+            groupsRepository.delete(groupsTable);
+            flag = true;
+        }
+        return flag;
     }
     @Override
     public GroupsTable getGroup(String groupID){
-
+        return groupsRepository.findGroupsTableByGroupID(groupID);
     }
     @Override
-    void truncateGroup(){
-
+    public void truncateGroup(){
+        groupsRepository.deleteAll();
     }
 
     // User_Groups
     @Override
     public UsersGroupsTable insertUserGroupRelation(UsersGroupsTable usersGroupsTable){
-
+        return userGroupRelationshipRepository.save(usersGroupsTable);
     }
     @Override
-    public Boolean deleteUserGroupRelation(String userID, String groupID){}
-
-    @Override
-    public List<UsersTable> getUsersByGroup(String groupID){
-
+    public Boolean deleteUserGroupRelation(String userID, String groupID){
+        UsersGroupsTable usersGroupsTable = userGroupRelationshipRepository.findRelationTableByUserIDAndGroupID(userID, groupID);
+        boolean flag = false;
+        if(usersGroupsTable != null){
+            userGroupRelationshipRepository.delete(usersGroupsTable);
+            flag = true;
+        }
+        return flag;
     }
-    @Override
-    public List<GroupsTable> getGroupsByUser(String userID){
 
+    @Override
+    public List<UsersGroupsTable> getUsersByGroup(String groupID){
+        return userGroupRelationshipRepository.findRelationTableByGroupID(groupID);
+    }
+
+    @Override
+    public List<UsersGroupsTable> getGroupsByUser(String userID){
+        return userGroupRelationshipRepository.findRelationTableByUserID(userID);
     }
     @Override
     public void truncateUsersGroupsTable(){
-
+        userGroupRelationshipRepository.deleteAll();
     }
 }
