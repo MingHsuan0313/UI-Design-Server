@@ -1,10 +1,8 @@
 package com.selab.uidesignserver.repositoryService;
 
-import com.selab.uidesignserver.dao.uiComposition.GroupsRepository;
-import com.selab.uidesignserver.dao.uiComposition.UserGroupRelationshipRepository;
-import com.selab.uidesignserver.dao.uiComposition.UsersRepository;
-import com.selab.uidesignserver.dao.uiComposition.ProjectsRepository;
+import com.selab.uidesignserver.dao.uiComposition.*;
 import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
+import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     @Autowired
     UserGroupRelationshipRepository userGroupRelationshipRepository;
+
+    @Autowired
+    ThemesRepository themesRepository;
 
     // Users
     @Override
@@ -67,6 +68,21 @@ public class AuthenticationServiceImp implements AuthenticationService {
         }else{
             return false;
         }
+    }
+
+    @Override
+    public Boolean logout(String userID, List<String> themeIDs) {
+        UsersTable usersTable = usersRepository.findUsersTableByUserID(userID);
+        if(usersTable!=null){
+            for(String themeID: themeIDs){
+                ThemesTable themesTable = themesRepository.findThemesTableByID(themeID);
+                themesTable.setUsed(false);
+                themesRepository.save(themesTable);
+            }
+            return true;
+        }
+        return false;
+
     }
 
     @Override

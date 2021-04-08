@@ -2,15 +2,18 @@ package com.selab.uidesignserver.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.gson.JsonObject;
 import com.selab.uidesignserver.dao.uiComposition.ThemesRepository;
-import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
-import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
-import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
+import com.selab.uidesignserver.entity.uiComposition.*;
 import com.selab.uidesignserver.repositoryService.AuthenticationService;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.context.Theme;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,13 +31,38 @@ public class ProjectController {
 
     @Autowired AuthenticationService authenticationService;
 
-    @GetMapping(value = "")
-    public String importProject(@RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
-        return "";
+    @PostMapping(value = "/open")
+    public String openProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+        JSONObject themesObject = new JSONObject(data);
+        JSONArray themeIDsJSONArray = themesObject.getJSONArray("themeIDs");
+        JSONObject responseData = new JSONObject();
+
+        for(Object themeID: themeIDsJSONArray){
+            // Set theme to used
+            ThemesTable themesTable = internalRepresentationService.getThemeById((String)themeID);
+            if(themesTable.getUsed()==false) {
+                themesTable.setUsed(true);
+                internalRepresentationService.insertTheme(themesTable);
+                List<PagesTable> pagesTables = internalRepresentationService.getPagesByThemeID((String) themeID);
+                JSONObject DLsInPage = new JSONObject();
+                for (PagesTable pagesTable : pagesTables) {
+                    JSONObject DLs = new JSONObject();
+                    String ndl = internalRepresentationService.getNavigationByPageID(pagesTable.getId()).getNdl();
+                    String sumdl = internalRepresentationService.getSUMDLsByPageID(pagesTable.getId()).getSumdl();
+                    DLs.put("ndl", ndl);
+                    DLs.put("sumdl", sumdl);
+                    DLs.put("pdl", pagesTable.getPdl());
+                    DLsInPage.put(pagesTable.getId(), DLs);
+                }
+                responseData.put((String) themeID, DLsInPage);
+            }
+        }
+        return responseData.toString();
     }
 
-    @PostMapping(value = "")
-    public String exportProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+    @PostMapping(value = "/save")
+    public String saveProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+
         return "";
     }
 

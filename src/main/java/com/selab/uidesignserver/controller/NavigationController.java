@@ -50,6 +50,14 @@ public class NavigationController {
 			return "delete navigations failed or not found";
 	}
 
+	@DeleteMapping(value = "themeId")
+	public String deleteNavigationByTheme(@RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeId) {
+		if(internalRepresentationService.deleteNavigationByTheme(themeId))
+			return "delete navigations successfully";
+		else
+			return "delete navigations failed or not found";
+	}
+
 	@PostMapping(value = "")
 	public String insertNavigation(@RequestBody String data, @RequestHeader("projectName") String projectName) throws IOException, TemplateException, SQLException {
 		ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);

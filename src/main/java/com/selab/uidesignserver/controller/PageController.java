@@ -54,6 +54,16 @@ public class PageController {
 			return "delete page failed (not found)";
 		}
 	}
+
+	@DeleteMapping(value = "/themeId")
+	public String deletePagesByTheme(@RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeID) {
+		if(internalRepresentationService.deletePagesByTheme(themeID)) {
+			return "delete pages successfully";
+		}
+		else {
+			return "delete page failed (not found)";
+		}
+	}
 	
 	@GetMapping(value = "")
 	public List<PagesTable> getPages(@RequestHeader("projectName") String projectName) {

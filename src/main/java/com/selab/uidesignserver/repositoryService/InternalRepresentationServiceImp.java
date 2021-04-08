@@ -53,6 +53,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         return projects;
     }
 
+
+
     @Override
     public ProjectsTable getProjectByProjectName(String projectName){
         return projectsRepository.findProjectsTableByProjectName(projectName);
@@ -100,8 +102,18 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public List<PagesTable> getPagesByProjectID(String projectID) {
+        return pageRepository.findPDLsTablesByProjectID(projectID);
+    }
+
+    @Override
     public PagesTable getPageByPageID(String pageID){
         return pageRepository.findPagesTableByPageID(pageID);
+    }
+
+    @Override
+    public List<PagesTable> getPagesByThemeID(String themeID) {
+        return pageRepository.findPDLsTablesByThemeID(themeID);
     }
 
     @Override
@@ -110,6 +122,20 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         List<PagesTable> pages = pageRepository.findAll();
         for(int index = 0; index < pages.size(); index++) {
             if(pages.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+                System.out.println("delete page");
+                flag = true;
+                pageRepository.delete(pages.get(index));
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean deletePagesByTheme(String themeID) {
+        boolean flag = false;
+        List<PagesTable> pages = pageRepository.findAll();
+        for(int index = 0; index < pages.size(); index++) {
+            if(pages.get(index).getThemeTable().getId().equals(themeID)) {
                 System.out.println("delete page");
                 flag = true;
                 pageRepository.delete(pages.get(index));
@@ -156,6 +182,29 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public boolean deleteNavigationByTheme(String themeID) {
+        boolean flag = false;
+        List<NavigationsTable> navigations = navigationRepository.findAll();
+        for(int index = 0;index < navigations.size();index++) {
+            if(navigations.get(index).getThemesTable().getId().equals(themeID)) {
+                navigationRepository.delete(navigations.get(index));
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public List<NavigationsTable> getNDLsByProjectID(String projectID) {
+        return navigationRepository.findNDLsTablesByProjectID(projectID);
+    }
+
+    @Override
+    public NavigationsTable getNavigationByPageID(String pageID) {
+        return navigationRepository.findNDLsTablesByPageID(pageID);
+    }
+
+    @Override
     public void truncateNavigations() {
         navigationRepository.deleteAll();
     }
@@ -180,11 +229,34 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public List<SumdlsTable> getSUMDLsByProjectID(String projectID) {
+        return sumdlRepository.findSUMDLTablesByProjectID(projectID);
+    }
+
+    @Override
+    public SumdlsTable getSUMDLsByPageID(String pageID) {
+        return sumdlRepository.findSUMDLTablesByPageID(pageID);
+    }
+
+    @Override
     public boolean deleteSumdl(String projectID) {
         boolean flag = false;
         List<SumdlsTable> sumdls = sumdlRepository.findAll();
         for(int index = 0;index < sumdls.size();index++) {
             if(sumdls.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+                sumdlRepository.delete(sumdls.get(index));
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean deleteSumdlByTheme(String themeID) {
+        boolean flag = false;
+        List<SumdlsTable> sumdls = sumdlRepository.findAll();
+        for(int index = 0;index < sumdls.size();index++) {
+            if(sumdls.get(index).getThemesTable().getId().equals(themeID)) {
                 sumdlRepository.delete(sumdls.get(index));
                 flag = true;
             }
