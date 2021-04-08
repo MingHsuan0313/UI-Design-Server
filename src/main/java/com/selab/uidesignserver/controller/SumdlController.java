@@ -41,6 +41,14 @@ public class SumdlController {
             return "delete sumdl failed or not found";
     }
 
+    @DeleteMapping(value = "themeId")
+    public String deleteSumdlByTheme(@RequestHeader("projectName") String projectName, @RequestHeader("themeId") String themeID) {
+        if(this.internalRepresentationService.deleteSumdlByTheme(themeID))
+            return "delete sumdl successfully";
+        else
+            return "delete sumdl failed or not found";
+    }
+
     @PostMapping(value = "")
     public String insertSumdl(@RequestBody String data, @RequestHeader("projectName") String projectName) {
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);

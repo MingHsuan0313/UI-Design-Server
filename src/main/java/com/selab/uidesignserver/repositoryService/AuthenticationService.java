@@ -13,6 +13,7 @@ public interface AuthenticationService {
     UsersTable getUser(String userID);
     UsersTable getUserByUserName(String userName);
     Boolean authenticate(String userName, String password);
+    Boolean logout(String userID, List<String> themeIDs);
     void truncateUser();
 
     // Groups

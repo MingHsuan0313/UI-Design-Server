@@ -23,19 +23,28 @@ public interface InternalRepresentationService {
     public PagesTable insertPage(PagesTable pagesTable);
     public List<PagesTable> getPages(String projectID);
     public PagesTable getPageByPageID(String pageID);
+    public List<PagesTable> getPagesByProjectID(String projectID);
+    public List<PagesTable> getPagesByThemeID(String themeID);
     public boolean deletePages(String projectID);
+    public boolean deletePagesByTheme(String themeID);
     public void truncatePages();
     
     // navigation controller
     public NavigationsTable insertNaivigation(NavigationsTable navigationTable);
+    public List<NavigationsTable> getNDLsByProjectID(String projectID);
     public NavigationsTable getNavigation(String projectID);
+    public NavigationsTable getNavigationByPageID(String pageID);
     public boolean deleteNavigation(String projectID);
+    public boolean deleteNavigationByTheme(String themeID);
     public void truncateNavigations();
 
     // sumdl controller
     public SumdlsTable insertSumdl(SumdlsTable sumdlTable);
     public SumdlsTable getSumdl(String projectID);
+    public List<SumdlsTable> getSUMDLsByProjectID(String projectID);
+    public SumdlsTable getSUMDLsByPageID(String pageID);
     public boolean deleteSumdl(String projectID);
+    public boolean deleteSumdlByTheme(String themeID);
     public void truncateSumdls();
 
     // themes controller

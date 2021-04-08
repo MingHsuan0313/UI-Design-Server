@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThemesRepository extends JpaRepository<ThemesTable, String> {
 
+    @Query(value = "SELECT * FROM Themes t WHERE t.themeID = ?1", nativeQuery = true)
+    ThemesTable findThemesTableByID(String themeID);
+
     @Query(value = "SELECT * FROM Themes t WHERE t.projectID = ?1", nativeQuery = true)
     List<ThemesTable> findThemesTableByProjectID(String projectID);
 }   

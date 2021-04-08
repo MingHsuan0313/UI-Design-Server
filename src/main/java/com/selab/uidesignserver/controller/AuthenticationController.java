@@ -1,6 +1,7 @@
 package com.selab.uidesignserver.controller;
 
 import com.fasterxml.uuid.Generators;
+import com.google.gson.JsonObject;
 import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
@@ -10,10 +11,12 @@ import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import org.jclouds.rest.annotations.ResponseParser;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -125,4 +128,14 @@ public class AuthenticationController {
         authenticationService.insertUserGroupRelation(relation);
         return "";
     }
+
+    @PostMapping(value = "/logout")
+    public Boolean logout(@RequestHeader("userID") String userID, @RequestBody String data) {
+        JSONObject object = new JSONObject(data);
+        JSONArray themeIDs = object.getJSONArray("themeIDs");
+        List<String> themeIDList = new ArrayList<>();
+        themeIDs.forEach(themeID->themeIDList.add((String)themeID));
+        return authenticationService.logout(userID, themeIDList);
+    }
+
 }
