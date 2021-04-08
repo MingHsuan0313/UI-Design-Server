@@ -35,6 +35,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '4.0.1'
+// https://mvnrepository.com/artifact/org.springframework.session/spring-session
+	//implementation group: 'org.springframework.session', name: 'spring-session', version: '1.3.5.RELEASE'
+
+
+	implementation group: 'org.springframework.session', name: 'spring-session-jdbc', version: '2.4.2'
+
+
 
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
