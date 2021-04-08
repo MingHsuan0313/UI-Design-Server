@@ -237,4 +237,10 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public void truncateThemes() {
         themeRepository.deleteAll();
     }
+
+    @Override
+    public boolean modifyProject(ProjectsTable project) {
+        this.projectsRepository.save(project);
+        return false;
+    }
 }

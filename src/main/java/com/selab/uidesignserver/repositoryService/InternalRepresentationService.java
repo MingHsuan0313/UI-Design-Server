@@ -17,6 +17,7 @@ public interface InternalRepresentationService {
     public boolean deleteProject(String projectID);
     public void truncateProjects();
     public List<ThemesTable> getThemesByProjectID(String projectID);
+    public boolean modifyProject(ProjectsTable project);
 
     // page controller
     public PagesTable insertPage(PagesTable pagesTable);

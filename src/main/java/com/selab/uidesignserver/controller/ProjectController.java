@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.selab.uidesignserver.dao.uiComposition.ThemesRepository;
+import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
 import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
@@ -39,7 +40,11 @@ public class ProjectController {
     }
 
     @PatchMapping(value="/group")
-    public String changeProjectGroup(@RequestHeader("userID") String targetUserID, @RequestHeader("groupID") String targetGroupID) {
+    public String changeProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
+        ProjectsTable project = internalRepresentationService.getProject(projectID);
+        GroupsTable group = authenticationService.getGroup(targetGroupID);
+        project.setGroupsTable(group);
+        this.internalRepresentationService.modifyProject(project);
         return "";
     }
 

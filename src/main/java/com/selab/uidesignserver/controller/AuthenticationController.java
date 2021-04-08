@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,26 +29,38 @@ public class AuthenticationController {
     InternalRepresentationService internalRepresentationService;
 
     @PostMapping(value = "/login")
-    public Boolean authenticate(@RequestBody String data) {
+    public String authenticate(@RequestBody String data) {
         System.out.println("Hello authentication");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
-        return authenticationService.authenticate(username, password);
+        if(authenticationService.authenticate(username, password)) {
+            return authenticationService.getUserByUserName(username).getUserID();
+        }
+        return "authentication failed";
     }
 
     // delete userA
     // delete all group-user relations with userA
     // delete groupA
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "/deregister")
     public String deRegister(@RequestBody String data) {
         System.out.println("Deregister");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         UsersTable user = authenticationService.getUserByUserName(username);
+        GroupsTable group = authenticationService.getGroupByName(username);
         if (user != null) {
             if (user.getPassword().equals(userNamePasswordObject.getString("password"))) {
+                List<UsersGroupsTable> userGroupRelations = authenticationService.getGroupsByUser(user.getUserID());
+                for(int index = 0; index < userGroupRelations.size(); index++) {
+                    UsersGroupsTable userGroupRelation = userGroupRelations.get(index);
+                    String userID = userGroupRelation.getUsersTable().getUserID();
+                    String groupID = userGroupRelation.getGroupsTable().getGroupID();
+                    authenticationService.deleteUserGroupRelation(userID, groupID);
+                }
                 authenticationService.deleteUser(user.getUserID());
+                authenticationService.deleteGroup(group.getGroupID());
                 return "delete user: " + username + "successfully";
             } else
                 return "delete user: " + username + "not correctly (password not matched";
