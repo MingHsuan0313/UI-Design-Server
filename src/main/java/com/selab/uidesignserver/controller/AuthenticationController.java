@@ -122,14 +122,14 @@ public class AuthenticationController {
             return "create failed: this group name has been used!";
     }
 
-    @PatchMapping(value="/group")
-    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+    @PutMapping(value="/group")
+    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userName") String userName) {
         ProjectsTable projectTable = internalRepresentationService.getProject(projectID);
         GroupsTable groupTable = projectTable.getGroupsTable();
-        UsersTable usersTable = authenticationService.getUser(userID);
+        UsersTable usersTable = authenticationService.getUserByUserName(userName);
         UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupTable);
         authenticationService.insertUserGroupRelation(relation);
-        return "";
+        return "invite successfully";
     }
 
     @PostMapping(value = "/logout")
