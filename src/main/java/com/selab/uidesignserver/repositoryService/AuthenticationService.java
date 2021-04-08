@@ -19,6 +19,7 @@ public interface AuthenticationService {
     GroupsTable insertGroup(GroupsTable groupsTable);
     Boolean deleteGroup(String groupID);
     GroupsTable getGroup(String groupID);
+    GroupsTable getGroupByName(String name);
     void truncateGroup();
 
     // User_Groups

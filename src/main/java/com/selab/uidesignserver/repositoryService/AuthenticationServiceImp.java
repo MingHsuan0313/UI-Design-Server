@@ -79,6 +79,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public GroupsTable insertGroup(GroupsTable groupsTable){
         return groupsRepository.save(groupsTable);
     }
+
     @Override
     public Boolean deleteGroup(String groupID){
         GroupsTable groupsTable = groupsRepository.findGroupsTableByGroupID(groupID);
@@ -89,10 +90,17 @@ public class AuthenticationServiceImp implements AuthenticationService {
         }
         return flag;
     }
+
     @Override
     public GroupsTable getGroup(String groupID){
         return groupsRepository.findGroupsTableByGroupID(groupID);
     }
+
+    @Override
+    public GroupsTable getGroupByName(String groupName) {
+        return groupsRepository.findGroupsTableByGroupName(groupName);
+    }
+
     @Override
     public void truncateGroup(){
         groupsRepository.deleteAll();
@@ -103,6 +111,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public UsersGroupsTable insertUserGroupRelation(UsersGroupsTable usersGroupsTable){
         return userGroupRelationshipRepository.save(usersGroupsTable);
     }
+
     @Override
     public Boolean deleteUserGroupRelation(String userID, String groupID){
         UsersGroupsTable usersGroupsTable = userGroupRelationshipRepository.findRelationTableByUserIDAndGroupID(userID, groupID);

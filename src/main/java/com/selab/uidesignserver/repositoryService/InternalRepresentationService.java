@@ -12,9 +12,11 @@ public interface InternalRepresentationService {
     // project controller
     public ProjectsTable insertProject(ProjectsTable projectsTable);
     public ProjectsTable getProject(String projectID);
+    public List<ProjectsTable> getProjectsByGroupID(String groupID);
     public ProjectsTable getProjectByProjectName(String projectName);
     public boolean deleteProject(String projectID);
     public void truncateProjects();
+    public List<ThemesTable> getThemesByProjectID(String projectID);
 
     // page controller
     public PagesTable insertPage(PagesTable pagesTable);

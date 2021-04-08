@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface GroupsRepository extends JpaRepository<GroupsTable, String> {
-    @Query(value = "SELECT * FROM Group g WHERE g.userID = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Group g WHERE g.groupID = ?1", nativeQuery = true)
     GroupsTable findGroupsTableByGroupID(String groupID);
+
+    @Query(value = "SELECT * FROM Group g WHERE g.groupName = ?1", nativeQuery = true)
+    GroupsTable findGroupsTableByGroupName(String name);
 }

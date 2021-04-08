@@ -17,10 +17,6 @@ public class ThemesTable {
     @JoinColumn(name = "ownerID", referencedColumnName = "userID")
     private UsersTable usersTable;
 
-    @ManyToOne
-    @JoinColumn(name = "groupID", referencedColumnName = "groupID")
-    private GroupsTable groupsTable;
-
     @Column(name = "themeName", nullable = false)
     private String themeName;
 
@@ -31,12 +27,11 @@ public class ThemesTable {
 
     }
 
-    public ThemesTable(String id, String themeName, ProjectsTable projectsTable, GroupsTable groupsTable, UsersTable usersTable, Boolean used) {
+    public ThemesTable(String id, String themeName, ProjectsTable projectsTable, UsersTable usersTable, Boolean used) {
         this.id = id;
         this.projectsTable = projectsTable;
         this.themeName = themeName;
         this.usersTable = usersTable;
-        this.groupsTable = groupsTable;
         this.used = used;
     }
 
@@ -46,10 +41,6 @@ public class ThemesTable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public void setGroupsTable(GroupsTable groupsTable) {
-        this.groupsTable = groupsTable;
     }
 
     public void setUsersTable(UsersTable usersTable) {
@@ -66,10 +57,6 @@ public class ThemesTable {
 
     public UsersTable getUsersTable() {
         return usersTable;
-    }
-
-    public GroupsTable getGroupsTable() {
-        return groupsTable;
     }
 
     public Boolean getUsed() {

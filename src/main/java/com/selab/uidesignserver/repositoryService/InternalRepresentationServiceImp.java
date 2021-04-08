@@ -31,6 +31,9 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     @Autowired
     SumdlsRepository sumdlRepository;
 
+    @Autowired
+    ProjectsRepository projectRepository;
+
     // project
     @Override
     public ProjectsTable insertProject(ProjectsTable projectsTable){
@@ -44,8 +47,20 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public List<ProjectsTable> getProjectsByGroupID(String groupID) {
+        List<ProjectsTable> projects = new ArrayList<ProjectsTable>();
+        projects = this.projectRepository.findProjectsTablesByGroupID(groupID);
+        return projects;
+    }
+
+    @Override
     public ProjectsTable getProjectByProjectName(String projectName){
         return projectsRepository.findProjectsTableByProjectName(projectName);
+    }
+
+    @Override
+    public List<ThemesTable> getThemesByProjectID(String projectID) {
+        return themeRepository.findThemesTableByProjectID(projectID);
     }
 
 

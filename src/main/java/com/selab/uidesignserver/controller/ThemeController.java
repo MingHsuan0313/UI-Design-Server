@@ -70,7 +70,7 @@ public class ThemeController {
         ThemesTable themesTable = internalRepresentationService.getThemeById(themeID);
         PagesTable pagesTable = internalRepresentationService.getPageByPageID(pageID);
         String themeName = themeObject.getString("name");
-        ThemesTable themeTable = new ThemesTable(id, themeName, projectsTable,  groupsTable, usersTable, true);
+        ThemesTable themeTable = new ThemesTable(id, themeName, projectsTable, usersTable, true);
         this.internalRepresentationService.insertTheme(themeTable);
         return "insert theme successfully";
     }

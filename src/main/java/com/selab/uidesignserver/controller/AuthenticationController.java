@@ -1,9 +1,15 @@
 package com.selab.uidesignserver.controller;
 
 import com.fasterxml.uuid.Generators;
+import com.selab.uidesignserver.entity.uiComposition.GroupsTable;
+import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
+import com.selab.uidesignserver.entity.uiComposition.UsersGroupsTable;
 import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import com.selab.uidesignserver.repositoryService.AuthenticationService;
+import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import org.jclouds.rest.annotations.ResponseParser;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,30 +24,92 @@ public class AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-    @PostMapping(value="")
-    public Boolean authenticate(@RequestBody String data){
+    @Autowired
+    InternalRepresentationService internalRepresentationService;
+
+    @PostMapping(value = "/login")
+    public Boolean authenticate(@RequestBody String data) {
         System.out.println("Hello authentication");
         JSONObject userNamePasswordObject = new JSONObject(data);
-        String username = userNamePasswordObject.getString("userName");
+        String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
         return authenticationService.authenticate(username, password);
     }
 
+    // delete userA
+    // delete all group-user relations with userA
+    // delete groupA
+    @DeleteMapping(value = "")
+    public String deRegister(@RequestBody String data) {
+        System.out.println("Deregister");
+        JSONObject userNamePasswordObject = new JSONObject(data);
+        String username = userNamePasswordObject.getString("username");
+        UsersTable user = authenticationService.getUserByUserName(username);
+        if (user != null) {
+            if (user.getPassword().equals(userNamePasswordObject.getString("password"))) {
+                authenticationService.deleteUser(user.getUserID());
+                return "delete user: " + username + "successfully";
+            } else
+                return "delete user: " + username + "not correctly (password not matched";
+        }
+        return "user not found";
+    }
+
+    // type1: register successfully
+    // type2: register duplicate username
     @PostMapping(value = "/register")
-    public Boolean register(@RequestBody String data){
+    public String register(@RequestBody String data) {
         System.out.println("Hello register");
         JSONObject userNamePasswordObject = new JSONObject(data);
-        String username = userNamePasswordObject.getString("userName");
+        String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
-        if(authenticationService.getUserByUserName(username)==null){
+        if (authenticationService.getUserByUserName(username) == null) {
             UUID uuid = Generators.randomBasedGenerator().generate();
+
+            // create group
+            String groupID = "Group-" + uuid.toString();
+            GroupsTable groupsTable = new GroupsTable(groupID, username);
+            authenticationService.insertGroup(groupsTable);
+
+            // create user
             String userID = "User-" + uuid.toString();
             System.out.println(userID);
             UsersTable usersTable = new UsersTable(userID, username, password);
             authenticationService.insertUser(usersTable);
-            return true;
+
+            // create relation between group and user
+            UsersGroupsTable usersGroupsTable = new UsersGroupsTable(usersTable, groupsTable);
+            authenticationService.insertUserGroupRelation(usersGroupsTable);
+            return "Hello " + username + " register successed!";
         }
-        return false;
+        return "Duplicate username";
     }
 
+    @PostMapping(value = "/group")
+    public String createGroup(@RequestBody String data, @RequestHeader("userID") String userID) {
+        JSONObject responseObject = new JSONObject(data);
+        UUID uuid = Generators.randomBasedGenerator().generate();
+        String groupID = "Group-" + uuid.toString();
+        String groupName = responseObject.getString("name");
+        if (authenticationService.getGroupByName(groupName) == null) {
+            GroupsTable groupsTable = new GroupsTable(groupID, groupName);
+            authenticationService.insertGroup(groupsTable);
+            UsersTable usersTable = authenticationService.getUser(userID);
+            UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupsTable);
+            authenticationService.insertUserGroupRelation(relation);
+            return "create group success";
+        }
+        else 
+            return "create failed: this group name has been used!";
+    }
+
+    @PatchMapping(value="/group")
+    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+        ProjectsTable projectTable = internalRepresentationService.getProject(projectID);
+        GroupsTable groupTable = projectTable.getGroupsTable();
+        UsersTable usersTable = authenticationService.getUser(userID);
+        UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupTable);
+        authenticationService.insertUserGroupRelation(relation);
+        return "";
+    }
 }
