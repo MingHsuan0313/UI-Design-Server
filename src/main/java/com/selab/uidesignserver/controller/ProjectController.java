@@ -1,7 +1,9 @@
 package com.selab.uidesignserver.controller;
+import com.fasterxml.uuid.Generators;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonObject;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,19 +67,36 @@ public class ProjectController {
         return responseData.toString();
     }
 
+    @PostMapping(value = "/create")
+    public String createProject(@RequestHeader("groupID") String groupID, @RequestHeader("userID") String userID, @RequestHeader("projectName") String projectName) {
+        System.out.println("create project");
+        if(internalRepresentationService.getProjectByProjectName(projectName) != null) {
+            return "project name has been used";
+        }
+        UUID uuid = Generators.randomBasedGenerator().generate();
+        String projectId = "Project-" + uuid.toString();
+        GroupsTable groupsTable = authenticationService.getGroup(groupID);
+        System.out.println(groupsTable);
+        System.out.println(groupsTable.getGroupID());
+        System.out.println(groupsTable.getGroupName());
+        ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable);
+        internalRepresentationService.insertProject(project);
+        return "create project success";
+    }
+
     @PostMapping(value = "/save")
     public String saveProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
 
         return "";
     }
 
-    @PatchMapping(value="/group")
-    public String changeProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
+    @PutMapping(value="/group")
+    public String changeProjectGroup(@RequestHeader("userID") String userID, @RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
         ProjectsTable project = internalRepresentationService.getProject(projectID);
         GroupsTable group = authenticationService.getGroup(targetGroupID);
         project.setGroupsTable(group);
         this.internalRepresentationService.modifyProject(project);
-        return "";
+        return "change group success";
     }
 
     @GetMapping(value="/user")

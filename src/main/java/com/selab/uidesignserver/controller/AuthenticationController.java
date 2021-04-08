@@ -38,7 +38,10 @@ public class AuthenticationController {
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
         if(authenticationService.authenticate(username, password)) {
-            return authenticationService.getUserByUserName(username).getUserID();
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("userId", authenticationService.getUserByUserName(username).getUserID());
+            responseObject.put("groupId", authenticationService.getGroupByName(username).getGroupID());
+            return responseObject.toString();
         }
         return "authentication failed";
     }
