@@ -32,7 +32,7 @@ public class ProjectController {
     @Autowired AuthenticationService authenticationService;
 
     @PostMapping(value = "/open")
-    public String openProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+    public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName, @RequestHeader("userID") String userID) {
         JSONObject themesObject = new JSONObject(data);
         JSONArray themeIDsJSONArray = themesObject.getJSONArray("themeIDs");
         JSONObject responseData = new JSONObject();

@@ -42,4 +42,8 @@ public class ProjectsTable {
     public void setProjectID(String projectID) {
         this.projectID = projectID;
     }
+
+    public String getProjectName() {
+        return projectName;
+    }
 }
