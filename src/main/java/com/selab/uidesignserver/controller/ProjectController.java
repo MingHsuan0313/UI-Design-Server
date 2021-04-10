@@ -1,4 +1,5 @@
 package com.selab.uidesignserver.controller;
+
 import com.fasterxml.uuid.Generators;
 
 import java.util.ArrayList;
@@ -34,19 +35,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/project")
 @CrossOrigin(origins = "*", allowCredentials = "true")
 public class ProjectController {
-    @Autowired InternalRepresentationService internalRepresentationService;
+    @Autowired
+    InternalRepresentationService internalRepresentationService;
 
-    @Autowired AuthenticationService authenticationService;
+    @Autowired
+    AuthenticationService authenticationService;
 
     @PostMapping(value = "/open")
-    public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName, @RequestHeader("userID") String userID) {
+    public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
+            @RequestHeader("userID") String userID) {
         JSONArray themesArray = new JSONArray(data);
         JSONObject responseData = new JSONObject();
 
-        for(Object themeID: themesArray){
+        for (Object themeID : themesArray) {
             // Set theme to used
-            ThemesTable themesTable = internalRepresentationService.getThemeById((String)themeID);
-            if(themesTable.getUsed()==false) {
+            ThemesTable themesTable = internalRepresentationService.getThemeById((String) themeID);
+            if (themesTable.getUsed() == false) {
                 themesTable.setUsed(true);
                 internalRepresentationService.insertTheme(themesTable);
                 List<PagesTable> pagesTables = internalRepresentationService.getPagesByThemeID((String) themeID);
@@ -67,30 +71,41 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/create")
-    public String createProject(@RequestHeader("groupID") String groupID, @RequestHeader("userID") String userID, @RequestHeader("projectName") String projectName) {
+    public String createProject(@RequestHeader("userID") String userID,
+            @RequestHeader("projectName") String projectName) {
         System.out.println("create project");
-        if(internalRepresentationService.getProjectByProjectName(projectName) != null) {
+        if (internalRepresentationService.getProjectByProjectName(projectName) != null) {
             return "project name has been used";
         }
         UUID uuid = Generators.randomBasedGenerator().generate();
+
+        // create group
+        String groupID = "Group-" + uuid.toString();
+        GroupsTable groupsTable = new GroupsTable(groupID, projectName);
+        authenticationService.insertGroup(groupsTable);
+
+        // create relation between project group and project owner
+        UsersTable usersTable = authenticationService.getUser(userID);
+        UsersGroupsTable usersGroupsTable = new UsersGroupsTable(usersTable, groupsTable);
+        authenticationService.insertUserGroupRelation(usersGroupsTable);
+
+        // create project
         String projectId = "Project-" + uuid.toString();
-        GroupsTable groupsTable = authenticationService.getGroup(groupID);
-        System.out.println(groupsTable);
-        System.out.println(groupsTable.getGroupID());
-        System.out.println(groupsTable.getGroupName());
         ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable);
         internalRepresentationService.insertProject(project);
         return "create project success";
     }
 
     @PostMapping(value = "/save")
-    public String saveProject(@RequestBody String data, @RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+    public String saveProject(@RequestBody String data, @RequestHeader("projectID") String projectID,
+            @RequestHeader("userID") String userID) {
 
         return "";
     }
 
-    @PutMapping(value="/group")
-    public String changeProjectGroup(@RequestHeader("userID") String userID, @RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
+    @PutMapping(value = "/group")
+    public String changeProjectGroup(@RequestHeader("userID") String userID,
+            @RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
         ProjectsTable project = internalRepresentationService.getProject(projectID);
         GroupsTable group = authenticationService.getGroup(targetGroupID);
         project.setGroupsTable(group);
@@ -98,22 +113,24 @@ public class ProjectController {
         return "change group success";
     }
 
-    @GetMapping(value="/user")
+    @GetMapping(value = "/user")
     public List<ProjectsTable> getProjectsByUserID(@RequestHeader("userID") String userID) {
         List<ProjectsTable> projects = new ArrayList<ProjectsTable>();
         List<UsersGroupsTable> relations = this.authenticationService.getGroupsByUser(userID);
-        for(int index = 0; index < relations.size(); index++) {
+        for (int index = 0; index < relations.size(); index++) {
             UsersGroupsTable relation = relations.get(index);
-            List<ProjectsTable> temp_projects = this.internalRepresentationService.getProjectsByGroupID(relation.getGroupsTable().getGroupID());
-            for(int j = 0; j < temp_projects.size(); j++) {
+            List<ProjectsTable> temp_projects = this.internalRepresentationService
+                    .getProjectsByGroupID(relation.getGroupsTable().getGroupID());
+            for (int j = 0; j < temp_projects.size(); j++) {
                 projects.add(temp_projects.get(j));
             }
         }
         return projects;
     }
 
-    @GetMapping(value="themes")
-    public List<ThemesTable> getThemesByProjectID(@RequestHeader("userID") String userID, @RequestHeader("projectID") String projectID) {
+    @GetMapping(value = "themes")
+    public List<ThemesTable> getThemesByProjectID(@RequestHeader("userID") String userID,
+            @RequestHeader("projectID") String projectID) {
         return internalRepresentationService.getThemesByProjectID(projectID);
     }
 }

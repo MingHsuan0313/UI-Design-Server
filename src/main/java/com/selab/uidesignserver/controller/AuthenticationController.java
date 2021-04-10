@@ -85,20 +85,12 @@ public class AuthenticationController {
         if (authenticationService.getUserByUserName(username) == null) {
             UUID uuid = Generators.randomBasedGenerator().generate();
 
-            // create group
-            String groupID = "Group-" + uuid.toString();
-            GroupsTable groupsTable = new GroupsTable(groupID, username);
-            authenticationService.insertGroup(groupsTable);
-
             // create user
             String userID = "User-" + uuid.toString();
             System.out.println(userID);
             UsersTable usersTable = new UsersTable(userID, username, password);
             authenticationService.insertUser(usersTable);
 
-            // create relation between group and user
-            UsersGroupsTable usersGroupsTable = new UsersGroupsTable(usersTable, groupsTable);
-            authenticationService.insertUserGroupRelation(usersGroupsTable);
             return "Hello " + username + " register successed!";
         }
         return "Duplicate username";
