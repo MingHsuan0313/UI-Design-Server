@@ -12,16 +12,13 @@ public class ProjectsTable {
     @Column(name="projectName", nullable = false)
     private String projectName;
 
-    @ManyToOne
-    @JoinColumn(name = "groupID", referencedColumnName = "groupID")
+    @OneToOne
+    @JoinColumn(name = "groupID", referencedColumnName = "groupID", nullable=false)
     private GroupsTable groupsTable;
-
-
-
 
     public ProjectsTable(){}
 
-    public ProjectsTable(String projectID, GroupsTable groupsTable, String projectName){
+    public ProjectsTable(String projectID, String projectName, GroupsTable groupsTable){
         this.projectID = projectID;
         this.groupsTable = groupsTable;
         this.projectName = projectName;

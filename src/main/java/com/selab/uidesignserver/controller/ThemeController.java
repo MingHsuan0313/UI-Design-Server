@@ -74,4 +74,6 @@ public class ThemeController {
         this.internalRepresentationService.insertTheme(themeTable);
         return "insert theme successfully";
     }
+
+
 }

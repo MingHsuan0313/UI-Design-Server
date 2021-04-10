@@ -32,26 +32,41 @@ public class AuthenticationController {
     InternalRepresentationService internalRepresentationService;
 
     @PostMapping(value = "/login")
-    public Boolean authenticate(@RequestBody String data) {
+    public String authenticate(@RequestBody String data) {
         System.out.println("Hello authentication");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
-        return authenticationService.authenticate(username, password);
+        if(authenticationService.authenticate(username, password)) {
+            JSONObject responseObject = new JSONObject();
+            responseObject.put("userId", authenticationService.getUserByUserName(username).getUserID());
+            //responseObject.put("groupId", authenticationService.getGroupByName(username).getGroupID());
+            return responseObject.toString();
+        }
+        return "authentication failed";
     }
 
     // delete userA
     // delete all group-user relations with userA
     // delete groupA
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "/deregister")
     public String deRegister(@RequestBody String data) {
         System.out.println("Deregister");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         UsersTable user = authenticationService.getUserByUserName(username);
+        GroupsTable group = authenticationService.getGroupByName(username);
         if (user != null) {
             if (user.getPassword().equals(userNamePasswordObject.getString("password"))) {
+                List<UsersGroupsTable> userGroupRelations = authenticationService.getGroupsByUser(user.getUserID());
+                for(int index = 0; index < userGroupRelations.size(); index++) {
+                    UsersGroupsTable userGroupRelation = userGroupRelations.get(index);
+                    String userID = userGroupRelation.getUsersTable().getUserID();
+                    String groupID = userGroupRelation.getGroupsTable().getGroupID();
+                    authenticationService.deleteUserGroupRelation(userID, groupID);
+                }
                 authenticationService.deleteUser(user.getUserID());
+                authenticationService.deleteGroup(group.getGroupID());
                 return "delete user: " + username + "successfully";
             } else
                 return "delete user: " + username + "not correctly (password not matched";
@@ -107,14 +122,14 @@ public class AuthenticationController {
             return "create failed: this group name has been used!";
     }
 
-    @PatchMapping(value="/group")
-    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userID") String userID) {
+    @PutMapping(value="/group")
+    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userName") String userName) {
         ProjectsTable projectTable = internalRepresentationService.getProject(projectID);
         GroupsTable groupTable = projectTable.getGroupsTable();
-        UsersTable usersTable = authenticationService.getUser(userID);
+        UsersTable usersTable = authenticationService.getUserByUserName(userName);
         UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupTable);
         authenticationService.insertUserGroupRelation(relation);
-        return "";
+        return "invite successfully";
     }
 
     @PostMapping(value = "/logout")
