@@ -93,7 +93,7 @@ public class ProjectController {
         String projectId = "Project-" + uuid.toString();
         ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable);
         internalRepresentationService.insertProject(project);
-        return "create project success";
+        return projectId;
     }
 
     @PostMapping(value = "/save")
