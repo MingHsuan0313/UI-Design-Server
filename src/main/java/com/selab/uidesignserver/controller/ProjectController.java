@@ -45,26 +45,34 @@ public class ProjectController {
     public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
             @RequestHeader("userID") String userID) {
         JSONArray themesArray = new JSONArray(data);
-        JSONObject responseData = new JSONObject();
+        JSONArray responseData = new JSONArray();
 
         for (Object themeID : themesArray) {
             // Set theme to used
             ThemesTable themesTable = internalRepresentationService.getThemeById((String) themeID);
+            JSONObject themeInfo = new JSONObject();
             if (themesTable.getUsed() == false) {
                 themesTable.setUsed(true);
                 internalRepresentationService.insertTheme(themesTable);
                 List<PagesTable> pagesTables = internalRepresentationService.getPagesByThemeID((String) themeID);
-                JSONObject DLsInPage = new JSONObject();
+                JSONArray pageInfoArray = new JSONArray();
                 for (PagesTable pagesTable : pagesTables) {
+                    JSONObject pageInfo = new JSONObject();
                     JSONObject DLs = new JSONObject();
                     String ndl = internalRepresentationService.getNavigationByPageID(pagesTable.getId()).getNdl();
                     String sumdl = internalRepresentationService.getSUMDLsByPageID(pagesTable.getId()).getSumdl();
                     DLs.put("ndl", ndl);
                     DLs.put("sumdl", sumdl);
                     DLs.put("pdl", pagesTable.getPdl());
-                    DLsInPage.put(pagesTable.getId(), DLs);
+                    pageInfo.put("pageName", pagesTable.getName());
+                    pageInfo.put("pageID", pagesTable.getId());
+                    pageInfo.put("DLs", DLs);
+                    pageInfoArray.put(pageInfo);
                 }
-                responseData.put((String) themeID, DLsInPage);
+                themeInfo.put("themeID", themesTable.getId());
+                themeInfo.put("themeName", themesTable.getThemeName());
+                themeInfo.put("pages", pageInfoArray);
+                responseData.put(themeInfo);
             }
         }
         return responseData.toString();
