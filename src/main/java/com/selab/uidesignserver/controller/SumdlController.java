@@ -54,12 +54,12 @@ public class SumdlController {
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
         String projectID = projectsTable.getProjectID();
         JSONObject dataObject = new JSONObject(data);
-        String sumdl = dataObject.getString("sumdl");
+        JSONObject sumdl = dataObject.getJSONObject("sumdl");
         String themeID = dataObject.getString("themeID");
         String pageID = dataObject.getString("pageID");
         ThemesTable themesTable = internalRepresentationService.getThemeById(themeID);
         PagesTable pagesTable = internalRepresentationService.getPageByPageID(pageID);
-        SumdlsTable sumdlTable = new SumdlsTable(sumdl, projectsTable, themesTable, pagesTable);
+        SumdlsTable sumdlTable = new SumdlsTable(sumdl.toString(), projectsTable, themesTable, pagesTable);
         this.internalRepresentationService.insertSumdl(sumdlTable);
         return "insert theme successfully";
     }

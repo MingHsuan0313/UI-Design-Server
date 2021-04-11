@@ -61,13 +61,14 @@ public class NavigationController {
 	@PostMapping(value = "")
 	public String insertNavigation(@RequestBody String data, @RequestHeader("projectName") String projectName) throws IOException, TemplateException, SQLException {
 		ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
+		System.out.println(data.toString());
 		JSONObject dataObject = new JSONObject(data);
-		String ndl = dataObject.getString("ndl");
+		JSONObject ndl = dataObject.getJSONObject("ndl");
 		String themeID = dataObject.getString("themeID");
 		String pageID = dataObject.getString("pageID");
 		ThemesTable themesTable = internalRepresentationService.getThemeById(themeID);
 		PagesTable pagesTable = internalRepresentationService.getPageByPageID(pageID);
-		NavigationsTable navigationTable = new NavigationsTable(ndl, projectsTable, themesTable, pagesTable);
+		NavigationsTable navigationTable = new NavigationsTable(ndl.toString(), projectsTable, themesTable, pagesTable);
 		internalRepresentationService.insertNaivigation(navigationTable);
 		return "insert navigation";
 	}

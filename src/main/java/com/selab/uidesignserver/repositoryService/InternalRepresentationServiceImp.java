@@ -306,6 +306,16 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public boolean deleteThemeByID(String themeID){
+        ThemesTable deleteTheme = themeRepository.findThemesTableByID(themeID);
+        if(deleteTheme!=null){
+            themeRepository.delete(deleteTheme);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void truncateThemes() {
         themeRepository.deleteAll();
     }

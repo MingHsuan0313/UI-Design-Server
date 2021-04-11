@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PagesRepository extends JpaRepository<PagesTable, Integer>{
-    @Query(value = "SELECT p FROM PageUICDLs p WHERE p.pageID = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM PageUICDLs p WHERE p.pageID = ?1", nativeQuery = true)
     PagesTable findPagesTableByPageID(String pageID);
 
     @Query(value = "SELECT * FROM PageUICDLs p WHERE p.projectID = ?1", nativeQuery = true)

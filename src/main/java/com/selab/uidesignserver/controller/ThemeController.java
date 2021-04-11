@@ -55,22 +55,24 @@ public class ThemeController {
         }
     }
 
+    @DeleteMapping(value = "themeId")
+    public String deleteThemeByID(@RequestHeader("projectName") String projectName, @RequestHeader("themeID") String themeID) {
+        if(this.internalRepresentationService.deleteThemes(themeID))
+            return "delete themes";
+        else {
+            return "delete themes failed (not found)";
+        }
+    }
+
     @PostMapping(value = "")
     public String insertTheme(@RequestBody String data, @RequestHeader("projectName") String projectName) {
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
-        String projectID = projectsTable.getProjectID();
 		JSONObject themeObject = new JSONObject(data);
-        String id = themeObject.getString("id");
         String themeID = themeObject.getString("themeID");
-        String pageID = themeObject.getString("pageID");
-        String groupID = themeObject.getString("pageID");
         String userID = themeObject.getString("userID");
-        GroupsTable groupsTable = authenticationService.getGroup(groupID);
         UsersTable usersTable = authenticationService.getUser(userID);
-        ThemesTable themesTable = internalRepresentationService.getThemeById(themeID);
-        PagesTable pagesTable = internalRepresentationService.getPageByPageID(pageID);
-        String themeName = themeObject.getString("name");
-        ThemesTable themeTable = new ThemesTable(id, themeName, projectsTable, usersTable, true);
+        String themeName = themeObject.getString("themeName");
+        ThemesTable themeTable = new ThemesTable(themeID, themeName, projectsTable, usersTable, true);
         this.internalRepresentationService.insertTheme(themeTable);
         return "insert theme successfully";
     }

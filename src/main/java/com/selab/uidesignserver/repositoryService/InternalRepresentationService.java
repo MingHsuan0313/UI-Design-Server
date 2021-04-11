@@ -52,5 +52,6 @@ public interface InternalRepresentationService {
     public List<ThemesTable> getThemes(String projectID);
     public ThemesTable getThemeById(String ThemeId);
     public boolean deleteThemes(String projectID);
+    public boolean deleteThemeByID(String themeID);
     public void truncateThemes();
 }
