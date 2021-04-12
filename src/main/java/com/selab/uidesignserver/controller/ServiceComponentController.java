@@ -65,7 +65,6 @@ public class ServiceComponentController {
     @GetMapping(value = "/getReturn")
     public String getReturn(@RequestParam("serviceID") String serviceID) {
         JSONObject Return = new JSONObject();
-        // JSONObject department = new JSONObject();
         JSONObject category = new JSONObject();
         JSONObject item = new JSONObject();
 
@@ -81,7 +80,6 @@ public class ServiceComponentController {
         Return.put("description", "");
         Return.put("category", category);
 
-        // return "Hello";
         return Return.toString();
     }
 
@@ -168,8 +166,6 @@ public class ServiceComponentController {
         }
         connection.close();
         return arguments.toString();
-        // return
-        // serviceComponentService.getArgumentsByServiceID(Integer.parseInt(serviceID));
     }
 
 

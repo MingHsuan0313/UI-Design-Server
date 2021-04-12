@@ -14,6 +14,8 @@ import org.jclouds.rest.annotations.ResponseParser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class AuthenticationController {
     InternalRepresentationService internalRepresentationService;
 
     @PostMapping(value = "/login")
-    public String authenticate(@RequestBody String data) {
+    public ResponseEntity<String> authenticate(@RequestBody String data) {
         System.out.println("Hello authentication");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
@@ -40,17 +42,16 @@ public class AuthenticationController {
         if(authenticationService.authenticate(username, password)) {
             JSONObject responseObject = new JSONObject();
             responseObject.put("userId", authenticationService.getUserByUserName(username).getUserID());
-            //responseObject.put("groupId", authenticationService.getGroupByName(username).getGroupID());
-            return responseObject.toString();
+            return ResponseEntity.status(HttpStatus.OK).body(responseObject.toString());
         }
-        return "authentication failed";
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("authentification failed: user or password not match");
     }
 
     // delete userA
     // delete all group-user relations with userA
     // delete groupA
     @DeleteMapping(value = "/deregister")
-    public String deRegister(@RequestBody String data) {
+    public ResponseEntity<String> deRegister(@RequestBody String data) {
         System.out.println("Deregister");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
@@ -67,17 +68,17 @@ public class AuthenticationController {
                 }
                 authenticationService.deleteUser(user.getUserID());
                 authenticationService.deleteGroup(group.getGroupID());
-                return "delete user: " + username + "successfully";
+                return ResponseEntity.status(HttpStatus.OK).body("delete user: " + username + "successfully");
             } else
-                return "delete user: " + username + "not correctly (password not matched";
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("delete user: " + username + "not correctly (password not matched");
         }
-        return "user not found";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("user not found");
     }
 
     // type1: register successfully
     // type2: register duplicate username
     @PostMapping(value = "/register")
-    public String register(@RequestBody String data) {
+    public ResponseEntity<String> register(@RequestBody String data) {
         System.out.println("Hello register");
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
@@ -91,13 +92,13 @@ public class AuthenticationController {
             UsersTable usersTable = new UsersTable(userID, username, password);
             authenticationService.insertUser(usersTable);
 
-            return "Hello " + username + " register successed!";
+            return ResponseEntity.status(HttpStatus.OK).body("Hello " + username + " register successed!");
         }
-        return "Duplicate username";
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Duplicate username");
     }
 
     @PostMapping(value = "/group")
-    public String createGroup(@RequestBody String data, @RequestHeader("userID") String userID) {
+    public ResponseEntity<String> createGroup(@RequestBody String data, @RequestHeader("userID") String userID) {
         JSONObject responseObject = new JSONObject(data);
         UUID uuid = Generators.randomBasedGenerator().generate();
         String groupID = "Group-" + uuid.toString();
@@ -108,29 +109,59 @@ public class AuthenticationController {
             UsersTable usersTable = authenticationService.getUser(userID);
             UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupsTable);
             authenticationService.insertUserGroupRelation(relation);
-            return "create group success";
+            return ResponseEntity.status(HttpStatus.OK).body("create group success");
         }
         else 
-            return "create failed: this group name has been used!";
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("failed: this group name has been used!");
     }
 
     @PutMapping(value="/group")
-    public String inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userName") String userName) {
+    public ResponseEntity<String> inviteToProjectGroup(@RequestHeader("projectID") String projectID, @RequestHeader("userName") String userName) {
+        System.out.println("invite group here");;
         ProjectsTable projectTable = internalRepresentationService.getProject(projectID);
         GroupsTable groupTable = projectTable.getGroupsTable();
         UsersTable usersTable = authenticationService.getUserByUserName(userName);
+        if(this.authenticationService.getRelationByGroupAndUserID(groupTable.getGroupID(),usersTable.getUserID()).size() > 0)
+            return ResponseEntity.status(HttpStatus.OK).body("user has been involved in group");
+
+        if(usersTable == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("user is not found".toString());
         UsersGroupsTable relation = new UsersGroupsTable(usersTable, groupTable);
         authenticationService.insertUserGroupRelation(relation);
-        return "invite successfully";
+        return ResponseEntity.status(HttpStatus.OK).body("invite successfully".toString());
     }
 
     @PostMapping(value = "/logout")
-    public Boolean logout(@RequestHeader("userID") String userID, @RequestBody String data) {
+    public ResponseEntity<String> logout(@RequestHeader("userID") String userID, @RequestBody String data) {
+        System.out.println("logout here");
+        System.out.println(data);
         JSONObject object = new JSONObject(data);
-        JSONArray themeIDs = object.getJSONArray("themeIDs");
+        JSONArray themeIDs = new JSONArray();
+        if(object.getJSONArray("themeIDs") != null) 
+            themeIDs = object.getJSONArray("themeIDs");
+        System.out.println("hello");
         List<String> themeIDList = new ArrayList<>();
         themeIDs.forEach(themeID->themeIDList.add((String)themeID));
-        return authenticationService.logout(userID, themeIDList);
+        if(authenticationService.logout(userID, themeIDList))
+            return ResponseEntity.status(HttpStatus.OK).body("log out success");
+        else
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("log out failed (invalid username)");
     }
 
+    @GetMapping(value = "/project/members")
+    public ResponseEntity<String> getGroupMembersByProjectId(@RequestHeader("projectId") String projectId) {
+        ProjectsTable projectsTable = internalRepresentationService.getProject(projectId);
+        if(projectsTable == null) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("project not found");
+        }
+        GroupsTable groupsTable = projectsTable.getGroupsTable();
+        List<UsersGroupsTable> relations = authenticationService.getUsersByGroup(groupsTable.getGroupID());
+
+        List<UsersTable> users = new ArrayList<UsersTable>();
+        for(int index = 0; index < relations.size(); index++) {
+            users.add(relations.get(index).getUsersTable());
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(users.toString());
+    }
 }

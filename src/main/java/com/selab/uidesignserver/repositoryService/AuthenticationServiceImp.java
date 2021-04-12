@@ -32,14 +32,15 @@ public class AuthenticationServiceImp implements AuthenticationService {
 
     // Users
     @Override
-    public UsersTable insertUser(UsersTable usersTable){
+    public UsersTable insertUser(UsersTable usersTable) {
         return usersRepository.save(usersTable);
     }
+
     @Override
-    public Boolean deleteUser(String userID){
+    public Boolean deleteUser(String userID) {
         UsersTable usersTable = usersRepository.findUsersTableByUserID(userID);
         boolean flag = false;
-        if(usersTable!=null){
+        if (usersTable != null) {
             usersRepository.delete(usersTable);
             flag = true;
         }
@@ -47,7 +48,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public UsersTable getUser(String userID){
+    public UsersTable getUser(String userID) {
         return usersRepository.findUsersTableByUserID(userID);
     }
 
@@ -57,15 +58,14 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public Boolean authenticate(String userName, String password){
-        System.out.println("Hello authenticate");
+    public Boolean authenticate(String userName, String password) {
         UsersTable usersTable = usersRepository.findUsersTableByUserName(userName);
-        if(usersTable == null){
+        if (usersTable == null) {
             return false;
         }
-        if( usersTable.getPassword().equals(password)){
+        if (usersTable.getPassword().equals(password)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -73,11 +73,13 @@ public class AuthenticationServiceImp implements AuthenticationService {
     @Override
     public Boolean logout(String userID, List<String> themeIDs) {
         UsersTable usersTable = usersRepository.findUsersTableByUserID(userID);
-        if(usersTable!=null){
-            for(String themeID: themeIDs){
+        if (usersTable != null) {
+            for (String themeID : themeIDs) {
                 ThemesTable themesTable = themesRepository.findThemesTableByID(themeID);
-                themesTable.setUsed(false);
-                themesRepository.save(themesTable);
+                if (themesTable != null) {
+                    themesTable.setUsed(false);
+                    themesRepository.save(themesTable);
+                }
             }
             return true;
         }
@@ -86,21 +88,21 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public void truncateUser(){
+    public void truncateUser() {
         usersRepository.deleteAll();
     }
 
     // Groups
     @Override
-    public GroupsTable insertGroup(GroupsTable groupsTable){
+    public GroupsTable insertGroup(GroupsTable groupsTable) {
         return groupsRepository.save(groupsTable);
     }
 
     @Override
-    public Boolean deleteGroup(String groupID){
+    public Boolean deleteGroup(String groupID) {
         GroupsTable groupsTable = groupsRepository.findGroupsTableByGroupID(groupID);
         boolean flag = false;
-        if(groupsTable!=null){
+        if (groupsTable != null) {
             groupsRepository.delete(groupsTable);
             flag = true;
         }
@@ -108,7 +110,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public GroupsTable getGroup(String groupID){
+    public GroupsTable getGroup(String groupID) {
         return groupsRepository.findGroupsTableByGroupID(groupID);
     }
 
@@ -118,21 +120,22 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public void truncateGroup(){
+    public void truncateGroup() {
         groupsRepository.deleteAll();
     }
 
     // User_Groups
     @Override
-    public UsersGroupsTable insertUserGroupRelation(UsersGroupsTable usersGroupsTable){
+    public UsersGroupsTable insertUserGroupRelation(UsersGroupsTable usersGroupsTable) {
         return userGroupRelationshipRepository.save(usersGroupsTable);
     }
 
     @Override
-    public Boolean deleteUserGroupRelation(String userID, String groupID){
-        UsersGroupsTable usersGroupsTable = userGroupRelationshipRepository.findRelationTableByUserIDAndGroupID(userID, groupID);
+    public Boolean deleteUserGroupRelation(String userID, String groupID) {
+        UsersGroupsTable usersGroupsTable = userGroupRelationshipRepository.findRelationTableByUserIDAndGroupID(userID,
+                groupID);
         boolean flag = false;
-        if(usersGroupsTable != null){
+        if (usersGroupsTable != null) {
             userGroupRelationshipRepository.delete(usersGroupsTable);
             flag = true;
         }
@@ -140,16 +143,22 @@ public class AuthenticationServiceImp implements AuthenticationService {
     }
 
     @Override
-    public List<UsersGroupsTable> getUsersByGroup(String groupID){
+    public List<UsersGroupsTable> getUsersByGroup(String groupID) {
         return userGroupRelationshipRepository.findRelationTableByGroupID(groupID);
     }
 
     @Override
-    public List<UsersGroupsTable> getGroupsByUser(String userID){
+    public List<UsersGroupsTable> getGroupsByUser(String userID) {
         return userGroupRelationshipRepository.findRelationTableByUserID(userID);
     }
+
     @Override
-    public void truncateUsersGroupsTable(){
+    public void truncateUsersGroupsTable() {
         userGroupRelationshipRepository.deleteAll();
+    }
+
+    @Override
+    public List<UsersGroupsTable> getRelationByGroupAndUserID(String groupID, String usersID) {
+        return userGroupRelationshipRepository.findRelationTableByGroupIDAndUserID(groupID, usersID);
     }
 }
