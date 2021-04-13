@@ -16,6 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,14 +34,31 @@ public class AuthenticationController {
     InternalRepresentationService internalRepresentationService;
 
     @PostMapping(value = "/login")
-    public String authenticate(@RequestBody String data) {
+    public String authenticate(@RequestBody String data, HttpServletRequest request) {
         System.out.println("Hello authentication");
+        HttpSession session = request.getSession();
+
+        if(!session.isNew()){
+            System.out.println("Has session ID");
+            //session.invalidate();
+            String userId = (String)session.getAttribute("userId");
+            JSONObject responseObject = new JSONObject().put("userId", userId);
+            return responseObject.toString();
+        }
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
         if(authenticationService.authenticate(username, password)) {
             JSONObject responseObject = new JSONObject();
-            responseObject.put("userId", authenticationService.getUserByUserName(username).getUserID());
+            String userId = authenticationService.getUserByUserName(username).getUserID();
+            responseObject.put("userId", userId);
+            session.setAttribute("userId", userId);
+            List<String> openedThemeIDList = new ArrayList<String>();
+
+            session.setAttribute("openedThemeIDList", openedThemeIDList);
+            ((List<String>)session.getAttribute("openedThemeIDList")).forEach(
+                    name -> System.out.println(name)
+            );
             //responseObject.put("groupId", authenticationService.getGroupByName(username).getGroupID());
             return responseObject.toString();
         }
@@ -125,11 +144,12 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/logout")
-    public Boolean logout(@RequestHeader("userID") String userID, @RequestBody String data) {
+    public Boolean logout(@RequestHeader("userID") String userID, @RequestBody String data, HttpSession session) {
         JSONObject object = new JSONObject(data);
         JSONArray themeIDs = object.getJSONArray("themeIDs");
         List<String> themeIDList = new ArrayList<>();
         themeIDs.forEach(themeID->themeIDList.add((String)themeID));
+        session.invalidate();
         return authenticationService.logout(userID, themeIDList);
     }
 

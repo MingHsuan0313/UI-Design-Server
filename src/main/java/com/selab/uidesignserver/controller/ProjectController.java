@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/project")
 @CrossOrigin(origins = "*", allowCredentials = "true")
@@ -43,9 +45,11 @@ public class ProjectController {
 
     @PostMapping(value = "/open")
     public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
-            @RequestHeader("userID") String userID) {
+                              @RequestHeader("userID") String userID, HttpSession session) {
         JSONArray themesArray = new JSONArray(data);
         JSONArray responseData = new JSONArray();
+
+        List<String> openedThemeIDList = (List<String>) session.getAttribute("openedThemeIDList");
 
         for (Object themeID : themesArray) {
             // Set theme to used
@@ -72,8 +76,12 @@ public class ProjectController {
                 themeInfo.put("themeID", themesTable.getId());
                 themeInfo.put("themeName", themesTable.getThemeName());
                 themeInfo.put("pages", pageInfoArray);
+                System.out.println(themesTable.getId());
+                openedThemeIDList.add(themesTable.getId());
+
                 responseData.put(themeInfo);
             }
+            session.setAttribute("openedThemeIDList", openedThemeIDList);
         }
         return responseData.toString();
     }

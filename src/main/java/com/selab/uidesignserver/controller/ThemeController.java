@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.selab.uidesignserver.entity.uiComposition.ThemesTable;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/theme")
 @CrossOrigin(origins = "*", allowCredentials = "true")
@@ -65,15 +67,18 @@ public class ThemeController {
     }
 
     @PostMapping(value = "")
-    public String insertTheme(@RequestBody String data, @RequestHeader("projectName") String projectName) {
+    public String insertTheme(@RequestBody String data, @RequestHeader("projectName") String projectName, HttpSession session) {
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
-		JSONObject themeObject = new JSONObject(data);
+        List<String> openedThemeIDList = (List<String>) session.getAttribute("openedThemeIDList");
+        JSONObject themeObject = new JSONObject(data);
         String themeID = themeObject.getString("themeID");
         String userID = themeObject.getString("userID");
         UsersTable usersTable = authenticationService.getUser(userID);
         String themeName = themeObject.getString("themeName");
         ThemesTable themeTable = new ThemesTable(themeID, themeName, projectsTable, usersTable, true);
         this.internalRepresentationService.insertTheme(themeTable);
+        openedThemeIDList.add(themeID);
+        session.setAttribute("openedThemeIDList", openedThemeIDList);
         return "insert theme successfully";
     }
 

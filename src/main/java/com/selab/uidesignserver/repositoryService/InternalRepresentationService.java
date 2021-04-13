@@ -50,8 +50,10 @@ public interface InternalRepresentationService {
     // themes controller
     public ThemesTable insertTheme(ThemesTable themeTable);
     public List<ThemesTable> getThemes(String projectID);
-    public ThemesTable getThemeById(String ThemeId);
+    public ThemesTable getThemeById(String themeID);
+    public boolean setThemeToUnused(String themeID);
     public boolean deleteThemes(String projectID);
     public boolean deleteThemeByID(String themeID);
     public void truncateThemes();
+
 }

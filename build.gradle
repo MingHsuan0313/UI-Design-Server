@@ -35,6 +35,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'com.fasterxml.uuid', name: 'java-uuid-generator', version: '4.0.1'
+//	implementation group: 'org.springframework.session', name: 'spring-session-jdbc', version: '2.4.2'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.security:spring-security-test'
+	implementation group: 'org.springframework.data', name: 'spring-data-redis', version: '2.4.7'
+	// https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
+	implementation group: 'org.springframework.session', name: 'spring-session-data-redis', version: '2.3.2.RELEASE'
+	// https://mvnrepository.com/artifact/redis.clients/jedis
+	implementation group: 'redis.clients', name: 'jedis', version: '3.5.2'
+
+
 
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {

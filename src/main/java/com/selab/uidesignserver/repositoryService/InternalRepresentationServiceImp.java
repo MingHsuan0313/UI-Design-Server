@@ -276,8 +276,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public ThemesTable getThemeById(String ThemeId) {
-        return themeRepository.findById(ThemeId).get();
+    public ThemesTable getThemeById(String themeID) {
+        return themeRepository.findById(themeID).get();
     }
 
     @Override
@@ -310,6 +310,17 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         ThemesTable deleteTheme = themeRepository.findThemesTableByID(themeID);
         if(deleteTheme!=null){
             themeRepository.delete(deleteTheme);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean setThemeToUnused(String themeID){
+        ThemesTable themesTable = themeRepository.findById(themeID).get();
+        if(themesTable !=null && themesTable.getUsed()==true){
+            themesTable.setUsed(false);
+            themeRepository.save(themesTable);
             return true;
         }
         return false;
