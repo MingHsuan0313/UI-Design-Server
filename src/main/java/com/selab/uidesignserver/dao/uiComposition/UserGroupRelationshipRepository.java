@@ -17,4 +17,7 @@ public interface UserGroupRelationshipRepository extends JpaRepository<UsersGrou
 
     @Query(value = "SELECT * FROM Users_Groups ug WHERE ug.groupID = ?1", nativeQuery = true)
     List<UsersGroupsTable> findRelationTableByGroupID(String groupID);
+
+    @Query(value = "SELECT * FROM Users_Groups ug WHERE ug.groupID = ?1 and ug.userID = ?2", nativeQuery = true)
+    List<UsersGroupsTable> findRelationTableByGroupIDAndUserID(String groupID, String userID);
 }

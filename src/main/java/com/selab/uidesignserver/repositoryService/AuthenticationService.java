@@ -28,6 +28,7 @@ public interface AuthenticationService {
     Boolean deleteUserGroupRelation(String userID, String groupID);
     List<UsersGroupsTable> getUsersByGroup(String groupID);
     List<UsersGroupsTable> getGroupsByUser(String userID);
+    List<UsersGroupsTable> getRelationByGroupAndUserID(String groupID, String usersID);
     void truncateUsersGroupsTable();
 
 }

@@ -69,10 +69,6 @@ public class EndpointTestingController {
         return params;
     }
     
-    public void setFakeDataForVarValue(JSONArray serviceComponentPool) {
-        
-    }
-    
     public JSONObject setComplexArgUrl(JSONObject complexArgTypeUrl) {
         JSONObject complexArg = new JSONObject();
         Iterator<String> complexArgNames = complexArgTypeUrl.keys();
@@ -97,7 +93,6 @@ public class EndpointTestingController {
         Map<String, Object> templateData = new HashMap<>();
 
         JSONArray serviceComponentPool = new JSONArray(data);
-        this.setFakeDataForVarValue(serviceComponentPool);
 
         ArrayList<JSONObject> operations = new ArrayList<JSONObject>();
 
@@ -118,7 +113,6 @@ public class EndpointTestingController {
             System.out.println("****************");
 
             if (!argComplexTypeUrl.keys().hasNext()) {
-                // System.out.println(serviceComponent.getString("name") + " " + "empty");
                 operation.put("argComplexTypeUrl", "");
             } else {
                 operation.put("argComplexTypeUrl", argComplexTypeUrl);
@@ -137,13 +131,9 @@ public class EndpointTestingController {
             operation.put("httpMethod",serviceComponent.getString("httpMethod"));
             operations.add(operation);
         }
-        // System.out.println(operations.toString());
         templateData.put("operations", operations);
         Writer writer = new StringWriter();
         mainCodeTemplate.process(templateData, writer);
-        // Gson gson = new Gson();
-        // System.out.println(gson.toJson(operations));
-        // System.out.println(writer.toString());
         return writer.toString();
     }
 }

@@ -1,5 +1,6 @@
 package com.selab.uidesignserver.controller;
 
+import com.cdancy.jenkins.rest.shaded.javax.ws.rs.core.Response;
 import com.fasterxml.uuid.Generators;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,8 +47,10 @@ public class ProjectController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/open")
-    public String openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
-                              @RequestHeader("userID") String userID, HttpSession session) {
+
+    public ResponseEntity<String> openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
+            @RequestHeader("userID") String userID, HttpSession session) {
+
         JSONArray themesArray = new JSONArray(data);
         JSONArray responseData = new JSONArray();
 
@@ -83,15 +88,15 @@ public class ProjectController {
             }
             session.setAttribute("openedThemeIDList", openedThemeIDList);
         }
-        return responseData.toString();
+        return ResponseEntity.status(HttpStatus.OK).body(responseData.toString());
     }
 
     @PostMapping(value = "/create")
-    public String createProject(@RequestHeader("userID") String userID,
+    public ResponseEntity<String> createProject(@RequestHeader("userID") String userID,
             @RequestHeader("projectName") String projectName) {
         System.out.println("create project");
         if (internalRepresentationService.getProjectByProjectName(projectName) != null) {
-            return "project name has been used";
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("project name has been used");
         }
         UUID uuid = Generators.randomBasedGenerator().generate();
 
@@ -109,24 +114,21 @@ public class ProjectController {
         String projectId = "Project-" + uuid.toString();
         ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable);
         internalRepresentationService.insertProject(project);
-        return projectId;
-    }
-
-    @PostMapping(value = "/save")
-    public String saveProject(@RequestBody String data, @RequestHeader("projectID") String projectID,
-            @RequestHeader("userID") String userID) {
-
-        return "";
+        return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }
 
     @PutMapping(value = "/group")
-    public String changeProjectGroup(@RequestHeader("userID") String userID,
+    public ResponseEntity<String> changeProjectGroup(@RequestHeader("userID") String userID,
             @RequestHeader("projectID") String projectID, @RequestHeader("groupID") String targetGroupID) {
         ProjectsTable project = internalRepresentationService.getProject(projectID);
+        if(project == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("projectID not found");
         GroupsTable group = authenticationService.getGroup(targetGroupID);
+        if(group == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("groupID not found");
         project.setGroupsTable(group);
         this.internalRepresentationService.modifyProject(project);
-        return "change group success";
+        return ResponseEntity.status(HttpStatus.OK).body("change group success");
     }
 
     @GetMapping(value = "/user")

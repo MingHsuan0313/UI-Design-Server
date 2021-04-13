@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.json.JSONObject;
+
 @Entity
 @Table(name = "Users")
 public class UsersTable {
@@ -48,5 +50,13 @@ public class UsersTable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        JSONObject userInfo = new JSONObject();
+        userInfo.put("name", this.userName);
+        userInfo.put("id", this.userID);
+        return userInfo.toString();
     }
 }
