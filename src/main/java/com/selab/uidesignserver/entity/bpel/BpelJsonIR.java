@@ -1,6 +1,7 @@
 package com.selab.uidesignserver.entity.bpel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.selab.uidesignserver.config.BpelDBConfig;
 
 import javax.persistence.*;
@@ -19,12 +20,14 @@ public class BpelJsonIR {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "MEDIUMTEXT")
     private String content;
 
+    @JsonProperty("created_at")
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @JsonProperty("updated_at")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
