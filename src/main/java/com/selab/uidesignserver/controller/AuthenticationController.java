@@ -42,14 +42,6 @@ public class AuthenticationController {
         System.out.println("Hello authentication");
         HttpSession session = request.getSession();
 
-        if(!session.isNew()){
-            System.out.println("Has session ID");
-            //session.invalidate();
-            String userId = (String)session.getAttribute("userId");
-            JSONObject responseObject = new JSONObject().put("userId", userId);
-            return ResponseEntity.status(HttpStatus.OK).body(responseObject.toString());
-        }
-
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");

@@ -71,7 +71,6 @@ public class ThemeController {
     @PostMapping(value = "")
     public String insertTheme(@RequestBody String data, @RequestHeader("projectName") String projectName, HttpSession session) {
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
-        List<String> openedThemeIDList = (List<String>) session.getAttribute("openedThemeIDList");
         JSONObject themeObject = new JSONObject(data);
         String themeID = themeObject.getString("themeID");
         String userID = themeObject.getString("userID");
@@ -79,10 +78,10 @@ public class ThemeController {
         String themeName = themeObject.getString("themeName");
         ThemesTable themeTable = new ThemesTable(themeID, themeName, projectsTable, usersTable, true);
         this.internalRepresentationService.insertTheme(themeTable);
+        List<String> openedThemeIDList = (List<String>) session.getAttribute("openedThemeIDList");
         openedThemeIDList.add(themeID);
         session.setAttribute("openedThemeIDList", openedThemeIDList);
         return "insert theme successfully";
     }
-
 
 }
