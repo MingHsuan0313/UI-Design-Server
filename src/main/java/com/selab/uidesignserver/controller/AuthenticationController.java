@@ -59,7 +59,7 @@ public class AuthenticationController {
 
             return ResponseEntity.status(HttpStatus.OK).body(responseObject.toString());
         }
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("authentification failed: user or password not match");
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("authentication failed: user or password not match");
     }
 
     // delete userA
