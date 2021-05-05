@@ -55,5 +55,6 @@ public interface InternalRepresentationService {
     public boolean deleteThemes(String projectID);
     public boolean deleteThemeByID(String themeID);
     public void truncateThemes();
+    public void refreshAllThemes();
 
 }

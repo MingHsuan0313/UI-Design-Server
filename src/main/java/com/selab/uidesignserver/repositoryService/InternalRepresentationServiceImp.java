@@ -332,6 +332,11 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public void refreshAllThemes() {
+        themeRepository.refreshUsed();
+    }
+
+    @Override
     public boolean modifyProject(ProjectsTable project) {
         this.projectsRepository.save(project);
         return false;

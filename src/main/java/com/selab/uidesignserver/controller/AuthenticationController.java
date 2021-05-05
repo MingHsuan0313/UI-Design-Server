@@ -36,7 +36,6 @@ public class AuthenticationController {
     InternalRepresentationService internalRepresentationService;
 
     @PostMapping(value = "/login")
-
     public ResponseEntity<String> authenticate(@RequestBody String data, HttpServletRequest request) {
 
         System.out.println("Hello authentication");

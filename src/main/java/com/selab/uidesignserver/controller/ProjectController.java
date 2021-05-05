@@ -47,7 +47,6 @@ public class ProjectController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/open")
-
     public ResponseEntity<String> openProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
             @RequestHeader("userID") String userID, HttpSession session) {
 

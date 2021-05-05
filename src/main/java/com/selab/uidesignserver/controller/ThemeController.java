@@ -33,6 +33,12 @@ public class ThemeController {
     @Autowired
     AuthenticationService authenticationService;
 
+    @GetMapping(value = "/refresh/used")
+    public String refresh() {
+        this.internalRepresentationService.refreshAllThemes();
+        return "unset all theme's used bit";
+    }
+
     @DeleteMapping(value = "/trunc")
     public String truncate() throws SQLException {
         this.internalRepresentationService.truncateThemes();
@@ -83,5 +89,4 @@ public class ThemeController {
         session.setAttribute("openedThemeIDList", openedThemeIDList);
         return "insert theme successfully";
     }
-
 }
