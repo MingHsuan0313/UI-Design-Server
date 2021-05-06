@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ThemesRepository extends JpaRepository<ThemesTable, String> {
@@ -19,6 +20,7 @@ public interface ThemesRepository extends JpaRepository<ThemesTable, String> {
     List<ThemesTable> findThemesTableByProjectID(String projectID);
 
     @Modifying
+    @Transactional
     @Query(value = "UPDATE Themes SET used = false", nativeQuery = true)
     void refreshUsed();
 }
