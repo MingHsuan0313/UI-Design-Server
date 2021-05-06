@@ -17,6 +17,6 @@ public interface ThemesRepository extends JpaRepository<ThemesTable, String> {
     @Query(value = "SELECT * FROM Themes t WHERE t.projectID = ?1", nativeQuery = true)
     List<ThemesTable> findThemesTableByProjectID(String projectID);
 
-//    @Query(value = "UPDATE Themes SET used = false", nativeQuery = true)
-//    void refreshUsed();
+   @Query(value = "UPDATE Themes SET used = false", nativeQuery = true)
+   void refreshUsed();
 }   
