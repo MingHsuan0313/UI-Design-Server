@@ -91,10 +91,11 @@ public class ThemeController {
     }
 
     @PostMapping(value = "/setUnused")
-    public String insertTheme(@RequestBody String themeID, @RequestHeader("projectName") String projectName, HttpSession session) {
+    public String setUnused(@RequestBody String themeID, @RequestHeader("projectName") String projectName, HttpSession session) {
+        System.out.println("set theme unused");
         ThemesTable themesTable = internalRepresentationService.getThemeById(themeID);
         themesTable.setUsed(false);
-        internalRepresentationService.insertTheme(themeTable);
+        internalRepresentationService.insertTheme(themesTable);
         return "set the theme unused successfully";
     }
 }
