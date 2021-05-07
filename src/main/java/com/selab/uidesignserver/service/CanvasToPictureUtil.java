@@ -25,10 +25,11 @@ public class CanvasToPictureUtil {
     public CanvasToPictureUtil(){}
 
     static public byte[] transformToPNG(String erXmlString) throws IOException{
-        System.out.println(erXmlString);
+       // System.out.println(erXmlString);
         Document doc = mxXmlUtils.parseXml(erXmlString);
-        System.out.println(doc);
+        //System.out.println(doc);
         mxGraph graph = new mxGraph();
+
         Map<String,Object> defaultStyle = graph.getStylesheet().getDefaultVertexStyle();
         defaultStyle.put("fillColor","#ffffff");
 
@@ -37,7 +38,7 @@ public class CanvasToPictureUtil {
 
         MymxGraphComponent graphComponent = new MymxGraphComponent(graph);
         BufferedImage image = mxCellRenderer.createBufferedImage(graph, null, 1, Color.WHITE, true, null, graphComponent.getCanvas());
-        System.out.println(image);
+        //System.out.println(image);
         mxPngEncodeParam param = mxPngEncodeParam.getDefaultEncodeParam(image);
         param.setCompressedText(new String[] { "mxGraphModel", erXmlString });
 
