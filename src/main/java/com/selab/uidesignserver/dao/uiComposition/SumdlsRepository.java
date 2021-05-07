@@ -16,4 +16,7 @@ public interface SumdlsRepository extends JpaRepository<SumdlsTable, String> {
 
     @Query(value = "SELECT * FROM SUMDLs s WHERE s.pageID = ?1", nativeQuery = true)
     SumdlsTable findSUMDLTablesByPageID(String pageID);
+
+    @Query(value = "SELECT * FROM SUMDLs s WHERE s.themeID = ?1", nativeQuery = true)
+    List<SumdlsTable> findSUMDLTableByThemeID(String themeID);
 }

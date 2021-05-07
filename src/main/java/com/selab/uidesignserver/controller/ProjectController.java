@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.context.Theme;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -149,5 +150,10 @@ public class ProjectController {
     public List<ThemesTable> getThemesByProjectID(@RequestHeader("userID") String userID,
             @RequestHeader("projectID") String projectID) {
         return internalRepresentationService.getThemesByProjectID(projectID);
+    }
+
+    @DeleteMapping(value = "/projects")
+    public String deleteProjectsByIds(@RequestBody String data) {
+        return "hello";
     }
 }

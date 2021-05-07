@@ -57,7 +57,7 @@ public class ThemeController {
         System.out.println("delete theme");
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
         String projectID = projectsTable.getProjectID();
-        if(this.internalRepresentationService.deleteThemes(projectID))
+        if(this.internalRepresentationService.deleteThemesByProjectId(projectID))
             return "delete themes";
         else {
             return "delete themes failed (not found)";
@@ -67,11 +67,17 @@ public class ThemeController {
     @DeleteMapping(value = "/themeId")
     public String deleteThemeByID(@RequestHeader("projectName") String projectName, @RequestHeader("themeID") String themeID) {
         System.out.println("delete ny ud");
-        if(this.internalRepresentationService.deleteThemes(themeID))
+        if(this.internalRepresentationService.deleteThemesByProjectId(themeID))
             return "delete themes";
         else {
             return "delete themes failed (not found)";
         }
+    }
+
+    @DeleteMapping(value = "/themes")
+    public String deleteThemesByIds(@RequestBody String data) {
+        // String[] themeIds = new JSONObject(data).getJSONArray("themeIds");
+        return "Hello";
     }
 
     @PostMapping(value = "")
