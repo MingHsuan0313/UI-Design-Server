@@ -403,4 +403,15 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         this.projectsRepository.save(project);
         return false;
     }
+
+    @Override
+    public boolean setLayout(String projectName, String layout) {
+        ProjectsTable project = this.projectRepository.findProjectsTableByProjectName(projectName);
+        if(project != null) {
+            project.setLayout(layout);
+            this.projectRepository.save(project);
+            return true;
+        }
+        return false;
+    }
 }

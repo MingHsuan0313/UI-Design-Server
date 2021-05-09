@@ -19,6 +19,7 @@ public interface InternalRepresentationService {
     public void truncateProjects();
     public List<ThemesTable> getThemesByProjectID(String projectID);
     public boolean modifyProject(ProjectsTable project);
+    public boolean setLayout(String projectName, String layout);
 
     // page controller
     public PagesTable insertPage(PagesTable pagesTable);

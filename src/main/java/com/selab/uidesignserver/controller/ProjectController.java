@@ -93,6 +93,14 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(responseData.toString());
     }
 
+    @PutMapping(value = "/layout")
+    public ResponseEntity<String> setLayout(@RequestHeader("projectName") String projectName, @RequestHeader("layout") String layout) {
+        if(this.internalRepresentationService.setLayout(projectName, layout))
+            return ResponseEntity.status(HttpStatus.OK).body("set Layout");
+        else
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("project not found");
+    }
+
     @PostMapping(value = "/save")
     public ResponseEntity<String> saveProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
             @RequestHeader("userID") String userID, HttpSession session) {
