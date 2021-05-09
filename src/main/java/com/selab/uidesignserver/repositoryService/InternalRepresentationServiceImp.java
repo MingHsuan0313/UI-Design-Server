@@ -294,7 +294,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         List<ThemesTable> themes = new ArrayList<ThemesTable>();
         for(int index = 0; index < themeIds.length; index++) {
             String themeId = themeIds[index];
-            themes.add(themeRepository.findThemesTableByID(themeId));
+            if(themeRepository.findThemesTableByID(themeId) != null)
+                themes.add(themeRepository.findThemesTableByID(themeId));
         }
 
         for (int index = 0; index < themes.size(); index++) {

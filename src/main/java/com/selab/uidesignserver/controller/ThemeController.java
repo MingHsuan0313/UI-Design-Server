@@ -8,6 +8,8 @@ import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
 import com.selab.uidesignserver.repositoryService.AuthenticationService;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -74,9 +76,15 @@ public class ThemeController {
         }
     }
 
-    @DeleteMapping(value = "/themes")
+    @PostMapping(value = "/themes")
     public String deleteThemesByIds(@RequestBody String data) {
-        // String[] themeIds = new JSONObject(data).getJSONArray("themeIds");
+        JSONArray themeIds = new JSONObject(data).getJSONArray("themeIDs");
+        String[] ids = new String[themeIds.length()];
+        for(int index = 0; index < ids.length; index++) {
+            String id = themeIds.getJSONObject(index).getString("id");
+            ids[index] = id;
+        }
+        this.internalRepresentationService.deleteThemesByIds(ids);
         return "Hello";
     }
 

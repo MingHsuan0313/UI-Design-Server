@@ -146,14 +146,21 @@ public class ProjectController {
         return projects;
     }
 
-    @GetMapping(value = "themes")
+    @GetMapping(value = "/themes")
     public List<ThemesTable> getThemesByProjectID(@RequestHeader("userID") String userID,
             @RequestHeader("projectID") String projectID) {
         return internalRepresentationService.getThemesByProjectID(projectID);
     }
 
-    @DeleteMapping(value = "/projects")
+    @PostMapping(value = "/projects")
     public String deleteProjectsByIds(@RequestBody String data) {
+        JSONArray projectIds = new JSONObject(data).getJSONArray("projectIDs");
+        String[] ids = new String[projectIds.length()];
+        for(int index = 0; index < projectIds.length(); index++) {
+            String id = projectIds.getJSONObject(index).getString("id");
+            ids[index] = id;
+        }
+        this.internalRepresentationService.deleteProjectsByIds(ids);
         return "hello";
     }
 }
