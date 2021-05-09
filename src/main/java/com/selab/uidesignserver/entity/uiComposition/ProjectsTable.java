@@ -12,16 +12,28 @@ public class ProjectsTable {
     @Column(name="projectName", nullable = false)
     private String projectName;
 
+	@Column(name = "layout", nullable = true)
+	private String layout;
+
     @OneToOne
     @JoinColumn(name = "groupID", referencedColumnName = "groupID", nullable=false)
     private GroupsTable groupsTable;
 
     public ProjectsTable(){}
 
-    public ProjectsTable(String projectID, String projectName, GroupsTable groupsTable){
+    public ProjectsTable(String projectID, String projectName, GroupsTable groupsTable, String layout){
         this.projectID = projectID;
         this.groupsTable = groupsTable;
         this.projectName = projectName;
+        this.layout = layout;
+    }
+
+    public String getLayout() {
+        return this.layout;
+    }
+
+    public void setLayout(String layout) {
+        this.layout = layout;
     }
 
     public GroupsTable getGroupsTable() {

@@ -98,6 +98,10 @@ public class ProjectController {
             @RequestHeader("userID") String userID, HttpSession session) {
             
             JSONObject projectObject = new JSONObject(data);
+            String layout = "";
+            if(projectObject.getString("layout") != null) {
+                layout = projectObject.getString("layout");
+            }
             JSONArray themeArray = projectObject.getJSONArray("themes"); 
             for(Object themeObject: themeArray){
                 String themeID = ((JSONObject)themeObject).getString("themeID");
@@ -126,6 +130,7 @@ public class ProjectController {
     public ResponseEntity<String> createProject(@RequestHeader("userID") String userID,
             @RequestHeader("projectName") String projectName) {
         System.out.println("create project");
+        String layout = "";
         if (internalRepresentationService.getProjectByProjectName(projectName) != null) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("project name has been used");
         }
@@ -143,7 +148,7 @@ public class ProjectController {
 
         // create project
         String projectId = "Project-" + uuid.toString();
-        ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable);
+        ProjectsTable project = new ProjectsTable(projectId, projectName, groupsTable, layout);
         internalRepresentationService.insertProject(project);
         return ResponseEntity.status(HttpStatus.OK).body(projectId);
     }

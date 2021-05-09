@@ -12,6 +12,7 @@ public class PagesTable {
     
 	@Column(name = "pageName", nullable = false)
 	private String name;
+
     
     @Column(name = "pageUICDL", nullable = false)
     private String pdl;
