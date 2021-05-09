@@ -52,7 +52,6 @@ public class ProjectController {
 
         JSONArray themesArray = new JSONArray(data);
         JSONArray responseData = new JSONArray();
-
         List<String> openedThemeIDList = (List<String>) session.getAttribute("openedThemeIDList");
 
         for (Object themeID : themesArray) {
@@ -84,10 +83,42 @@ public class ProjectController {
                 openedThemeIDList.add(themesTable.getId());
 
                 responseData.put(themeInfo);
+            }else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                     .body("Theme " + themesTable.getThemeName() + " is being used now.");
             }
             session.setAttribute("openedThemeIDList", openedThemeIDList);
         }
         return ResponseEntity.status(HttpStatus.OK).body(responseData.toString());
+    }
+
+    @PostMapping(value = "/save")
+    public ResponseEntity<String> saveProject(@RequestBody String data, @RequestHeader("projectName") String projectName,
+            @RequestHeader("userID") String userID, HttpSession session) {
+            
+            JSONObject projectObject = new JSONObject(data);
+            JSONArray themeArray = projectObject.getJSONArray("themes"); 
+            for(Object themeObject: themeArray){
+                String themeID = ((JSONObject)themeObject).getString("themeID");
+                String themeName = ((JSONObject)themeObject).getString("themeName");
+                JSONArray pageArray = ((JSONObject)themeObject).getJSONArray("pages");
+                for(Object pageObject: pageArray){
+                    String pageID = ((JSONObject)pageObject).getString("pageID");
+                    String pageName = ((JSONObject)pageObject).getString("pageName");
+                    String pdl = ((JSONObject)pageObject).getString("pdl");
+                    String sumdl = ((JSONObject)pageObject).getString("sumdl");
+                    String ndl = ((JSONObject)pageObject).getString("ndl");
+                    PagesTable pagesTable = internalRepresentationService.getPageByPageID(pageID);
+                    if(pagesTable!=null){
+                        
+                    }else{
+
+                    }
+                }
+            }
+
+
+        return ;
     }
 
     @PostMapping(value = "/create")
