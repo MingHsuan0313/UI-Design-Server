@@ -14,4 +14,7 @@ public interface NavigationRepository extends JpaRepository<NavigationsTable, St
 
     @Query(value = "SELECT * FROM NDLs n WHERE n.pageID = ?1", nativeQuery = true)
     NavigationsTable findNDLsTablesByPageID(String pageID);
+
+    @Query(value = "SELECT * FROM NDLs n WHERE n.themeID = ?1", nativeQuery = true)
+    List<NavigationsTable> findNDLsTableByThemeID(String themeID);
 }

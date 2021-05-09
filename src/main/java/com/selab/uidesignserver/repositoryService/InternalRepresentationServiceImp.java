@@ -1,5 +1,6 @@
 package com.selab.uidesignserver.repositoryService;
 
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 @Transactional
@@ -36,12 +36,12 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
 
     // project
     @Override
-    public ProjectsTable insertProject(ProjectsTable projectsTable){
+    public ProjectsTable insertProject(ProjectsTable projectsTable) {
         return projectsRepository.save(projectsTable);
     }
 
     @Override
-    public ProjectsTable getProject(String projectID){
+    public ProjectsTable getProject(String projectID) {
         ProjectsTable projectsTable = projectsRepository.findProjectsTableByProjectID(projectID);
         return projectsTable;
     }
@@ -53,10 +53,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         return projects;
     }
 
-
-
     @Override
-    public ProjectsTable getProjectByProjectName(String projectName){
+    public ProjectsTable getProjectByProjectName(String projectName) {
         return projectsRepository.findProjectsTableByProjectName(projectName);
     }
 
@@ -65,36 +63,34 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
         return themeRepository.findThemesTableByProjectID(projectID);
     }
 
-
     @Override
-    public boolean deleteProject(String projectID){
+    public boolean deleteProject(String projectID) {
         ProjectsTable projectsTable = projectsRepository.findProjectsTableByProjectID(projectID);
-        if(projectsTable != null){
+        if (projectsTable != null) {
             projectsRepository.delete(projectsTable);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-
     @Override
-    public void truncateProjects(){
+    public void truncateProjects() {
         projectsRepository.deleteAll();
     }
 
     // page
-	@Override
-	public PagesTable insertPage(PagesTable pagesTable) {
+    @Override
+    public PagesTable insertPage(PagesTable pagesTable) {
         return pageRepository.save(pagesTable);
-	}
-    
+    }
+
     @Override
     public List<PagesTable> getPages(String projectID) {
         List<PagesTable> allPages = pageRepository.findAll();
         List<PagesTable> wantedPages = new ArrayList<PagesTable>();
-        for(int index = 0;index < allPages.size(); index++) {
-            if(allPages.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < allPages.size(); index++) {
+            if (allPages.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 wantedPages.add(allPages.get(index));
             }
         }
@@ -107,7 +103,7 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public PagesTable getPageByPageID(String pageID){
+    public PagesTable getPageByPageID(String pageID) {
         return pageRepository.findPagesTableByPageID(pageID);
     }
 
@@ -120,8 +116,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deletePages(String projectID) {
         boolean flag = false;
         List<PagesTable> pages = pageRepository.findAll();
-        for(int index = 0; index < pages.size(); index++) {
-            if(pages.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < pages.size(); index++) {
+            if (pages.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 System.out.println("delete page");
                 flag = true;
                 pageRepository.delete(pages.get(index));
@@ -134,8 +130,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deletePagesByTheme(String themeID) {
         boolean flag = false;
         List<PagesTable> pages = pageRepository.findAll();
-        for(int index = 0; index < pages.size(); index++) {
-            if(pages.get(index).getThemeTable().getId().equals(themeID)) {
+        for (int index = 0; index < pages.size(); index++) {
+            if (pages.get(index).getThemeTable().getId().equals(themeID)) {
                 System.out.println("delete page");
                 flag = true;
                 pageRepository.delete(pages.get(index));
@@ -159,8 +155,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public NavigationsTable getNavigation(String projectID) {
         List<NavigationsTable> allNavigations = navigationRepository.findAll();
         NavigationsTable wantedNavigation = new NavigationsTable();
-        for(int index = 0;index < allNavigations.size(); index++) {
-            if(allNavigations.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < allNavigations.size(); index++) {
+            if (allNavigations.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 wantedNavigation = allNavigations.get(index);
                 break;
             }
@@ -172,8 +168,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deleteNavigation(String projectID) {
         boolean flag = false;
         List<NavigationsTable> navigations = navigationRepository.findAll();
-        for(int index = 0;index < navigations.size();index++) {
-            if(navigations.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < navigations.size(); index++) {
+            if (navigations.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 navigationRepository.delete(navigations.get(index));
                 flag = true;
             }
@@ -185,8 +181,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deleteNavigationByTheme(String themeID) {
         boolean flag = false;
         List<NavigationsTable> navigations = navigationRepository.findAll();
-        for(int index = 0;index < navigations.size();index++) {
-            if(navigations.get(index).getThemesTable().getId().equals(themeID)) {
+        for (int index = 0; index < navigations.size(); index++) {
+            if (navigations.get(index).getThemesTable().getId().equals(themeID)) {
                 navigationRepository.delete(navigations.get(index));
                 flag = true;
             }
@@ -219,8 +215,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public SumdlsTable getSumdl(String projectID) {
         List<SumdlsTable> allSumdls = sumdlRepository.findAll();
         SumdlsTable wantedSumdl = new SumdlsTable();
-        for(int index = 0;index < allSumdls.size(); index++) {
-            if(allSumdls.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < allSumdls.size(); index++) {
+            if (allSumdls.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 wantedSumdl = allSumdls.get(index);
                 break;
             }
@@ -242,8 +238,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deleteSumdl(String projectID) {
         boolean flag = false;
         List<SumdlsTable> sumdls = sumdlRepository.findAll();
-        for(int index = 0;index < sumdls.size();index++) {
-            if(sumdls.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < sumdls.size(); index++) {
+            if (sumdls.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 sumdlRepository.delete(sumdls.get(index));
                 flag = true;
             }
@@ -255,8 +251,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public boolean deleteSumdlByTheme(String themeID) {
         boolean flag = false;
         List<SumdlsTable> sumdls = sumdlRepository.findAll();
-        for(int index = 0;index < sumdls.size();index++) {
-            if(sumdls.get(index).getThemesTable().getId().equals(themeID)) {
+        for (int index = 0; index < sumdls.size(); index++) {
+            if (sumdls.get(index).getThemesTable().getId().equals(themeID)) {
                 sumdlRepository.delete(sumdls.get(index));
                 flag = true;
             }
@@ -284,8 +280,8 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     public List<ThemesTable> getThemes(String projectID) {
         List<ThemesTable> allThemes = themeRepository.findAll();
         List<ThemesTable> wantedThemes = new ArrayList<ThemesTable>();
-        for(int index = 0;index < allThemes.size(); index++) {
-            if(allThemes.get(index).getProjectsTable().getProjectID().equals(projectID)) {
+        for (int index = 0; index < allThemes.size(); index++) {
+            if (allThemes.get(index).getProjectsTable().getProjectID().equals(projectID)) {
                 wantedThemes.add(allThemes.get(index));
             }
         }
@@ -293,22 +289,87 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public boolean deleteThemes(String projectID) {
+    public boolean deleteThemesByIds(String[] themeIds) {
         boolean flag = false;
-        List<ThemesTable> themes = themeRepository.findAll();
-        for(int index = 0;index < themes.size();index++) {
-            if(themes.get(index).getProjectsTable().getProjectID().equals(projectID)) {
-                themeRepository.delete(themes.get(index));
-                flag = true;
+        List<ThemesTable> themes = new ArrayList<ThemesTable>();
+        for(int index = 0; index < themeIds.length; index++) {
+            String themeId = themeIds[index];
+            if(themeRepository.findThemesTableByID(themeId) != null)
+                themes.add(themeRepository.findThemesTableByID(themeId));
+        }
+
+        for (int index = 0; index < themes.size(); index++) {
+            String themeID = themes.get(index).getId();
+            // 1. delete pageUICDL tables
+            List<PagesTable> pages = this.pageRepository.findPDLsTablesByThemeID(themeID);
+            for(int j = 0; j < pages.size(); j++) {
+                pageRepository.delete(pages.get(j));
             }
+            // 2. delete NDL tables
+            List<NavigationsTable> ndls = this.navigationRepository.findNDLsTableByThemeID(themeID);
+            for(int j = 0; j < ndls.size(); j++) {
+                navigationRepository.delete(ndls.get(j));
+            }
+            // 3. delete sumdl tables
+            List<SumdlsTable> sumdls = this.sumdlRepository.findSUMDLTableByThemeID(themeID);
+            for(int j = 0; j < sumdls.size(); j++) {
+                sumdlRepository.delete(sumdls.get(j));
+            }
+            // 4. delete theme table
+            themeRepository.delete(themes.get(index));
+            flag = true;
+        }
+        return flag;
+    }
+    
+    @Override
+    public boolean deleteProjectsByIds(String[] projectIds) {
+        List<ProjectsTable> projects = new ArrayList<ProjectsTable>();
+
+        for(int index = 0; index < projectIds.length; index++) {
+            String projectId = projectIds[index];
+            projects.add(projectRepository.findProjectsTableByProjectID(projectId));
+            for(int j = 0; j < projects.size(); j++) {
+                projectRepository.delete(projects.get(j));
+                this.deleteThemesByProjectId(projects.get(j).getProjectID());
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean deleteThemesByProjectId(String projectID) {
+        boolean flag = false;
+        List<ThemesTable> themes = this.themeRepository.findThemesTableByProjectID(projectID);
+        for (int index = 0; index < themes.size(); index++) {
+            String themeID = themes.get(index).getId();
+            // 1. delete pageUICDL tables
+            List<PagesTable> pages = this.pageRepository.findPDLsTablesByThemeID(themeID);
+            for(int j = 0; j < pages.size(); j++) {
+                pageRepository.delete(pages.get(j));
+            }
+            // 2. delete NDL tables
+            List<NavigationsTable> ndls = this.navigationRepository.findNDLsTableByThemeID(themeID);
+            for(int j = 0; j < ndls.size(); j++) {
+                navigationRepository.delete(ndls.get(j));
+            }
+            // 3. delete sumdl tables
+            List<SumdlsTable> sumdls = this.sumdlRepository.findSUMDLTableByThemeID(themeID);
+            for(int j = 0; j < sumdls.size(); j++) {
+                sumdlRepository.delete(sumdls.get(j));
+            }
+            // 4. delete theme table
+            themeRepository.delete(themes.get(index));
+            flag = true;
         }
         return flag;
     }
 
     @Override
-    public boolean deleteThemeByID(String themeID){
+    public boolean deleteThemeByID(String themeID) {
         ThemesTable deleteTheme = themeRepository.findThemesTableByID(themeID);
-        if(deleteTheme!=null){
+        if (deleteTheme != null) {
             themeRepository.delete(deleteTheme);
             return true;
         }
@@ -316,9 +377,9 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
-    public boolean setThemeToUnused(String themeID){
+    public boolean setThemeToUnused(String themeID) {
         ThemesTable themesTable = themeRepository.findById(themeID).get();
-        if(themesTable !=null && themesTable.getUsed()==true){
+        if (themesTable != null && themesTable.getUsed() == true) {
             themesTable.setUsed(false);
             themeRepository.save(themesTable);
             return true;

@@ -8,6 +8,8 @@ import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import com.selab.uidesignserver.entity.uiComposition.PagesTable;
 import com.selab.uidesignserver.entity.uiComposition.ProjectsTable;
 import com.selab.uidesignserver.repositoryService.AuthenticationService;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,7 +59,7 @@ public class ThemeController {
         System.out.println("delete theme");
         ProjectsTable projectsTable = internalRepresentationService.getProjectByProjectName(projectName);
         String projectID = projectsTable.getProjectID();
-        if(this.internalRepresentationService.deleteThemes(projectID))
+        if(this.internalRepresentationService.deleteThemesByProjectId(projectID))
             return "delete themes";
         else {
             return "delete themes failed (not found)";
@@ -67,11 +69,23 @@ public class ThemeController {
     @DeleteMapping(value = "/themeId")
     public String deleteThemeByID(@RequestHeader("projectName") String projectName, @RequestHeader("themeID") String themeID) {
         System.out.println("delete ny ud");
-        if(this.internalRepresentationService.deleteThemes(themeID))
+        if(this.internalRepresentationService.deleteThemesByProjectId(themeID))
             return "delete themes";
         else {
             return "delete themes failed (not found)";
         }
+    }
+
+    @PostMapping(value = "/themes")
+    public String deleteThemesByIds(@RequestBody String data) {
+        JSONArray themeIds = new JSONObject(data).getJSONArray("themeIDs");
+        String[] ids = new String[themeIds.length()];
+        for(int index = 0; index < ids.length; index++) {
+            String id = themeIds.getJSONObject(index).getString("id");
+            ids[index] = id;
+        }
+        this.internalRepresentationService.deleteThemesByIds(ids);
+        return "Hello";
     }
 
     @PostMapping(value = "")

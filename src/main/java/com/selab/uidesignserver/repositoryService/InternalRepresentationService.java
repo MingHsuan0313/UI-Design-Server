@@ -15,6 +15,7 @@ public interface InternalRepresentationService {
     public List<ProjectsTable> getProjectsByGroupID(String groupID);
     public ProjectsTable getProjectByProjectName(String projectName);
     public boolean deleteProject(String projectID);
+    public boolean deleteProjectsByIds(String[] projectIds);
     public void truncateProjects();
     public List<ThemesTable> getThemesByProjectID(String projectID);
     public boolean modifyProject(ProjectsTable project);
@@ -52,8 +53,9 @@ public interface InternalRepresentationService {
     public List<ThemesTable> getThemes(String projectID);
     public ThemesTable getThemeById(String themeID);
     public boolean setThemeToUnused(String themeID);
-    public boolean deleteThemes(String projectID);
+    public boolean deleteThemesByProjectId(String projectID);
     public boolean deleteThemeByID(String themeID);
+    public boolean deleteThemesByIds(String[] themeIDs);
     public void truncateThemes();
     public void refreshAllThemes();
 

@@ -82,7 +82,7 @@ public class PageController {
 		internalRepresentationService.deletePages(projectName);
 		internalRepresentationService.deleteNavigation(projectName);
 		internalRepresentationService.deleteSumdl(projectName);
-		internalRepresentationService.deleteThemes(projectName);
+		internalRepresentationService.deleteThemesByProjectId(projectName);
 		return "delete project: " + projectName + " Success !!!";
 	}
 }
