@@ -300,11 +300,6 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
 
         for (int index = 0; index < themes.size(); index++) {
             String themeID = themes.get(index).getId();
-            // 1. delete pageUICDL tables
-            List<PagesTable> pages = this.pageRepository.findPDLsTablesByThemeID(themeID);
-            for(int j = 0; j < pages.size(); j++) {
-                pageRepository.delete(pages.get(j));
-            }
             // 2. delete NDL tables
             List<NavigationsTable> ndls = this.navigationRepository.findNDLsTableByThemeID(themeID);
             for(int j = 0; j < ndls.size(); j++) {
@@ -315,8 +310,15 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
             for(int j = 0; j < sumdls.size(); j++) {
                 sumdlRepository.delete(sumdls.get(j));
             }
+            // 1. delete pageUICDL tables
+            List<PagesTable> pages = this.pageRepository.findPDLsTablesByThemeID(themeID);
+            for(int j = 0; j < pages.size(); j++) {
+                pageRepository.delete(pages.get(j));
+            }
+
             // 4. delete theme table
             themeRepository.delete(themes.get(index));
+            System.out.println("delete theme");
             flag = true;
         }
         return flag;
