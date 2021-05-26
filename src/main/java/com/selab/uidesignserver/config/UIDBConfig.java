@@ -44,6 +44,7 @@ public class UIDBConfig {
                 .persistenceUnit("Users")
                 .persistenceUnit("Groups")
                 .persistenceUnit("Users_Groups")
+                .persistenceUnit("ServiceListBpelJsonIRs")  // for embedded BPEL-Designer editing service list BPLE JSON IR
                 .build();
     }
 
