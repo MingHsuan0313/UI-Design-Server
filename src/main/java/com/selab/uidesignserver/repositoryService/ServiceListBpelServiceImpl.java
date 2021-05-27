@@ -20,9 +20,8 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
     private InternalRepresentationService internalRepresentationService;
 
     @Override
-    public ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId, String selectorOperation) {
-        return Objects.requireNonNull(
-                serviceListBpelJsonIRRepository.findByScopeSelectorOperation(projectName, themeId, pageId, selectorOperation));
+    public ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId, String selector) {
+        return serviceListBpelJsonIRRepository.findByScopeSelector(projectName, themeId, pageId, selector);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
     public ServiceListBpelJsonIR updateServiceListBpelJsonIR(String id, ServiceListBpelJsonIR serviceListBpelJsonIR) {
         ServiceListBpelJsonIR slbj = Objects.requireNonNull(serviceListBpelJsonIRRepository.findById(Integer.valueOf(id)).orElse(null));
 
-        slbj.setSelectorOperation(serviceListBpelJsonIR.getSelectorOperation());
+        slbj.setSelector(serviceListBpelJsonIR.getSelector());
         slbj.setContent(serviceListBpelJsonIR.getContent());
         slbj.setUpdatedAt(LocalDateTime.now());
 

@@ -4,7 +4,7 @@ import com.selab.uidesignserver.entity.uiComposition.ServiceListBpelJsonIR;
 
 public interface ServiceListBpelService {
     ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId,
-                                                   String selectorOperation);
+                                                   String selector);
 
     ServiceListBpelJsonIR createServiceListBpelJsonIR(String projectName, String themeId, String pageId,
                                 ServiceListBpelJsonIR serviceListBpelJsonIR);

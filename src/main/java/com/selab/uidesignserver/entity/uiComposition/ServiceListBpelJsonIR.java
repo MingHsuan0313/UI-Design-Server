@@ -14,8 +14,8 @@ public class ServiceListBpelJsonIR {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "selectorOperation")
-    private String selectorOperation;
+    @Column(name = "selector")
+    private String selector;
 
     @Column(name = "content", columnDefinition = "MEDIUMTEXT")
     private String content;
@@ -51,12 +51,12 @@ public class ServiceListBpelJsonIR {
         this.id = id;
     }
 
-    public String getSelectorOperation() {
-        return selectorOperation;
+    public String getSelector() {
+        return selector;
     }
 
-    public void setSelectorOperation(String selectorOperation) {
-        this.selectorOperation = selectorOperation;
+    public void setSelector(String selector) {
+        this.selector = selector;
     }
 
     public String getContent() {

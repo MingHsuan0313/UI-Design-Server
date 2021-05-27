@@ -19,8 +19,8 @@ public class ServiceListBpelController {
     public ServiceListBpelJsonIR getServiceListBpelJsonIR(@RequestParam(name = "projectName") String projectName,
                                                           @RequestParam(name = "themeId") String themeId,
                                                           @RequestParam(name = "pageId") String pageId,
-                                                          @RequestParam(name = "selectorOperation") String selectorOperation) {
-        return serviceListBpelService.getServiceListBpelJsonIR(projectName, themeId, pageId, selectorOperation);
+                                                          @RequestParam(name = "selector") String selector) {
+        return serviceListBpelService.getServiceListBpelJsonIR(projectName, themeId, pageId, selector);
     }
 
     @PostMapping("/json-ir")
