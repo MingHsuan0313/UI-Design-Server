@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 public interface ServiceListBpelJsonIRRepository extends JpaRepository<ServiceListBpelJsonIR, Integer> {
     @Query("select slbj " +
             "from ServiceListBpelJsonIR slbj " +
-            "inner join ProjectsTable pj on pj.projectName = ?1 " +
-            "inner join ThemesTable th on th.id = ?2 " +
-            "inner join PagesTable pg on pg.id = ?3 " +
-            "where slbj.selector = ?4")
+            "where slbj.projectsTable.projectName = ?1 " +
+            "and slbj.themesTable.id = ?2 " +
+            "and slbj.pagesTable.id = ?3 " +
+            "and slbj.selector = ?4")
     ServiceListBpelJsonIR findByScopeSelector(String projectName, String themeId, String pageId,
                                               String selector);
 }
