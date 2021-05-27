@@ -28,17 +28,18 @@ public class ServiceListBpelJsonIR {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @JsonIgnore
+    /* comment json ignore for logout save theme process */
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "projectID", referencedColumnName = "projectID")
     private ProjectsTable projectsTable;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "themeID", referencedColumnName = "themeID")
     private ThemesTable themesTable;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "pageID", referencedColumnName = "pageID")
     private PagesTable pagesTable;

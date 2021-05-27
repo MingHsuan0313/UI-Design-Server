@@ -82,4 +82,22 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
             }
         }
     }
+
+    @Override
+    public List<ServiceListBpelJsonIR> getServiceBpelJsonIRUnderTheme(String themeId) {
+        return serviceListBpelJsonIRRepository.findByTheme(themeId);
+    }
+
+    @Override
+    public ServiceListBpelJsonIR createServiceBpelJsonIRByProjectId(String projectId, String themeId, String pageId, ServiceListBpelJsonIR serviceListBpelJsonIR) {
+        serviceListBpelJsonIR.setProjectsTable(internalRepresentationService.getProject(projectId));
+        serviceListBpelJsonIR.setThemesTable(internalRepresentationService.getThemeById(themeId));
+        serviceListBpelJsonIR.setPagesTable(internalRepresentationService.getPageByPageID(pageId));
+
+        LocalDateTime now = LocalDateTime.now();
+        serviceListBpelJsonIR.setCreatedAt(now);
+        serviceListBpelJsonIR.setUpdatedAt(now);
+
+        return serviceListBpelJsonIRRepository.save(serviceListBpelJsonIR);
+    }
 }

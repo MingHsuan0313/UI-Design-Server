@@ -4,6 +4,8 @@ import com.selab.uidesignserver.entity.uiComposition.ServiceListBpelJsonIR;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ServiceListBpelJsonIRRepository extends JpaRepository<ServiceListBpelJsonIR, Integer> {
     @Query("select slbj " +
             "from ServiceListBpelJsonIR slbj " +
@@ -13,4 +15,9 @@ public interface ServiceListBpelJsonIRRepository extends JpaRepository<ServiceLi
             "and slbj.selector = ?4")
     ServiceListBpelJsonIR findByScopeSelector(String projectName, String themeId, String pageId,
                                               String selector);
+
+    @Query("select slbj " +
+            "from ServiceListBpelJsonIR slbj " +
+            "where slbj.themesTable.id = ?1")
+    List<ServiceListBpelJsonIR> findByTheme(String themeId);
 }
