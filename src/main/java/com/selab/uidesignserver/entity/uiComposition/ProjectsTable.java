@@ -16,6 +16,10 @@ public class ProjectsTable {
 	private String layout;
 
     @OneToOne
+    @JoinColumn(name = "mainPageID", referencedColumnName = "pageID", nullable=true)
+    private PagesTable pagesTable;
+
+    @OneToOne
     @JoinColumn(name = "groupID", referencedColumnName = "groupID", nullable=false)
     private GroupsTable groupsTable;
 
@@ -31,6 +35,18 @@ public class ProjectsTable {
     public String getLayout() {
         return this.layout;
     }
+
+    public void setMainPage(PagesTable pagesTable){
+        this.pagesTable = pagesTable;
+    }
+
+    public String getMainPageID(){
+        if(this.pagesTable == null){
+            return null;
+        }
+        return this.pagesTable.getId();
+    }
+
 
     public void setLayout(String layout) {
         this.layout = layout;

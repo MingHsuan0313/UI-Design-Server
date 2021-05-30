@@ -22,12 +22,14 @@ public class CreateDBService {
 
     public String trigger(String path) {
         try {
+            System.out.println("Trigger!!!");
             this.client = JenkinsClient.builder().endPoint(Config.JENKINS_URL).token(Config.TOKEN).build();
             Map<String, List<String>> params = new HashMap<>();
             params.put(Config.TOKEN_PARAM, Collections.singletonList(Config.TOKEN));
             params.put(Config.CUSTOMIZED_PARAM, Collections.singletonList(Config.CUSTOMIZED));
             params.put("path", Collections.singletonList(path));
             IntegerResponse instanceId = client.api().jobsApi().buildWithParameters(null, Config.JOB_NAME, params);
+            System.out.println(instanceId.value());
             return String.valueOf(instanceId.value());
 
         } catch (Exception e) {
@@ -88,7 +90,7 @@ public class CreateDBService {
         public static final String CUSTOMIZED_PARAM = "CUSTOMIZED";
 
 
-        public static final String JOB_NAME = "create_db";
+        public static final String JOB_NAME = "create-db";
         public static final String TOKEN = "create_db_token";
         public static final String PROJECT_IDS = "1";
         public static final String CUSTOMIZED = "true";

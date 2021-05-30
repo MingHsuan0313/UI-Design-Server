@@ -37,10 +37,11 @@ public class CreateDBController {
     @PostMapping(value = "")
     public ResponseEntity<String> createDBSchema(@RequestBody String data) {
         JSONObject requestBody = new JSONObject(data);
+        System.out.println("create db here");
         JSONArray databases = requestBody.getJSONArray("databases");
         String filePath = "/home/selab/customized-entity/data/" + requestBody.getString("filePath");
         this.path = requestBody.getString("filePath");
-        System.out.println(databases);
+        System.out.println("file path: " + this.path);
         if (this.writeFile(filePath, databases.toString())) {
             return ResponseEntity.status(HttpStatus.OK).body("create file success");
         } else {

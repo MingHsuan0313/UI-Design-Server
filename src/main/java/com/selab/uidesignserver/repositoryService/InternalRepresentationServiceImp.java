@@ -391,6 +391,30 @@ public class InternalRepresentationServiceImp implements InternalRepresentationS
     }
 
     @Override
+    public boolean setMainPage(ProjectsTable project, String pageID){
+        PagesTable pagesTable = this.getPageByPageID(pageID);
+        if(pagesTable.getProjectsTable().getProjectID().equals(project.getProjectID()) && 
+           project.getMainPageID()==null){
+                project.setMainPage(pagesTable);
+                projectRepository.save(project);
+                return true;
+        }else{
+            return false;
+        }
+    } 
+
+    @Override
+    public boolean deleteMainPage(ProjectsTable project, String pageID){
+        if(project.getMainPageID()!=null && project.getMainPageID().equals(pageID)){
+            project.setMainPage(null);
+            projectRepository.save(project);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
     public void truncateThemes() {
         themeRepository.deleteAll();
     }
