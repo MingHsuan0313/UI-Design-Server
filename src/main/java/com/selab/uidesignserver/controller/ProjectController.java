@@ -210,8 +210,9 @@ public class ProjectController {
 
     @PostMapping(value = "/setMainPage")
     public ResponseEntity<String> setMainPage(@RequestHeader("userID") String userID,
-                              @RequestHeader("projectID") String projectID, 
+                              @RequestHeader("projectName") String projectName, 
                               @RequestBody String data){
+        String projectID = internalRepresentationService.getProjectByProjectName(projectName).getProjectID();
         ProjectsTable projectsTable = internalRepresentationService.getProject(projectID);
         JSONObject object = new JSONObject(data);
         String pageID = object.getString("pageID");
@@ -223,8 +224,9 @@ public class ProjectController {
 
     @PostMapping(value = "/deleteMainPage")
     public ResponseEntity<String> deleteMainPage(@RequestHeader("userID") String userID,
-                              @RequestHeader("projectID") String projectID, 
+                              @RequestHeader("projectName") String projectName, 
                               @RequestBody String data){
+        String projectID = internalRepresentationService.getProjectByProjectName(projectName).getProjectID();
         ProjectsTable projectsTable = internalRepresentationService.getProject(projectID);
         JSONObject object = new JSONObject(data);
         String pageID = object.getString("pageID");
