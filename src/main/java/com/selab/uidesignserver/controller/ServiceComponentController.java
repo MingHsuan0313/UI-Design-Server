@@ -69,7 +69,7 @@ public class ServiceComponentController {
     }
 
     @PostMapping(value = "/editService")
-    public String editServiceComponent(@RequestBody String data) {
+    public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException{
         JSONObject requestBodyObject = new JSONObject(data);
 
         String code = requestBodyObject.getString("code");
@@ -77,8 +77,9 @@ public class ServiceComponentController {
         String className = requestBodyObject.getString("className");
         String originalServiceID = requestBodyObject.getString("originalServiceID");
         this.editServiceComponentService.initialize(projectName, className, originalServiceID, code);
+        this.editServiceComponentService.editService();
 
-        return "";
+        return "edit service component";
     }
 
 

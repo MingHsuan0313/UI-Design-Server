@@ -36,7 +36,7 @@ public class CodeGeneration {
         templateData.put("code", code);
         Writer writer = new StringWriter();
         mainCodeTemplate.process(templateData, writer);
-        this.writeFile("./temp", writer.toString());
+        this.writeFile("./temp/tempService.java", writer.toString());
     }
 
 	public boolean genJavaFile(String code, String path) {
@@ -48,6 +48,7 @@ public class CodeGeneration {
 		String projectUrl = baseProjectsUrl + "/" + projectName;
 		// git add .
 		// git commit 
+        System.out.println("do git version control");
 		return true;
 	}
 
@@ -56,6 +57,7 @@ public class CodeGeneration {
 		String projectUrl = baseProjectsUrl + "/" + projectName;
 		// git stash
 		// git check out HEAD^
+        System.out.println("do git version backward");
 		return true;
 	}
 

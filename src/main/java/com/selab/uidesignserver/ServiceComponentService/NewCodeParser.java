@@ -1,5 +1,7 @@
 
 package com.selab.uidesignserver.ServiceComponentService;
+import java.io.IOError;
+import java.io.IOException;
 import java.nio.charset.Charset;
 
 import com.sun.source.tree.*;
@@ -7,6 +9,10 @@ import com.sun.tools.javac.api.JavacTool;
 import com.sun.tools.javac.file.JavacFileManager;
 import com.sun.tools.javac.util.Context;
 import com.selab.uidesignserver.ServiceComponentService.visitors.*;
+import com.sun.source.util.JavacTask;
+import javax.tools.JavaFileObject;
+import javax.tools.JavaCompiler;
+
 
 import java.util.*;
 
@@ -22,12 +28,45 @@ public class NewCodeParser {
 
 	public MethodTree parseServiceComponent(String path) {
 		MethodTree mt = null;
-		return mt;
+        Iterable<? extends JavaFileObject> files = fileManager.getJavaFileObjects(path);
+        JavaCompiler.CompilationTask compilationTask = this.javacTool.getTask(null, fileManager, null, null, null,
+                files);
+        JavacTask javacTask = (JavacTask) compilationTask;
+        List<MethodTree> methodTrees = new ArrayList<>();
+        try {
+            Iterable<? extends CompilationUnitTree> result = javacTask.parse();
+            for (CompilationUnitTree tree : result) {
+                List<ClassTree> classTreeContainer = new ArrayList<>();
+                tree.accept(new ClassVisitor(), classTreeContainer);
+                for (ClassTree classTree : classTreeContainer) {
+                    classTree.accept(new MethodVisitor(), methodTrees);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return methodTrees.get(0);
 	}
 
-	public ClassTree parseJavaFile(String path) {
-		ClassTree ct = null;
-		return ct;
+	public ClassTree parseJavaFile(String path) throws IOException {
+        Iterable<? extends JavaFileObject> files = fileManager.getJavaFileObjects(path);
+        JavaCompiler.CompilationTask compilationTask = this.javacTool.getTask(null, fileManager, null, null, null,
+                files);
+        JavacTask javacTask = (JavacTask) compilationTask;
+        List<MethodTree> methodTrees = new ArrayList<>();
+        try {
+            Iterable<? extends CompilationUnitTree> result = javacTask.parse();
+            for (CompilationUnitTree tree : result) {
+                List<ClassTree> classTreeContainer = new ArrayList<>();
+                tree.accept(new ClassVisitor(), classTreeContainer);
+                for (ClassTree classTree : classTreeContainer) {
+                    return classTree;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	public boolean checkIsFileExisted(String path) {
