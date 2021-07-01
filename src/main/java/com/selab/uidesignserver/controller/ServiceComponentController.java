@@ -51,38 +51,6 @@ public class ServiceComponentController {
         serviceComponentService = theServiceComponentService;
     }
 
-    // uiCategory: input-control, informative, containers, navigation
-    // uiType: form, button, text, icon...etc
-    // parameterCount: # of sub UI Component eg: form with four input-text
-    // matchmaking: using query stage2 or not
-    @GetMapping(value = "/getServices")
-    public String getServices(@RequestParam("uiCategory") String uiCategory, @RequestParam("uiName") String uiName,
-            @RequestParam("uiType") String uiType, @RequestParam("parameterCount") String argumentCount,
-            @RequestParam("matchmaking") String isMatchmaking) throws SQLException {
-        return serviceComponentService.getServiceComponentsWithRestriction(Integer.parseInt(argumentCount)).toString();
-    }
-
-    @GetMapping(value = "/getReturn")
-    public String getReturn(@RequestParam("serviceID") String serviceID) {
-        JSONObject Return = new JSONObject();
-        JSONObject category = new JSONObject();
-        JSONObject item = new JSONObject();
-
-        item.put("name", "");
-        item.put("id", "");
-        item.put("description", "");
-
-        category.put("name", "");
-        category.put("id", "");
-        category.put("item", item);
-
-        Return.put("name", "");
-        Return.put("description", "");
-        Return.put("category", category);
-
-        return Return.toString();
-    }
-
     @GetMapping(value = "/getCode")
     public String getCode(@RequestParam("serviceID") String serviceID) throws SQLException {
         return serviceComponentService.getServiceComponentCode(Integer.parseInt(serviceID));

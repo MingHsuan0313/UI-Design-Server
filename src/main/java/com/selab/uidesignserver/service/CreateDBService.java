@@ -91,7 +91,7 @@ public class CreateDBService {
         public static final String JOB_NAME = "create_db";
         public static final String TOKEN = "create_db_token";
         public static final String PROJECT_IDS = "1";
-        public static final String CUSTOMIZED = "true";
+        public static final String CUSTOMIZED = "True";
         // timeout of the build task
         // TODO: 3 min, modify the value if pipeline deals with more tasks and cost more time in the future
         public static final long BUILD_TIMEOUT = 1000 * 60 * 3;

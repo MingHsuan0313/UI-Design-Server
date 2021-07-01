@@ -47,6 +47,7 @@ public class CodeParser {
     public String addEditedServiceComponent(String editedServicePath, String originalServicePath) {
         MethodTree methodTree = this.parseServiceComponent(editedServicePath);
         ClassTree classTree = this.parseJavaFile(originalServicePath);
+
         this.originalCode = this.resultString;
         // identify if service signature is unique
         if (this.identifySignatureUnique(methodTree, classTree)) {
