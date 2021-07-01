@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -19,8 +20,8 @@ public class ServiceListBpelController {
     public ServiceListBpelJsonIR getServiceListBpelJsonIR(@RequestParam(name = "projectName") String projectName,
                                                           @RequestParam(name = "themeId") String themeId,
                                                           @RequestParam(name = "pageId") String pageId,
-                                                          @RequestParam(name = "selectorOperation") String selectorOperation) {
-        return serviceListBpelService.getServiceListBpelJsonIR(projectName, themeId, pageId, selectorOperation);
+                                                          @RequestParam(name = "selector") String selector) {
+        return serviceListBpelService.getServiceListBpelJsonIR(projectName, themeId, pageId, selector);
     }
 
     @PostMapping("/json-ir")
@@ -71,6 +72,26 @@ public class ServiceListBpelController {
     public String deleteServiceListBpelJsonIR(@PathVariable String id) {
         serviceListBpelService.deleteServiceListBpelJsonIR(id);
         return "delete BPEL JSON IR successfully";
+    }
+
+    /* helpers for logout save theme (1)get (2)delete (3)re-create */
+    @GetMapping("/json-ir/logout")
+    public List<ServiceListBpelJsonIR> getServiceBpelJsonIRUnderTheme(@RequestParam(name = "themeId") String themeId) {
+        return serviceListBpelService.getServiceBpelJsonIRUnderTheme(themeId);
+    }
+
+    @PostMapping("/json-ir/logout")
+    public String createServiceBpelJsonIRByProjectId(@RequestParam(name = "projectId") String projectId,
+                                                    @RequestParam(name = "themeId") String themeId,
+                                                    @RequestParam(name = "pageId") String pageId,
+                                                    @RequestBody ServiceListBpelJsonIR serviceListBpelJsonIR,
+                                                    HttpServletResponse response) {
+        ServiceListBpelJsonIR slbj = serviceListBpelService.createServiceBpelJsonIRByProjectId(
+                Objects.requireNonNull(projectId), Objects.requireNonNull(themeId), Objects.requireNonNull(pageId),
+                serviceListBpelJsonIR);
+        response.setStatus(HttpServletResponse.SC_CREATED);
+        response.setHeader(Location.TAG, Location.BPEL_JSON_IR_CREATED(slbj.getId()));
+        return "create service list BPEL JSON IR by projectId successfully";
     }
 
     private static class Location {

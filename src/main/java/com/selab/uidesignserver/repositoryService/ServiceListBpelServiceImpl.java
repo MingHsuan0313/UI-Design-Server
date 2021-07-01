@@ -20,9 +20,8 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
     private InternalRepresentationService internalRepresentationService;
 
     @Override
-    public ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId, String selectorOperation) {
-        return Objects.requireNonNull(
-                serviceListBpelJsonIRRepository.findByScopeSelectorOperation(projectName, themeId, pageId, selectorOperation));
+    public ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId, String selector) {
+        return serviceListBpelJsonIRRepository.findByScopeSelector(projectName, themeId, pageId, selector);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
     public ServiceListBpelJsonIR updateServiceListBpelJsonIR(String id, ServiceListBpelJsonIR serviceListBpelJsonIR) {
         ServiceListBpelJsonIR slbj = Objects.requireNonNull(serviceListBpelJsonIRRepository.findById(Integer.valueOf(id)).orElse(null));
 
-        slbj.setSelectorOperation(serviceListBpelJsonIR.getSelectorOperation());
+        slbj.setSelector(serviceListBpelJsonIR.getSelector());
         slbj.setContent(serviceListBpelJsonIR.getContent());
         slbj.setUpdatedAt(LocalDateTime.now());
 
@@ -82,5 +81,23 @@ public class ServiceListBpelServiceImpl implements ServiceListBpelService {
                 serviceListBpelJsonIRRepository.delete(slbj);
             }
         }
+    }
+
+    @Override
+    public List<ServiceListBpelJsonIR> getServiceBpelJsonIRUnderTheme(String themeId) {
+        return serviceListBpelJsonIRRepository.findByTheme(themeId);
+    }
+
+    @Override
+    public ServiceListBpelJsonIR createServiceBpelJsonIRByProjectId(String projectId, String themeId, String pageId, ServiceListBpelJsonIR serviceListBpelJsonIR) {
+        serviceListBpelJsonIR.setProjectsTable(internalRepresentationService.getProject(projectId));
+        serviceListBpelJsonIR.setThemesTable(internalRepresentationService.getThemeById(themeId));
+        serviceListBpelJsonIR.setPagesTable(internalRepresentationService.getPageByPageID(pageId));
+
+        LocalDateTime now = LocalDateTime.now();
+        serviceListBpelJsonIR.setCreatedAt(now);
+        serviceListBpelJsonIR.setUpdatedAt(now);
+
+        return serviceListBpelJsonIRRepository.save(serviceListBpelJsonIR);
     }
 }

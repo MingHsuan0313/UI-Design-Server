@@ -2,9 +2,11 @@ package com.selab.uidesignserver.repositoryService;
 
 import com.selab.uidesignserver.entity.uiComposition.ServiceListBpelJsonIR;
 
+import java.util.List;
+
 public interface ServiceListBpelService {
     ServiceListBpelJsonIR getServiceListBpelJsonIR(String projectName, String themeId, String pageId,
-                                                   String selectorOperation);
+                                                   String selector);
 
     ServiceListBpelJsonIR createServiceListBpelJsonIR(String projectName, String themeId, String pageId,
                                 ServiceListBpelJsonIR serviceListBpelJsonIR);
@@ -18,4 +20,9 @@ public interface ServiceListBpelService {
     void deleteServiceListBpelJsonIRByTheme(String themeId);
 
     void deleteServiceListBpelJsonIRByPage(String pageId);
+
+    List<ServiceListBpelJsonIR> getServiceBpelJsonIRUnderTheme(String themeId);
+
+    ServiceListBpelJsonIR createServiceBpelJsonIRByProjectId(String projectId, String themeId, String pageId,
+                                              ServiceListBpelJsonIR serviceListBpelJsonIR);
 }

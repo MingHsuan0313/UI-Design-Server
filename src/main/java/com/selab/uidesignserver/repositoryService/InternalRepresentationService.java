@@ -29,6 +29,8 @@ public interface InternalRepresentationService {
     public List<PagesTable> getPagesByThemeID(String themeID);
     public boolean deletePages(String projectID);
     public boolean deletePagesByTheme(String themeID);
+    public boolean setMainPage(ProjectsTable project, String pageID);
+    public boolean deleteMainPage(ProjectsTable project, String pageID);
     public void truncatePages();
     
     // navigation controller

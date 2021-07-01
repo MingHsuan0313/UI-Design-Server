@@ -207,4 +207,36 @@ public class ProjectController {
         this.internalRepresentationService.deleteProjectsByIds(ids);
         return "hello";
     }
+
+    @PostMapping(value = "/setMainPage")
+    public ResponseEntity<String> setMainPage(@RequestHeader("userID") String userID,
+                              @RequestHeader("projectName") String projectName, 
+                              @RequestBody String data){
+        String projectID = internalRepresentationService.getProjectByProjectName(projectName).getProjectID();
+        ProjectsTable projectsTable = internalRepresentationService.getProject(projectID);
+        JSONObject object = new JSONObject(data);
+        String pageID = object.getString("pageID");
+        if(internalRepresentationService.setMainPage(projectsTable, pageID)){
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully set main page for the project.");
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Already have another main page for the project.");
+    }
+
+    @PostMapping(value = "/deleteMainPage")
+    public ResponseEntity<String> deleteMainPage(@RequestHeader("userID") String userID,
+                              @RequestHeader("projectName") String projectName, 
+                              @RequestBody String data){
+        String projectID = internalRepresentationService.getProjectByProjectName(projectName).getProjectID();
+        ProjectsTable projectsTable = internalRepresentationService.getProject(projectID);
+        JSONObject object = new JSONObject(data);
+        String pageID = object.getString("pageID");
+        if(internalRepresentationService.deleteMainPage(projectsTable, pageID)){
+            return ResponseEntity.status(HttpStatus.OK).body("Successfully remove main page for the project.");
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot remove the main page since the given page is not the main page");
+    }
+
+
+
+    
 }
