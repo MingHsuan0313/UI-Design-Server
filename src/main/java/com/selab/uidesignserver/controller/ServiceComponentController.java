@@ -51,6 +51,12 @@ public class ServiceComponentController {
         serviceComponentService = theServiceComponentService;
     }
 
+    @GetMapping(value = "/test")
+    public String test() {
+        System.out.println("test 123");
+        return "test123";
+    }
+
     @GetMapping(value = "/getCode")
     public String getCode(@RequestParam("serviceID") String serviceID) throws SQLException {
         return serviceComponentService.getServiceComponentCode(Integer.parseInt(serviceID));
