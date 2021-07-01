@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.selab.uidesignserver.ServiceComponentService.AddServiceComponentService;
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
+import com.selab.uidesignserver.ServiceComponentService.EditServiceComponentService;
 import com.selab.uidesignserver.entity.serviceComponent.*;
 import com.selab.uidesignserver.entity.uiComposition.*;
 
@@ -45,11 +47,40 @@ import freemarker.template.TemplateException;
 public class ServiceComponentController {
 
     private ServiceComponentService serviceComponentService;
+    private AddServiceComponentService addServiceComponentService;
+    private EditServiceComponentService editServiceComponentService;
 
     @Autowired
-    public ServiceComponentController(ServiceComponentService theServiceComponentService) {
+    public ServiceComponentController(ServiceComponentService theServiceComponentService,
+        AddServiceComponentService theAddServiceComponentService, 
+        EditServiceComponentService theEditServiceComponentService
+    ) {
+        addServiceComponentService = theAddServiceComponentService;
+        editServiceComponentService = theEditServiceComponentService;
         serviceComponentService = theServiceComponentService;
     }
+
+    @PostMapping(value = "/addService")
+    public String addServiceComponent(@RequestBody String data) {
+        JSONObject requestBodyObject = new JSONObject(data);
+        String code = requestBodyObject.getString("code");
+        this.addServiceComponentService.initialize(code);
+        return "";
+    }
+
+    @PostMapping(value = "/editService")
+    public String editServiceComponent(@RequestBody String data) {
+        JSONObject requestBodyObject = new JSONObject(data);
+
+        String code = requestBodyObject.getString("code");
+        String projectName = requestBodyObject.getString("projectName");
+        String className = requestBodyObject.getString("className");
+        String originalServiceID = requestBodyObject.getString("originalServiceID");
+        this.editServiceComponentService.initialize(projectName, className, originalServiceID, code);
+
+        return "";
+    }
+
 
     @GetMapping(value = "/test")
     public String test() {
@@ -143,26 +174,26 @@ public class ServiceComponentController {
     }
 
 
-    // return build log message
-    @PostMapping(value = "/editServiceComponent")
-    public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
-        JSONObject requestBodyObject = new JSONObject(data);
-        // System.out.println(requestBodyObject.getString("code"));
-        String editedServiceComponentCode = requestBodyObject.getString("code");
-        // class name with package name
-        String serviceComponentClassName = requestBodyObject.getString("class");
+    // // return build log message
+    // @PostMapping(value = "/editServiceComponent")
+    // public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
+    //     JSONObject requestBodyObject = new JSONObject(data);
+    //     // System.out.println(requestBodyObject.getString("code"));
+    //     String editedServiceComponentCode = requestBodyObject.getString("code");
+    //     // class name with package name
+    //     String serviceComponentClassName = requestBodyObject.getString("class");
 
-        EditCodeService editCodeService = new EditCodeService(serviceComponentClassName);
-        JSONObject editCodeState = editCodeService.editServiceComponent(editedServiceComponentCode);
-        // means signature not unique
-        if (editCodeState.getInt("statusCode") == -1)
-            return editCodeState.toString();
+    //     EditCodeService editCodeService = new EditCodeService(serviceComponentClassName);
+    //     JSONObject editCodeState = editCodeService.editServiceComponent(editedServiceComponentCode);
+    //     // means signature not unique
+    //     if (editCodeState.getInt("statusCode") == -1)
+    //         return editCodeState.toString();
 
-        // if signature is unique than pass to build stage
-        JSONObject buildResultObject = editCodeService.buildCode();
+    //     // if signature is unique than pass to build stage
+    //     JSONObject buildResultObject = editCodeService.buildCode();
 
-        buildResultObject.put("log", buildResultObject.getString("log"));
-        buildResultObject.put("statusCode", buildResultObject.getInt("statusCode"));
-        return buildResultObject.toString();
-    }
+    //     buildResultObject.put("log", buildResultObject.getString("log"));
+    //     buildResultObject.put("statusCode", buildResultObject.getInt("statusCode"));
+    //     return buildResultObject.toString();
+    // }
 }
