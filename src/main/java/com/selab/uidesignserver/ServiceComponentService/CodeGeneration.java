@@ -47,14 +47,14 @@ public class CodeGeneration {
     public boolean doGitVersionControl(String projectName, String mode, String serviceName) {
         String baseProjectsUrl = "";
         String projectUrl = baseProjectsUrl + "/" + projectName;
-        String executeString = "./doGitVersionControl.sh";
+        String executeString = "./script/doGitVersionControl.sh";
         executeString = executeString + " " + mode + " " + projectUrl + " " + serviceName;
         // git add .
         // git commit
         Process p;
         String log = "";
         String s;
-        int commitStatus = 0; // 0: success  1: nothingToCommit
+        int commitStatus = 0; // 0: success 1: nothingToCommit
         try {
             p = Runtime.getRuntime().exec(executeString);
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -62,7 +62,7 @@ public class CodeGeneration {
                 if (s.contains("nothing to commit")) {
                     System.out.println("nothing to commit");
                     commitStatus = 1;
-                } 
+                }
                 log += s + "\n";
                 System.out.println(s);
             }
@@ -113,18 +113,38 @@ public class CodeGeneration {
         }
     }
 
+    public void doGitStash() {
+        System.out.println("Do Git Stash...");
+        String s;
+        Process p;
+        String log = "";
+        try {
+            p = Runtime.getRuntime().exec("./script/doGitStash.sh");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null) {
+                log += s + "\n";
+           }
+            p.waitFor();
+            p.destroy();
+        } catch (Exception e) {
+            System.out.println("build process exception");
+            e.printStackTrace();
+        }
+    }
+
     public JSONObject buildCode() {
         // statusCode
         // -1 signature same
         // 0 build error
         // 1 build success
+        String projectUrl = baseProjectsUrl + "/" + projectName;
         System.out.println("Bulding Code...");
         String s;
         Process p;
         String log = "";
         int statusCode = 0;
         try {
-            p = Runtime.getRuntime().exec("./build.sh");
+            p = Runtime.getRuntime().exec("./script/build.sh");
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null) {
                 log += s + "\n";

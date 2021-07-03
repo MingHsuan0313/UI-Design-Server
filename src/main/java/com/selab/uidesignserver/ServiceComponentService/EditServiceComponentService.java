@@ -1,5 +1,6 @@
 package com.selab.uidesignserver.ServiceComponentService;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import freemarker.template.TemplateException;
@@ -70,7 +71,6 @@ public class EditServiceComponentService {
 		ClassTree klass = codeParser
 				.parseClass(this.getAbsoluteServiceComponentPath());
 
-		codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
 		this.writePackageAndImports(javaFile);
 		this.writeClassStart(klass);
 		if (codeParser.identifySignatureUnique(klass, method)) {
@@ -80,7 +80,16 @@ public class EditServiceComponentService {
 		}
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
-		return this.result;
+		JSONObject result = codeGeneration.buildCode();
+		// success
+		if(result.getInt("statusCode") == 1) {
+			codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
+			return this.result;
+		}
+		else {
+			codeGeneration.doGitStash();
+			return "failed";
+		}
 	}
 
 	public boolean writeClassStart(ClassTree klass) {
