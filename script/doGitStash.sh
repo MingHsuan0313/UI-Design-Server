@@ -1,3 +1,7 @@
 projectPath=$1
 cd ${projectPath}
-git stash
+if [ $? -eq 0 ]; then
+	git stash
+else
+    echo FAIL
+fi

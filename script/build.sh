@@ -1,3 +1,7 @@
 projectPath=$1
 cd $1
-./gradlew clean assemble
+if [ $? -eq 0 ]; then
+	./gradlew clean assemble
+else
+    echo FAIL
+fi

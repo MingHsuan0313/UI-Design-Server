@@ -80,14 +80,14 @@ public class EditServiceComponentService {
 		}
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
-		JSONObject result = codeGeneration.buildCode();
+		JSONObject result = codeGeneration.buildCode(this.getAbsoluteProjectPath());
 		// success
 		if(result.getInt("statusCode") == 1) {
 			codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
 			return this.result;
 		}
 		else {
-			codeGeneration.doGitStash();
+			codeGeneration.doGitStash(this.getAbsoluteProjectPath());
 			return "failed";
 		}
 	}

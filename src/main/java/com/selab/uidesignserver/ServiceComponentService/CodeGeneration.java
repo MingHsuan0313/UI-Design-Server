@@ -44,9 +44,7 @@ public class CodeGeneration {
         return true;
     }
 
-    public boolean doGitVersionControl(String projectName, String mode, String serviceName) {
-        String baseProjectsUrl = "";
-        String projectUrl = baseProjectsUrl + "/" + projectName;
+    public boolean doGitVersionControl(String projectUrl, String mode, String serviceName) {
         String executeString = "./script/doGitVersionControl.sh";
         executeString = executeString + " " + mode + " " + projectUrl + " " + serviceName;
         // git add .
@@ -113,13 +111,13 @@ public class CodeGeneration {
         }
     }
 
-    public void doGitStash() {
-        System.out.println("Do Git Stash...");
+    public void doGitStash(String projectUrl) {
+        String executeScript = "./script/doGitStash.sh " + projectUrl;
         String s;
         Process p;
         String log = "";
         try {
-            p = Runtime.getRuntime().exec("./script/doGitStash.sh");
+            p = Runtime.getRuntime().exec(executeScript);
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null) {
                 log += s + "\n";
@@ -132,19 +130,19 @@ public class CodeGeneration {
         }
     }
 
-    public JSONObject buildCode() {
+    public JSONObject buildCode(String projectUrl) {
         // statusCode
         // -1 signature same
         // 0 build error
         // 1 build success
-        String projectUrl = baseProjectsUrl + "/" + projectName;
         System.out.println("Bulding Code...");
         String s;
         Process p;
         String log = "";
         int statusCode = 0;
         try {
-            p = Runtime.getRuntime().exec("./script/build.sh");
+            String executeScript = "./script/build.sh " + projectUrl;
+            p = Runtime.getRuntime().exec(executeScript);
             BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((s = br.readLine()) != null) {
                 log += s + "\n";
