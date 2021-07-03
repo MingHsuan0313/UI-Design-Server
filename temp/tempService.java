@@ -1,4 +1,4 @@
 public class Temp {
-	public  viewCategory (String uid, String token, Integer cid) {
+	public Department viewCategory (String uid, String token) {System.out.println("ok")
 }
 }

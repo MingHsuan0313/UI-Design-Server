@@ -39,8 +39,8 @@ public class CodeParser {
 
     public void recover() {
         System.out.println("starting recover");
-        System.out.println(this.sourceFilePath);
-        System.out.println(this.originalCode);
+        // System.out.println(this.sourceFilePath);
+        // System.out.println(this.originalCode);
         this.writeFile(this.sourceFilePath, this.originalCode);
     }
 

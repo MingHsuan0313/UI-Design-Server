@@ -6,28 +6,29 @@ import java.util.Map;
 
 import com.selab.uidesignserver.service.FreeMarkerUtil;
 
+import org.json.JSONObject;
+
 import freemarker.template.TemplateException;
 import freemarker.template.Template;
 
-
 public class CodeGeneration {
-	public String projectName;
-	public String className;
-	public Mode mode;
+    public String projectName;
+    public String className;
+    public Mode mode;
 
-	public enum Mode {
-		EDIT_SERVICE {
-		    public String toString() {
-     			return "Edit Service";
-		    }
-		},
+    public enum Mode {
+        EDIT_SERVICE {
+            public String toString() {
+                return "Edit Service";
+            }
+        },
 
-		ADD_SERVICE {
-	        public String toString() {
-        	    return "Add Service";
-      		}
-		}
-	}
+        ADD_SERVICE {
+            public String toString() {
+                return "Add Service";
+            }
+        }
+    }
 
     // create service component temp java file
     public void createTempServiceComponent(String code) throws IOException, TemplateException {
@@ -39,27 +40,50 @@ public class CodeGeneration {
         this.writeFile("./temp/tempService.java", writer.toString());
     }
 
-	public boolean genJavaFile(String code, String path) {
-		return true;
-	}
+    public boolean genJavaFile(String code, String path) {
+        return true;
+    }
 
-	public boolean doGitVersionControl(String projectName) {
-		String baseProjectsUrl = "";
-		String projectUrl = baseProjectsUrl + "/" + projectName;
-		// git add .
-		// git commit 
+    public boolean doGitVersionControl(String projectName, String mode, String serviceName) {
+        String baseProjectsUrl = "";
+        String projectUrl = baseProjectsUrl + "/" + projectName;
+        String executeString = "./doGitVersionControl.sh";
+        executeString = executeString + " " + mode + " " + projectUrl + " " + serviceName;
+        // git add .
+        // git commit
+        Process p;
+        String log = "";
+        String s;
+        int commitStatus = 0; // 0: success  1: nothingToCommit
+        try {
+            p = Runtime.getRuntime().exec(executeString);
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null) {
+                if (s.contains("nothing to commit")) {
+                    System.out.println("nothing to commit");
+                    commitStatus = 1;
+                } 
+                log += s + "\n";
+                System.out.println(s);
+            }
+            p.waitFor();
+            p.destroy();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         System.out.println("do git version control");
-		return true;
-	}
+        return true;
+    }
 
-	public boolean doGitBackward(String projectName) {
-		String baseProjectsUrl = "";
-		String projectUrl = baseProjectsUrl + "/" + projectName;
-		// git stash
-		// git check out HEAD^
+    public boolean doGitBackward(String projectName) {
+        String baseProjectsUrl = "";
+        String projectUrl = baseProjectsUrl + "/" + projectName;
+        // git stash
+        // git check out HEAD^
         System.out.println("do git version backward");
-		return true;
-	}
+        return true;
+    }
 
     public void writeFile(String path, String text) {
         System.out.println("path heree : " + path);
@@ -67,7 +91,7 @@ public class CodeGeneration {
         if (fileObj.exists()) {
             try {
                 FileWriter myWriter = new FileWriter(path);
-                System.out.println(text);
+                // System.out.println(text);
                 myWriter.write(text);
                 myWriter.close();
                 System.out.println("Successfully wrote to the file. EditorCode");
@@ -87,5 +111,42 @@ public class CodeGeneration {
                 System.out.println("create not success");
             }
         }
+    }
+
+    public JSONObject buildCode() {
+        // statusCode
+        // -1 signature same
+        // 0 build error
+        // 1 build success
+        System.out.println("Bulding Code...");
+        String s;
+        Process p;
+        String log = "";
+        int statusCode = 0;
+        try {
+            p = Runtime.getRuntime().exec("./build.sh");
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((s = br.readLine()) != null) {
+                log += s + "\n";
+                System.out.println(s);
+                if (s.contains("BUILD SUCCESSFUL")) {
+                    System.out.println("Build success");
+                    statusCode = 1;
+                } else if (s.contains("FAILED")) {
+                    System.out.println("Build failed");
+                    statusCode = 0;
+                }
+            }
+            p.waitFor();
+            p.destroy();
+        } catch (Exception e) {
+            System.out.println("build process exception");
+            e.printStackTrace();
+        }
+        System.out.println("hello " + statusCode);
+        JSONObject response = new JSONObject();
+        response.put("log", log);
+        response.put("statusCode", statusCode);
+        return response;
     }
 }

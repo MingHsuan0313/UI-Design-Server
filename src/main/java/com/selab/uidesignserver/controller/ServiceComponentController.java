@@ -41,7 +41,7 @@ import javax.xml.parsers.*;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-@RestController
+@RestController()
 @RequestMapping("/services")
 @CrossOrigin(origins = "*", allowCredentials = "true")
 public class ServiceComponentController {
@@ -77,9 +77,9 @@ public class ServiceComponentController {
         String className = requestBodyObject.getString("className");
         String originalServiceID = requestBodyObject.getString("originalServiceID");
         this.editServiceComponentService.initialize(projectName, className, originalServiceID, code);
-        this.editServiceComponentService.editService();
-
-        return "edit service component";
+        String result = this.editServiceComponentService.editService();
+        this.editServiceComponentService.codeGeneration.writeFile("/home/timhsieh/Desktop/Selab/UI-Team/OriginInventorySystemBackend/temp.java", result);
+        return "edit success";
     }
 
 

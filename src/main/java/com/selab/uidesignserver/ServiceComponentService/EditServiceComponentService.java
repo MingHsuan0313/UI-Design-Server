@@ -6,17 +6,34 @@ import freemarker.template.TemplateException;
 
 import java.io.IOException;
 
+import com.selab.uidesignserver.ServiceComponentService.visitors.*;
+import java.util.*;
+
 import com.sun.source.tree.*;
 
 @Service
 public class EditServiceComponentService {
 	public String projectName;
-	public String className;	
+	public String className;
 	public String originalServiceID;
 	public String newServiceCode;
+	public CodeGeneration codeGeneration;
+	public NewCodeParser codeParser;
+	public String result;
 
 	public EditServiceComponentService() {
+		this.codeGeneration = new CodeGeneration();
+		this.codeParser = new NewCodeParser();
+	}
 
+	public String getAbsoluteServiceComponentPath() {
+		String projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
+		return projectBaseUrl + "/" + this.projectName + "/src/main/java/" + this.className;
+	}
+
+	public String getAbsoluteProjectPath() {
+		String projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
+		return projectBaseUrl + "/" + this.projectName;
 	}
 
 	public void initialize(String projectName, String className, String originalServiceID, String newServiceCode) {
@@ -28,53 +45,112 @@ public class EditServiceComponentService {
 		this.showInfo();
 	}
 
-    public String convertClassNameToFilePath(String className) {
-        String result = "";
-        System.out.println("start convert...");
-        System.out.println(className);
-        String[] stringLst = className.split("\\.");
-        // String[] stringLst =
-        // "ntu-csie-selab-inventorysystem-service-ItemHistoryService".split("-");
-        int index;
-        for (index = 0; index < stringLst.length - 1; index++) {
-            System.out.println(index);
-            result += stringLst[index] + "/";
-        }
-        result += stringLst[index] + ".java";
-        return result;
-    }
-
-
-	public boolean editService() throws IOException, TemplateException {
-		String projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
-		CodeGeneration codeGeneration = new CodeGeneration();
-		codeGeneration.createTempServiceComponent(this.newServiceCode);
-		NewCodeParser codeParser = new NewCodeParser();
-		MethodTree method = codeParser.parseServiceComponent("./temp/tempService.java");
-		System.out.println(method.toString());
-		System.out.println(projectBaseUrl + "/" + this.projectName + "/" + this.className);
-		ClassTree klass = codeParser.parseJavaFile(projectBaseUrl + "/" + this.projectName + "/src/main/java/" + this.className);
-
-		if(codeParser.identifySignatureUnique(klass, method)) {
-			//do add service
-			codeGeneration.doGitVersionControl(projectBaseUrl + "/" + this.projectName);
-			this.addNewService(method);
+	public String convertClassNameToFilePath(String className) {
+		String result = "";
+		System.out.println("start convert...");
+		System.out.println(className);
+		String[] stringLst = className.split("\\.");
+		// String[] stringLst =
+		// "ntu-csie-selab-inventorysystem-service-ItemHistoryService".split("-");
+		int index;
+		for (index = 0; index < stringLst.length - 1; index++) {
+			System.out.println(index);
+			result += stringLst[index] + "/";
 		}
-		else {
-			// do override
-			codeGeneration.doGitVersionControl(projectBaseUrl + "/" + this.projectName);
+		result += stringLst[index] + ".java";
+		return result;
+	}
+
+	public String editService() throws IOException, TemplateException {
+		this.result = "";
+		codeGeneration.createTempServiceComponent(this.newServiceCode);
+		MethodTree method = codeParser.parseServiceComponent("./temp/tempService.java");
+		CompilationUnitTree javaFile = codeParser
+				.parseJavaFile(this.getAbsoluteServiceComponentPath());
+		ClassTree klass = codeParser
+				.parseClass(this.getAbsoluteServiceComponentPath());
+
+		codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
+		this.writePackageAndImports(javaFile);
+		this.writeClassStart(klass);
+		if (codeParser.identifySignatureUnique(klass, method)) {
+			this.addNewService(klass, method);
+		} else {
 			this.overrideService(klass, method);
 		}
+		this.result += "}";
+		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
+		return this.result;
+	}
+
+	public boolean writeClassStart(ClassTree klass) {
+		List<AnnotationTree> annotationTreeContainer = new ArrayList<>();
+		klass.accept(new AnnotationVisitor(), annotationTreeContainer);
+		for(AnnotationTree annotationTree: annotationTreeContainer) {
+			// System.out.println(annotationTree.toString());
+			// System.out.println(annotationTree.getAnnotationType().toString());
+			// System.out.println("******");
+			this.result += annotationTree.toString() + "\n";
+		}
+		this.result += "public class " + klass.getSimpleName() + "{\n";
+		return true;
+	}
+
+	public boolean writePackageAndImports(CompilationUnitTree javaFileTree) {
+		this.result += "package " + javaFileTree.getPackageName() + ";\n";
+		List<ImportTree> importTreeContainer = new ArrayList<>();
+		javaFileTree.accept(new ImportVisitor(), importTreeContainer);
+		for (ImportTree importTree : importTreeContainer) {
+			this.result += importTree.toString();
+		}
+		this.result += "\n";
 		return true;
 	}
 
 	public boolean overrideService(ClassTree originClass, MethodTree newService) {
-		System.out.println("override service in original project");
+		List<VariableTree> propertiesContainer = new ArrayList<>();
+		List<MethodTree> methodsContainer = new ArrayList<>();
+		originClass.accept(new MethodVisitor(), methodsContainer);
+		originClass.accept(new VariableVisitor(), propertiesContainer);
+
+		for (int index = 0; index < propertiesContainer.size(); index++) {
+			VariableTree originalProperty = propertiesContainer.get(index);
+			this.result += originalProperty.toString() + ";\n";
+		}
+
+		for (int index = 0; index < methodsContainer.size(); index++) {
+			// System.out.println(methodsContainer.get(index));
+			MethodTree originService = methodsContainer.get(index);
+			if (this.codeParser.isSignatureTheSame(newService, originService)) {
+				this.result += newService.toString();
+			} else
+				this.result += originService.toString();
+			this.result += "\n";
+		}
 		return true;
 	}
 
-	public boolean addNewService(MethodTree newService) {
+	public boolean addNewService(ClassTree originClass, MethodTree newService) {
 		System.out.println("add new service in original project");
+		List<VariableTree> propertiesContainer = new ArrayList<>();
+		List<MethodTree> methodsContainer = new ArrayList<>();
+		originClass.accept(new MethodVisitor(), methodsContainer);
+		originClass.accept(new VariableVisitor(), propertiesContainer);
+
+		for (int index = 0; index < propertiesContainer.size(); index++) {
+			VariableTree originalProperty = propertiesContainer.get(index);
+			this.result += originalProperty.toString() + ";\n";
+		}
+
+		for (int index = 0; index < methodsContainer.size(); index++) {
+			// System.out.println(methodsContainer.get(index));
+			MethodTree originService = methodsContainer.get(index);
+			this.result += originService.toString();
+			this.result += "\n";
+		}
+		this.result += newService.toString();
+		this.result += "\n";
+
 		return true;
 	}
 
