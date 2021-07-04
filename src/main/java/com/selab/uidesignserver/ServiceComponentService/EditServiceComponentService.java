@@ -1,13 +1,18 @@
 package com.selab.uidesignserver.ServiceComponentService;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
 
+import com.fasterxml.uuid.Generators;
 import com.selab.uidesignserver.ServiceComponentService.visitors.*;
+import com.selab.uidesignserver.dao.serviceComponent.ModifiedRecordRepository;
+import com.selab.uidesignserver.entity.serviceComponent.ModifiedRecordTable;
+
 import java.util.*;
 
 import com.sun.source.tree.*;
@@ -21,6 +26,9 @@ public class EditServiceComponentService {
 	public CodeGeneration codeGeneration;
 	public NewCodeParser codeParser;
 	public String result;
+
+    @Autowired
+    ModifiedRecordRepository modifiedRecordRepository;
 
 	public EditServiceComponentService() {
 		this.codeGeneration = new CodeGeneration();
@@ -62,6 +70,23 @@ public class EditServiceComponentService {
 		return result;
 	}
 
+	public boolean saveModifiedRecord() throws IOException, TemplateException {
+		// clean all records first
+		this.modifiedRecordRepository.deleteAll();
+		String serviceId = this.originalServiceID;
+		this.codeGeneration.createTempServiceComponent(this.newServiceCode);
+		String signature = this.getMethodSignature(this.codeParser.parseServiceComponent("./temp/tempService.java"));
+		ModifiedRecordTable modifiedRecordTable = new ModifiedRecordTable(signature, serviceId);
+		this.modifiedRecordRepository.save(modifiedRecordTable);
+
+		return true;
+	}
+
+	public String getMethodSignature(MethodTree method) {
+		
+		return "";
+	}
+
 	public String editService() throws IOException, TemplateException {
 		this.result = "";
 		codeGeneration.createTempServiceComponent(this.newServiceCode);
@@ -77,6 +102,7 @@ public class EditServiceComponentService {
 			this.addNewService(klass, method);
 		} else {
 			this.overrideService(klass, method);
+			this.saveModifiedRecord();
 		}
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);

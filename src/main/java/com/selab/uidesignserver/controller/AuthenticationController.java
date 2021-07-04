@@ -37,10 +37,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<String> authenticate(@RequestBody String data, HttpServletRequest request) {
-
-        System.out.println("Hello authentication");
         HttpSession session = request.getSession();
-
         JSONObject userNamePasswordObject = new JSONObject(data);
         String username = userNamePasswordObject.getString("username");
         String password = userNamePasswordObject.getString("password");
@@ -50,12 +47,10 @@ public class AuthenticationController {
             responseObject.put("userId", userId);
             session.setAttribute("userId", userId);
             List<String> openedThemeIDList = new ArrayList<String>();
-
             session.setAttribute("openedThemeIDList", openedThemeIDList);
             ((List<String>)session.getAttribute("openedThemeIDList")).forEach(
                     name -> System.out.println(name)
             );
-
             return ResponseEntity.status(HttpStatus.OK).body(responseObject.toString());
         }
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("authentication failed: user or password not match");

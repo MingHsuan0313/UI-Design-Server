@@ -2,6 +2,8 @@ package com.selab.uidesignserver.entity.serviceComponent;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "Modified_Record")
 public class ModifiedRecordTable {
 	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="modified_recordID", nullable = false)
 	private String modifiedRecordID;
 
@@ -20,8 +23,7 @@ public class ModifiedRecordTable {
 
 	public ModifiedRecordTable() {}
 
-	public ModifiedRecordTable(String modifiedRecordID, String methodSignature, String serviceID) {
-		this.modifiedRecordID = modifiedRecordID;
+	public ModifiedRecordTable(String methodSignature, String serviceID) {
 		this.methodSignature = methodSignature;
 		this.serviceID = serviceID;
 	}
