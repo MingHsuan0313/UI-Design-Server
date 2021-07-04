@@ -92,6 +92,8 @@ public class EditServiceComponentService {
 	}
 
 	public String getMethodSignature(MethodTree method) {
+		String signatueString = "";
+		signatueString += method.getName() + "(";
 		List<VariableTree> variableTreeContainer = (List<VariableTree>) method.getParameters();
 		Map<String, String> signatures = SignatureLibrary.getSignatures();
 		for(VariableTree variableTree: variableTreeContainer) {
@@ -111,11 +113,12 @@ public class EditServiceComponentService {
 					}
 				}
 			}
-			System.out.println(variableTree.getType().toString());
-			System.out.println(fullType);
-			System.out.println(variableTree.toString());
+			signatueString += fullType + ", ";
 		}
-		return "";
+
+		signatueString = signatueString.substring(0, signatueString.length() - 2) + ")";
+		System.out.println(signatueString);
+		return signatueString;
 	}
 
 	public String editService() throws IOException, TemplateException {

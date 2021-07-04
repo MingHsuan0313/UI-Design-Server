@@ -1,4 +1,5 @@
 public class Temp {
-	public Department viewCategory (String uid, String token, Department cid) {
+	public int viewCategory (String uid, String token, Item cid) { int x = 5;
+return 0;
 }
 }
