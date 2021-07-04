@@ -9,6 +9,11 @@ import com.selab.uidesignserver.entity.uiComposition.UsersTable;
 import com.selab.uidesignserver.repositoryService.AuthenticationService;
 import com.selab.uidesignserver.repositoryService.InternalRepresentationService;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import org.jclouds.rest.annotations.ResponseParser;
 import org.json.JSONArray;

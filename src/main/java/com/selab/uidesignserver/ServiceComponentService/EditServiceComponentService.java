@@ -3,6 +3,7 @@ package com.selab.uidesignserver.ServiceComponentService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import freemarker.template.TemplateException;
 
@@ -26,13 +27,19 @@ public class EditServiceComponentService {
 	public CodeGeneration codeGeneration;
 	public NewCodeParser codeParser;
 	public String result;
+	public ArrayList<String> importPackages;
 
     @Autowired
     ModifiedRecordRepository modifiedRecordRepository;
 
 	public EditServiceComponentService() {
+		this.importPackages = new ArrayList<>();
 		this.codeGeneration = new CodeGeneration();
 		this.codeParser = new NewCodeParser();
+	}
+
+	public int getProjectIdFromServiceId() {
+		return 1; 
 	}
 
 	public String getAbsoluteServiceComponentPath() {
@@ -71,6 +78,7 @@ public class EditServiceComponentService {
 	}
 
 	public boolean saveModifiedRecord() throws IOException, TemplateException {
+		System.out.println("****save modified record****");
 		// clean all records first
 		this.modifiedRecordRepository.deleteAll();
 		String serviceId = this.originalServiceID;
@@ -78,12 +86,35 @@ public class EditServiceComponentService {
 		String signature = this.getMethodSignature(this.codeParser.parseServiceComponent("./temp/tempService.java"));
 		ModifiedRecordTable modifiedRecordTable = new ModifiedRecordTable(signature, serviceId);
 		this.modifiedRecordRepository.save(modifiedRecordTable);
+		System.out.println("****save modified record****");
 
 		return true;
 	}
 
 	public String getMethodSignature(MethodTree method) {
-		
+		List<VariableTree> variableTreeContainer = (List<VariableTree>) method.getParameters();
+		Map<String, String> signatures = SignatureLibrary.getSignatures();
+		for(VariableTree variableTree: variableTreeContainer) {
+			String type = variableTree.getType().toString();
+			String fullType = signatures.get(type);
+			if(fullType == null) {
+				List<String> projectSignatures = new ArrayList<>();
+				String uri = "http://140.112.90.144:3001/query/projectClasses?projectID=1";
+				RestTemplate restTemplate = new RestTemplate();
+				projectSignatures = restTemplate.getForObject(uri, ArrayList.class);
+				// System.out.println(projectSignatures);
+				for(int index = 0; index < projectSignatures.size(); index++) {
+					String sig = projectSignatures.get(index);
+					if(sig.split("\\.")[sig.split("\\.").length - 1].equals(type)) {
+						fullType = projectSignatures.get(index);
+						this.importPackages.add(fullType);
+					}
+				}
+			}
+			System.out.println(variableTree.getType().toString());
+			System.out.println(fullType);
+			System.out.println(variableTree.toString());
+		}
 		return "";
 	}
 
@@ -96,13 +127,13 @@ public class EditServiceComponentService {
 		ClassTree klass = codeParser
 				.parseClass(this.getAbsoluteServiceComponentPath());
 
+		this.saveModifiedRecord();
 		this.writePackageAndImports(javaFile);
 		this.writeClassStart(klass);
 		if (codeParser.identifySignatureUnique(klass, method)) {
 			this.addNewService(klass, method);
 		} else {
 			this.overrideService(klass, method);
-			this.saveModifiedRecord();
 		}
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
@@ -137,6 +168,10 @@ public class EditServiceComponentService {
 		javaFileTree.accept(new ImportVisitor(), importTreeContainer);
 		for (ImportTree importTree : importTreeContainer) {
 			this.result += importTree.toString();
+		}
+
+		for(int index = 0; index < this.importPackages.size(); index++) {
+			this.result += "import " + this.importPackages.get(index).toString() + ";\n";
 		}
 		this.result += "\n";
 		return true;
