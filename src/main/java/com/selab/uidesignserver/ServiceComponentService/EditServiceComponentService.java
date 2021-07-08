@@ -37,7 +37,7 @@ public class EditServiceComponentService {
 		this.importPackages = new ArrayList<>();
 		this.codeGeneration = new CodeGeneration();
 		this.codeParser = new NewCodeParser();
-		this.projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
+		this.projectBaseUrl = "/home/selab/service_generator_new/test_data";
 	}
 
 	public int getProjectIdFromServiceId() {
