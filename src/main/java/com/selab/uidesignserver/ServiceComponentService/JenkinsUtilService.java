@@ -27,6 +27,7 @@ public class JenkinsUtilService {
     }
 
     public String triggerEditServicePipeline() {
+        System.out.println("trigger jenkins!!");
         try {
         this.client = JenkinsClient.builder().endPoint(this.config.JENKINS_URL).token(this.config.TOKEN).build();
         Map<String, List<String>> params = new HashMap<>();
