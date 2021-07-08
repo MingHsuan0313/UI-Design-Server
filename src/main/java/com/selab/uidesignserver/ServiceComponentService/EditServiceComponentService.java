@@ -143,11 +143,11 @@ public class EditServiceComponentService {
 		JSONObject result = codeGeneration.buildCode(this.getAbsoluteProjectPath());
 		// success
 		if(result.getInt("statusCode") == 1) {
-			codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
+			// codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
 			return this.result;
 		}
 		else {
-			codeGeneration.doGitStash(this.getAbsoluteProjectPath());
+			// codeGeneration.doGitStash(this.getAbsoluteProjectPath());
 			return "failed";
 		}
 	}

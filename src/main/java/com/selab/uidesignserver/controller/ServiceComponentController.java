@@ -17,6 +17,7 @@ import java.util.Map;
 import com.selab.uidesignserver.ServiceComponentService.AddServiceComponentService;
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
 import com.selab.uidesignserver.ServiceComponentService.EditServiceComponentService;
+import com.selab.uidesignserver.ServiceComponentService.JenkinsUtilService;
 import com.selab.uidesignserver.entity.serviceComponent.*;
 import com.selab.uidesignserver.entity.uiComposition.*;
 
@@ -49,14 +50,17 @@ public class ServiceComponentController {
     private ServiceComponentService serviceComponentService;
     private AddServiceComponentService addServiceComponentService;
     private EditServiceComponentService editServiceComponentService;
+    private JenkinsUtilService jenkinsUtilService;
 
     @Autowired
     public ServiceComponentController(ServiceComponentService theServiceComponentService,
             AddServiceComponentService theAddServiceComponentService,
-            EditServiceComponentService theEditServiceComponentService) {
+            EditServiceComponentService theEditServiceComponentService,
+            JenkinsUtilService theJenkinsUtilService) {
         addServiceComponentService = theAddServiceComponentService;
         editServiceComponentService = theEditServiceComponentService;
         serviceComponentService = theServiceComponentService;
+        jenkinsUtilService = theJenkinsUtilService;
     }
 
     @PostMapping(value = "/addService")
@@ -79,8 +83,11 @@ public class ServiceComponentController {
         String result = this.editServiceComponentService.editService();
         if (result == "failed")
             return "failed";
-        else
+        else {
+            this.jenkinsUtilService.setProjectName(projectName);
+            this.jenkinsUtilService.triggerEditServicePipeline();
             return "edit success";
+        }
     }
 
     @GetMapping(value = "/test")
