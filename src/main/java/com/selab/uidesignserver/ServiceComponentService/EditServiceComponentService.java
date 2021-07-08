@@ -28,6 +28,7 @@ public class EditServiceComponentService {
 	public NewCodeParser codeParser;
 	public String result;
 	public ArrayList<String> importPackages;
+	public String projectBaseUrl; 
 
     @Autowired
     ModifiedRecordRepository modifiedRecordRepository;
@@ -36,6 +37,7 @@ public class EditServiceComponentService {
 		this.importPackages = new ArrayList<>();
 		this.codeGeneration = new CodeGeneration();
 		this.codeParser = new NewCodeParser();
+		this.projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
 	}
 
 	public int getProjectIdFromServiceId() {
@@ -43,12 +45,10 @@ public class EditServiceComponentService {
 	}
 
 	public String getAbsoluteServiceComponentPath() {
-		String projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
 		return projectBaseUrl + "/" + this.projectName + "/src/main/java/" + this.className;
 	}
 
 	public String getAbsoluteProjectPath() {
-		String projectBaseUrl = "/home/timhsieh/Desktop/Selab/UI-Team";
 		return projectBaseUrl + "/" + this.projectName;
 	}
 
