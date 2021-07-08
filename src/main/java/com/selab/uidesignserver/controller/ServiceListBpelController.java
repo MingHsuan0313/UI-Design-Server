@@ -33,6 +33,9 @@ public class ServiceListBpelController {
         ServiceListBpelJsonIR slbj = serviceListBpelService.createServiceListBpelJsonIR(
                 Objects.requireNonNull(projectName), Objects.requireNonNull(themeId), Objects.requireNonNull(pageId),
                 serviceListBpelJsonIR);
+        System.out.println("jelwqle");
+        System.out.println(pageId);
+        System.out.println(slbj.getPagesTable().getId());
         response.setStatus(HttpServletResponse.SC_CREATED);
         response.setHeader(Location.TAG, Location.BPEL_JSON_IR_CREATED(slbj.getId()));
         return "create service list BPEL JSON IR successfully";
