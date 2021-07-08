@@ -33,6 +33,7 @@ public class JenkinsUtilService {
         Map<String, List<String>> params = new HashMap<>();
         params.put("projectName", Collections.singletonList(this.config.PROJECT_NAME));
         IntegerResponse instanceId = client.api().jobsApi().buildWithParameters(null, this.config.JOB_NAME, params);
+        System.out.println(instanceId.value());
 
         return String.valueOf(instanceId.value());
         } catch (Exception e) {
