@@ -16,26 +16,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class JenkinsUtilService {
     private JenkinsClient client;
-    public Config config;
-
-    public JenkinsUtilService() {
-        this.config = new Config();
-    }
+    private String projectName;
 
     public void setProjectName(String projectName) {
-        this.config.PROJECT_NAME = projectName;
+        this.projectName = projectName;
     }
 
-    public String triggerEditServicePipeline() {
+    public String triggerEditServicePipeline(String projectName) {
         System.out.println("trigger jenkins!!");
         try {
-        this.client = JenkinsClient.builder().endPoint(this.config.JENKINS_URL).token(this.config.TOKEN).build();
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("projectName", Collections.singletonList(this.config.PROJECT_NAME));
-        IntegerResponse instanceId = client.api().jobsApi().buildWithParameters(null, this.config.JOB_NAME, params);
-        System.out.println(instanceId.value());
-
-        return String.valueOf(instanceId.value());
+            this.client = JenkinsClient.builder().endPoint(Config.JENKINS_URL).token(Config.TOKEN).build();
+            Map<String, List<String>> params = new HashMap<>();
+            params.put("token", Collections.singletonList(Config.TOKEN));
+            params.put("projectName", Collections.singletonList(projectName));
+            IntegerResponse instanceId = client.api().jobsApi().buildWithParameters(null, Config.JOB_NAME, params);
+            System.out.println(instanceId.value());
+            System.out.println("trigger");
+            System.out.println(Config.JENKINS_URL);
+            System.out.println(Config.TOKEN);
+            System.out.println(Config.JOB_NAME);
+            System.out.println(this.projectName);
+            return String.valueOf(instanceId.value());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +66,7 @@ public class JenkinsUtilService {
             if (executableBuild == null)
                 continue;
 
-            Workflow workflow = client.api().jobsApi().workflow(null, this.config.JOB_NAME, executableBuild.number());
+            Workflow workflow = client.api().jobsApi().workflow(null, Config.JOB_NAME, executableBuild.number());
             // get building stages
             ret.setStages(new Gson().toJson(workflow.stages()));
             // check status
@@ -94,10 +95,9 @@ public class JenkinsUtilService {
     }
 
     private class Config {
-        public final String JENKINS_URL = "http://140.112.90.144/jenkins/";
-        public final String TOKEN = "EDIT_SERVICE_PIPELINE";
-        public final String JOB_NAME = "service_generator_for_ui-design-client_edit_service";
-        public String PROJECT_NAME = "projectName";
+        public static final String JENKINS_URL = "http://140.112.90.144/jenkins/";
+        public static final String TOKEN = "EDIT_SERVICE_PIPELINE";
+        public static final String JOB_NAME = "service_generator_for_ui-design-client_edit_service";
         // timeout of the build task
         // TODO: 3 min, modify the value if pipeline deals with more tasks and cost more
         // time in the future

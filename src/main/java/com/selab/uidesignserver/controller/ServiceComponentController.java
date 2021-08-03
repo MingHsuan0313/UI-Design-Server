@@ -55,8 +55,7 @@ public class ServiceComponentController {
     @Autowired
     public ServiceComponentController(ServiceComponentService theServiceComponentService,
             AddServiceComponentService theAddServiceComponentService,
-            EditServiceComponentService theEditServiceComponentService,
-            JenkinsUtilService theJenkinsUtilService) {
+            EditServiceComponentService theEditServiceComponentService, JenkinsUtilService theJenkinsUtilService) {
         addServiceComponentService = theAddServiceComponentService;
         editServiceComponentService = theEditServiceComponentService;
         serviceComponentService = theServiceComponentService;
@@ -79,15 +78,15 @@ public class ServiceComponentController {
         String projectName = requestBodyObject.getString("projectName");
         String className = requestBodyObject.getString("className");
         String originalServiceID = requestBodyObject.getString("originalServiceID");
-        this.editServiceComponentService.initialize(projectName, className, originalServiceID, code);
-        String result = this.editServiceComponentService.editService();
-        if (result == "failed")
-            return "failed";
-        else {
-            this.jenkinsUtilService.setProjectName(projectName);
-            this.jenkinsUtilService.triggerEditServicePipeline();
-            return "edit success";
-        }
+        // this.editServiceComponentService.initialize(projectName, className,
+        // originalServiceID, code);
+        // String result = this.editServiceComponentService.editService();
+        // if (result == "failed")
+        // return "failed";
+        // else {
+        this.jenkinsUtilService.triggerEditServicePipeline(projectName);
+        return "edit success";
+        // }
     }
 
     @GetMapping(value = "/test")
