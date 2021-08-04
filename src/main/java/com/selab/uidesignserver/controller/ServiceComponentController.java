@@ -73,7 +73,8 @@ public class ServiceComponentController {
     }
 
     @PostMapping(value = "/editServiceComponent")
-    public JSONObject editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
+    public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
+        System.out.println("edit finish");
         JSONObject requestBodyObject = new JSONObject(data);
 
         String code = requestBodyObject.getString("code");
@@ -86,7 +87,8 @@ public class ServiceComponentController {
         JSONObject result = new JSONObject();
         result.put("statusCode", 1);
         result.put("log", "success");
-        return result;
+        System.out.println("edit finish2");
+        return result.toString();
     }
 
     @GetMapping(value = "/trigger/editService")
