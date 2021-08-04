@@ -1,5 +1,5 @@
 public class Temp {
-	public int viewCategory (String uid, String token, Item cid) { int x = 5;
+	public int viewCategory12345 (String uid, String token, Item cid) { test x
 return 0;
 }
 }

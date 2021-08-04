@@ -81,13 +81,12 @@ public class ServiceComponentController {
         String projectName = requestBodyObject.getString("projectName");
         String className = requestBodyObject.getString("className");
         String originalServiceID = requestBodyObject.getString("originalServiceID");
-        // this.editServiceComponentService.initialize(projectName, className,
-        // originalServiceID, code);
-        // JSONObject result = this.editServiceComponentService.editService();
-        JSONObject result = new JSONObject();
-        result.put("statusCode", 1);
-        result.put("log", "success");
-        System.out.println("edit finish2");
+        this.editServiceComponentService.initialize(projectName, className,originalServiceID, code);
+        JSONObject result = this.editServiceComponentService.editService();
+        //JSONObject result = new JSONObject();
+        //result.put("statusCode", 1);
+        //result.put("log", "success");
+        //System.out.println("edit finish2");
         return result.toString();
     }
 
