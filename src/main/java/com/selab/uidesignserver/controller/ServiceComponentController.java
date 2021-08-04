@@ -18,6 +18,7 @@ import com.selab.uidesignserver.ServiceComponentService.AddServiceComponentServi
 import com.selab.uidesignserver.ServiceComponentService.EditCodeService;
 import com.selab.uidesignserver.ServiceComponentService.EditServiceComponentService;
 import com.selab.uidesignserver.ServiceComponentService.JenkinsUtilService;
+import com.selab.uidesignserver.dto.WebAppGeneratingStateDto;
 import com.selab.uidesignserver.entity.serviceComponent.*;
 import com.selab.uidesignserver.entity.uiComposition.*;
 
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.w3c.dom.Document;
 
@@ -70,8 +72,8 @@ public class ServiceComponentController {
         return "";
     }
 
-    @PostMapping(value = "/editService")
-    public String editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
+    @PostMapping(value = "/editServiceComponent")
+    public JSONObject editServiceComponent(@RequestBody String data) throws IOException, TemplateException {
         JSONObject requestBodyObject = new JSONObject(data);
 
         String code = requestBodyObject.getString("code");
@@ -80,14 +82,24 @@ public class ServiceComponentController {
         String originalServiceID = requestBodyObject.getString("originalServiceID");
         // this.editServiceComponentService.initialize(projectName, className,
         // originalServiceID, code);
-        // String result = this.editServiceComponentService.editService();
-        // if (result == "failed")
-        // return "failed";
-        // else {
-        this.jenkinsUtilService.triggerEditServicePipeline(projectName);
-        return "edit success";
-        // }
+        // JSONObject result = this.editServiceComponentService.editService();
+        JSONObject result = new JSONObject();
+        result.put("statusCode", 1);
+        result.put("log", "success");
+        return result;
     }
+
+    @GetMapping(value = "/trigger/editService")
+    public String triggerEditService(@RequestParam("projectName") String projectName) {
+        return this.jenkinsUtilService.triggerEditServicePipeline(projectName);
+    }
+
+    @GetMapping(value = "/getCurrentEditServiceStatus")
+    public @ResponseBody WebAppGeneratingStateDto getCurrentGeneratingState(@RequestParam("instanceId") String instanceId) {
+        return this.jenkinsUtilService.getCurrentGeneratingState(instanceId);
+    }
+
+
 
     @GetMapping(value = "/test")
     public String test() {

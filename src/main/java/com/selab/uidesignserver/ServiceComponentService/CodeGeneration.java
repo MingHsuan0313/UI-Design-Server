@@ -161,7 +161,6 @@ public class CodeGeneration {
             System.out.println("build process exception");
             e.printStackTrace();
         }
-        System.out.println("hello " + statusCode);
         JSONObject response = new JSONObject();
         response.put("log", log);
         response.put("statusCode", statusCode);

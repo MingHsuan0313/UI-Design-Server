@@ -121,7 +121,7 @@ public class EditServiceComponentService {
 		return signatueString;
 	}
 
-	public String editService() throws IOException, TemplateException {
+	public JSONObject editService() throws IOException, TemplateException {
 		this.result = "";
 		codeGeneration.createTempServiceComponent(this.newServiceCode);
 		MethodTree method = codeParser.parseServiceComponent("./temp/tempService.java");
@@ -140,15 +140,15 @@ public class EditServiceComponentService {
 		}
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
-		JSONObject result = codeGeneration.buildCode(this.getAbsoluteProjectPath());
+		JSONObject response = codeGeneration.buildCode(this.getAbsoluteProjectPath());
 		// success
-		if(result.getInt("statusCode") == 1) {
+		if(response.getInt("statusCode") == 1) {
 			// codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
-			return this.result;
+			return response;
 		}
 		else {
 			// codeGeneration.doGitStash(this.getAbsoluteProjectPath());
-			return "failed";
+			return response;
 		}
 	}
 
