@@ -1,5 +1,8 @@
 public class Temp {
-	public int viewCategory12345 (String uid, String token, Item cid) { test x
-return 0;
+	
+@GetMapping(value = "/test3", produces = "application/json")
+public int viewCategoryTest3() {
+    int x = 5;
+    return x;
 }
 }

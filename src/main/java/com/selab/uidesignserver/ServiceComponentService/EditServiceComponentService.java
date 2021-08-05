@@ -84,6 +84,8 @@ public class EditServiceComponentService {
 		String serviceId = this.originalServiceID;
 		this.codeGeneration.createTempServiceComponent(this.newServiceCode);
 		String signature = this.getMethodSignature(this.codeParser.parseServiceComponent("./temp/tempService.java"));
+        System.out.println("signature heree....");
+        System.out.println(signature);
 		ModifiedRecordTable modifiedRecordTable = new ModifiedRecordTable(signature, serviceId);
 		this.modifiedRecordRepository.save(modifiedRecordTable);
 		System.out.println("****save modified record****");
@@ -116,7 +118,7 @@ public class EditServiceComponentService {
 			signatueString += fullType + ", ";
 		}
 
-		signatueString = signatueString.substring(0, signatueString.length() - 2) + ")";
+		signatueString = signatueString.substring(0, signatueString.length()) + ")";
 		System.out.println(signatueString);
 		return signatueString;
 	}
@@ -141,13 +143,14 @@ public class EditServiceComponentService {
 		this.result += "}";
 		this.codeGeneration.writeFile(this.getAbsoluteServiceComponentPath(), this.result);
 		JSONObject response = codeGeneration.buildCode(this.getAbsoluteProjectPath());
-		// success
+		// build success
 		if(response.getInt("statusCode") == 1) {
 			// codeGeneration.doGitVersionControl(this.getAbsoluteProjectPath(), "edit", method.getName().toString());
 			return response;
 		}
+        // build failed
 		else {
-			// codeGeneration.doGitStash(this.getAbsoluteProjectPath());
+			codeGeneration.doGitStash(this.getAbsoluteProjectPath());
 			return response;
 		}
 	}
